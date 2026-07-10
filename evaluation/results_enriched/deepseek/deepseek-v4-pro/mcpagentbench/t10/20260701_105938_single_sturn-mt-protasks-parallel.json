@@ -1,0 +1,3177 @@
+{
+  "timestamp": "2026-07-01T10:59:38.805642+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "single",
+  "mode": "sturn-mt-protasks-parallel",
+  "num_tools": 10,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 3,
+    "total_test_cases": 20,
+    "error_rate": 0.15
+  },
+  "aggregate": {
+    "total_prompt_tokens": 579351,
+    "total_completion_tokens": 39437,
+    "total_tokens": 618788,
+    "total_llm_calls": 73,
+    "total_cost": 0.286328,
+    "total_latency": 604.291,
+    "avg_latency": 30.215,
+    "pass_rate": 0.45,
+    "passed": 9,
+    "failed": 8,
+    "errors": 3
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_2_parallel_tools_1",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "How can I establish a secure connection to a database for a large-scale movie review website, the project id is 'movie-reviews-db', and at the same time obtain security guidance to ensure safe data st",
+      "expected_tools": [
+        {
+          "name": "connect_database",
+          "arguments": {
+            "database_name": "movie_reviews_db"
+          }
+        },
+        {
+          "name": "security_guidance",
+          "arguments": {
+            "query": "secure mysql connection for large-scale movie review website"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "connect_database",
+          "args": {
+            "database_name": "movie_reviews_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Successfully connected to \\'movie_reviews_db\\' with TLS-enabled pooled connection. Ready for secure movie review operations.\", \"id\": \"lc_ccc46aff-d99d-431f-a1b7-37",
+          "start_time": 0.0,
+          "latency": 2.488136600004509,
+          "agent_id": ""
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "Best practices for secure data storage and access for a large-scale movie review website database, including protection of user PII, password hashing, SQL injection prevention, encryption at rest and in transit, access control/RBAC, and compliance with data protection regulations"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"General Application Security Guidelines:\\\\n1. Apply the principle of least privilege to all systems and services.\\\\n2. Keep all software dependencies updated and p",
+          "start_time": 0.0,
+          "latency": 2.4894996000221,
+          "agent_id": ""
+        },
+        {
+          "name": "mongo_mcp",
+          "args": {
+            "collection_name": "movie_reviews_db",
+            "mongoUri": "mongodb://localhost:27017/movie_reviews_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Database \\'mongodb://localhost:27017/movie_reviews_db\\' not found in mock databases.\", \"id\": \"lc_74e9ffc7-6026-4a90-98cd-ba617e1cce31\"}], {\"structured_content\": {\"",
+          "start_time": 13.872,
+          "latency": 2.2345239999704063,
+          "agent_id": ""
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "Specific security best practices for a movie review website database: SQL injection prevention in review submission forms, PII protection for user emails and profiles, password hashing algorithms (bcrypt/argon2), TLS configuration for database connections, RBAC for moderators vs regular users, rate limiting on API endpoints, GDPR compliance for user data in reviews, and encryption at rest for movie_reviews_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"General Application Security Guidelines:\\\\n1. Apply the principle of least privilege to all systems and services.\\\\n2. Keep all software dependencies updated and p",
+          "start_time": 13.872,
+          "latency": 2.2358411999884993,
+          "agent_id": ""
+        },
+        {
+          "name": "get_secret",
+          "args": {
+            "secret_name": "movie-reviews-db",
+            "mask_sensitive": true,
+            "confirm_unmask": "no"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: Secret \\'movie-reviews-db\\' not found.\", \"id\": \"lc_1c736600-f023-48a2-ad8e-53c73b452d15\"}], {\"structured_content\": {\"result\": \"Error: Secret \\'movie-reviews",
+          "start_time": 23.111,
+          "latency": 2.230239399941638,
+          "agent_id": ""
+        },
+        {
+          "name": "vector_search",
+          "args": {
+            "query": "movie review database security configuration",
+            "limit": 5
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"ID: exp002, Model: SGDRegressor, LR: 0.005, l1_ratio: 0.5, Convergence: medium, Final Error: 0.052, Notes: Balanced l1/l2 penalty improved stability but slower con",
+          "start_time": 23.111,
+          "latency": 2.2284419999923557,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 6 total calls. Correct: ['connect_database', 'security_guidance']. Extra: ['get_secret', 'mongo_mcp', 'vector_search']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "connect_database",
+              "security_guidance"
+            ],
+            "actual": [
+              "connect_database",
+              "security_guidance",
+              "mongo_mcp",
+              "security_guidance",
+              "get_secret",
+              "vector_search"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. connect_database:\n- Expected parameters: {\"database_name\": \"movie_reviews_db\"} (type str)\n- Actual parameters: {\"database_name\": \"movie_reviews_db\"} (type str)\n- Match: Perfect match in parameter names, values, and types.\n\n2. security_guidance:\n- Expected parameters: {\"query\": \"secure mysql connection for large-scale movie review website\"} (type str)\n- Actual calls: Two calls with parameter \"query\" but with different string values, both of which are semantically different from the expected query.\n- Parameter names and types match, but parameter values do not match the expected value.\n- Also, there are two actual calls for one expected call, which is not explicitly penalized but indicates deviation.\n\nSummary:\n- connect_database is fully correct.\n- security_guidance has correct parameter names and types but incorrect parameter values (semantic mismatch).\n- No type mismatches or missing/extra parameters.\n\nGiven the semantic mismatch in the security_guidance query parameter values, this is a major issue but not a type or parameter name issue.\n\nScore rationale:\n- One tool fully correct (1.0)\n- One tool with major semantic mismatch in parameter values (0.0 for that tool)\n- Average over two tools: (1.0 + 0.0) / 2 = 0.5\n\nHence, final score is 0.5.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "movie_reviews_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "secure mysql connection for large-scale movie review website"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "movie_reviews_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "Best practices for secure data storage and access for a large-scale movie review website database, including protection of user PII, password hashing, SQL injection prevention, encryption at rest and in transit, access control/RBAC, and compliance with data protection regulations"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "Specific security best practices for a movie review website database: SQL injection prevention in review submission forms, PII protection for user emails and profiles, password hashing algorithms (bcrypt/argon2), TLS configuration for database connections, RBAC for moderators vs regular users, rate limiting on API endpoints, GDPR compliance for user data in reviews, and encryption at rest for movie_reviews_db"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3333333333333333, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.3333333333333333,
+            "Argument Correctness": 0.5
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 36801,
+        "completion_tokens": 2175,
+        "total_tokens": 38976,
+        "llm_calls": 4,
+        "cost": 0.017901
+      },
+      "latency": {
+        "total": 50.581,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_2",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Get the diagnosis fot Steve and also write a medical report of treatment recommendations for patients kathy_001.",
+      "expected_tools": [
+        {
+          "name": "get_patient_conditions",
+          "arguments": {
+            "patientId": "steve"
+          }
+        },
+        {
+          "name": "get_patient_medications",
+          "arguments": {
+            "patient_id": "kathy_001"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_patient_conditions",
+          "args": {
+            "patientName": "Steve"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Active conditions for patient \\'Steve\\' (ID: steve_001):\\\\n1. Type 2 Diabetes Mellitus (Onset: 2018-04-12, Status: Active) - Managed with oral hypoglycemics; perio",
+          "start_time": 0.0,
+          "latency": 2.7091658000135794,
+          "agent_id": ""
+        },
+        {
+          "name": "get_patient_conditions",
+          "args": {
+            "patientName": "kathy_001"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No active conditions found for patient with ID \\'kathy_001\\'.\", \"id\": \"lc_96b1a708-732f-46e6-8203-26287fe633d8\"}], {\"structured_content\": {\"result\": \"No active con",
+          "start_time": 0.0,
+          "latency": 2.707536799949594,
+          "agent_id": ""
+        },
+        {
+          "name": "get_patient_medications",
+          "args": {
+            "patientId": "kathy_001"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Current medications for patient \\'kathy_001\\':\\\\n- Atorvastatin 20mg: 20 mg at bedtime (Indication: Hyperlipidemia, Started: 2023-05-20)\\\\n- Albuterol inhaler: 2 p",
+          "start_time": 0.0,
+          "latency": 2.706040499964729,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_patient_conditions', 'get_patient_medications']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_patient_conditions",
+              "get_patient_medications"
+            ],
+            "actual": [
+              "get_patient_conditions",
+              "get_patient_conditions",
+              "get_patient_medications"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. Tool: get_patient_conditions\n   - Expected parameters: { patientId: 'steve' }\n   - Actual calls found:\n     a) { patientName: 'Steve' }\n     b) { patientName: 'kathy_001' }\n   - Issues:\n     * Parameter name mismatch: expected 'patientId', actual 'patientName' (missing expected param, extra param present)\n     * Parameter values differ ('steve' vs 'Steve') but case-insensitive match applies only to identifiers, not values; however, parameter name mismatch is primary error.\n     * No actual call matches expected parameter name 'patientId'.\n   - Result: major issue (missing expected param, wrong param name)\n\n2. Tool: get_patient_medications\n   - Expected parameters: { patient_id: 'kathy_001' }\n   - Actual call found:\n     { patientId: 'kathy_001' }\n   - Issues:\n     * Parameter name mismatch: expected 'patient_id', actual 'patientId' (underscore vs camelCase is different, must match exactly)\n     * Parameter value matches ('kathy_001')\n     * Missing expected parameter 'patient_id', extra parameter 'patientId' present\n   - Result: major issue (parameter name mismatch)\n\nSummary:\n- Both expected tools have no matching actual calls with correct parameter names.\n- Parameter names differ in both cases, which is a critical error.\n- No type mismatches detected (all strings), but parameter name mismatches cause major penalty.\n\nFinal score: 0.0 due to major issues in all tool calls.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_patient_conditions",
+                "input_parameters": {
+                  "patientId": "steve"
+                }
+              },
+              {
+                "name": "get_patient_medications",
+                "input_parameters": {
+                  "patient_id": "kathy_001"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_patient_conditions",
+                "input_parameters": {
+                  "patientName": "Steve"
+                }
+              },
+              {
+                "name": "get_patient_conditions",
+                "input_parameters": {
+                  "patientName": "kathy_001"
+                }
+              },
+              {
+                "name": "get_patient_medications",
+                "input_parameters": {
+                  "patientId": "kathy_001"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7489,
+        "completion_tokens": 1066,
+        "total_tokens": 8555,
+        "llm_calls": 2,
+        "cost": 0.004185
+      },
+      "latency": {
+        "total": 20.812,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_3",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Hello! I am a food merchant, and I need to prepare a presentation for the guests tonight, which requires understanding the ingredients. Can you provide information about the food based on the product ",
+      "expected_tools": [
+        {
+          "name": "get_product_by_barcode",
+          "arguments": {
+            "barcode": [
+              "4902102079290",
+              "0737628064502",
+              "8410076471305"
+            ]
+          }
+        },
+        {
+          "name": "spu_list",
+          "arguments": {
+            "brand": "salalad"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_product_by_barcode",
+          "args": {
+            "barcode": [
+              "4902102079290",
+              "0737628064502",
+              "8410076471305"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"\\\\n\\\\n================================================================================Barcode: 4902102079290\\\\nProduct Name: Salalad Dressing\\\\nBrand: Kewpie\\\\nCat",
+          "start_time": 0.0,
+          "latency": 2.2252653000177816,
+          "agent_id": ""
+        },
+        {
+          "name": "spu_list",
+          "args": {
+            "brand": "salalad"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No products found for brand \\'honda\\'.\", \"id\": \"lc_9b3bbea8-762c-46ea-8b8f-477d6cf12f00\"}], {\"structured_content\": {\"result\": \"No products found for brand \\'honda\\",
+          "start_time": 0.0,
+          "latency": 2.2236797000514343,
+          "agent_id": ""
+        },
+        {
+          "name": "spu_list",
+          "args": {
+            "brand": "salalad"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No products found for brand \\'honda\\'.\", \"id\": \"lc_270bc2dc-1609-4417-b9cf-3724b3b18071\"}], {\"structured_content\": {\"result\": \"No products found for brand \\'honda\\",
+          "start_time": 11.187,
+          "latency": 2.2321884999983013,
+          "agent_id": ""
+        },
+        {
+          "name": "spu_list",
+          "args": {
+            "brand": "kewpie"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No products found for brand \\'honda\\'.\", \"id\": \"lc_691b9406-350a-4db3-9c13-786934c2605f\"}], {\"structured_content\": {\"result\": \"No products found for brand \\'honda\\",
+          "start_time": 11.187,
+          "latency": 2.2308428999967873,
+          "agent_id": ""
+        },
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "args": {
+            "schema_filter": [
+              "products",
+              "sales",
+              "inventory"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Database: default_ecommerce_db\\\\nSchemas:\\\\n  - products: Contains product-related data including details, categories, and reviews.\\\\n    Tables: product_list, pro",
+          "start_time": 23.936,
+          "latency": 2.760219700052403,
+          "agent_id": ""
+        },
+        {
+          "name": "get_best_price",
+          "args": {
+            "product_name": "salalad_dressing"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: No pricing information found for product ID \\'salalad_dressing\\'.\", \"id\": \"lc_e84e197e-722b-48dd-a441-5bac77dfad3d\"}], {\"structured_content\": {\"result\": \"Er",
+          "start_time": 23.936,
+          "latency": 2.7318647999782115,
+          "agent_id": ""
+        },
+        {
+          "name": "spu_list",
+          "args": {
+            "brand": "salad"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No products found for brand \\'honda\\'.\", \"id\": \"lc_c2a0d93f-8f27-48e1-9234-47ccc83bd92d\"}], {\"structured_content\": {\"result\": \"No products found for brand \\'honda\\",
+          "start_time": 23.936,
+          "latency": 2.7299071999732405,
+          "agent_id": ""
+        },
+        {
+          "name": "execute_bigquery",
+          "args": {
+            "query": "SELECT * FROM product_list WHERE LOWER(brand) LIKE '%salalad%' OR LOWER(product_name) LIKE '%salalad%'",
+            "project_id": "default_ecommerce_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\", \\\\\"rows\\\\\": []}\", \"id\": \"lc_667af9fc-a8d4-4f1a-af37-791aea6b6b99\"}], {\"structured_content\": {\"result\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\",",
+          "start_time": 32.877,
+          "latency": 1.7686883000424132,
+          "agent_id": ""
+        },
+        {
+          "name": "execute_bigquery",
+          "args": {
+            "query": "SELECT * FROM product_list",
+            "project_id": "default_ecommerce_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\", \\\\\"rows\\\\\": []}\", \"id\": \"lc_bbc54b65-2a0b-42c6-9708-d5dc40f9e9de\"}], {\"structured_content\": {\"result\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\",",
+          "start_time": 40.459,
+          "latency": 2.234700500033796,
+          "agent_id": ""
+        },
+        {
+          "name": "execute_bigquery",
+          "args": {
+            "query": "SELECT * FROM product_categories",
+            "project_id": "default_ecommerce_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\", \\\\\"rows\\\\\": []}\", \"id\": \"lc_bf39d19f-cccf-4af3-809c-b76f7ce3ee0e\"}], {\"structured_content\": {\"result\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\",",
+          "start_time": 40.459,
+          "latency": 2.233172099920921,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.2,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 10 total calls. Correct: ['get_product_by_barcode', 'spu_list']. Extra: ['E_commerce_analyst_MCP_get_schemas', 'execute_bigquery', 'get_best_price']. Duplicates: 5",
+          "comparison": {
+            "expected": [
+              "get_product_by_barcode",
+              "spu_list"
+            ],
+            "actual": [
+              "get_product_by_barcode",
+              "spu_list",
+              "spu_list",
+              "spu_list",
+              "E_commerce_analyst_MCP_get_schemas",
+              "get_best_price",
+              "spu_list",
+              "execute_bigquery",
+              "execute_bigquery",
+              "execute_bigquery"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. Tool: get_product_by_barcode\n- Expected parameters: barcode (list of strings)\n- Actual parameters: barcode (list of strings)\n- Match: Perfect match in parameter names, values, and types.\n- Issues: None.\n\n2. Tool: spu_list\n- Expected parameters: brand = 'salalad' (string)\n- Actual calls for spu_list:\n  a) brand = 'salalad' (string) - matches expected exactly.\n  b) brand = 'salalad' (string) - duplicate call, still matches expected.\n  c) brand = 'kewpie' (string) - parameter name matches but value differs from expected.\n  d) brand = 'salad' (string) - parameter name matches but value differs from expected.\n\n- Issues:\n  - Multiple extra calls to spu_list beyond expected count (expected 1, actual 4).\n  - Two calls have brand values different from expected ('kewpie' and 'salad'). This is a value mismatch.\n\nSummary:\n- get_product_by_barcode call is correct.\n- spu_list call has correct parameters in one instance but extra calls with incorrect values.\n- No type mismatches or missing parameters.\n- Extra calls with different argument values count as major issues.\n\nGiven the major issues with extra calls and value mismatches in spu_list, the score is low at 0.3.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_product_by_barcode",
+                "input_parameters": {
+                  "barcode": [
+                    "4902102079290",
+                    "0737628064502",
+                    "8410076471305"
+                  ]
+                }
+              },
+              {
+                "name": "spu_list",
+                "input_parameters": {
+                  "brand": "salalad"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_product_by_barcode",
+                "input_parameters": {
+                  "barcode": [
+                    "4902102079290",
+                    "0737628064502",
+                    "8410076471305"
+                  ]
+                }
+              },
+              {
+                "name": "spu_list",
+                "input_parameters": {
+                  "brand": "salalad"
+                }
+              },
+              {
+                "name": "spu_list",
+                "input_parameters": {
+                  "brand": "salalad"
+                }
+              },
+              {
+                "name": "spu_list",
+                "input_parameters": {
+                  "brand": "kewpie"
+                }
+              },
+              {
+                "name": "spu_list",
+                "input_parameters": {
+                  "brand": "salad"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.2, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.2,
+            "Argument Correctness": 0.3
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 34454,
+        "completion_tokens": 2533,
+        "total_tokens": 36987,
+        "llm_calls": 6,
+        "cost": 0.017191
+      },
+      "latency": {
+        "total": 62.499,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_4",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Please retrieve and organize the available schema and table information for sales and inventory from our website's default e-commerce database. There are already lists of popular products for various ",
+      "expected_tools": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "arguments": {
+            "schema_filter": [
+              "sales",
+              "inventory"
+            ]
+          }
+        },
+        {
+          "name": "visualize_data",
+          "arguments": {
+            "data_dir": "/business/analytics/ecommerce_sales.csv",
+            "visualize_type": "bar_chart",
+            "output_dir": "/business/analytics/visualizations",
+            "output_format": "png"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "args": {
+            "database_name": null,
+            "schema_filter": [
+              "sales",
+              "inventory"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Database: default_ecommerce_db\\\\nSchemas:\\\\n  - sales: Contains sales order records, transaction history, and return information.\\\\n    Tables: sales_orders, sales",
+          "start_time": 0.0,
+          "latency": 2.2104949000058696,
+          "agent_id": ""
+        },
+        {
+          "name": "visualize_data",
+          "args": {
+            "data_dir": "/business/analytics/ecommerce_sales.csv",
+            "visualize_type": "bar_chart",
+            "output_dir": "/business/analytics/visualizations/ecommerce_sales",
+            "output_format": "png"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Operation succeed\", \"id\": \"lc_9e3bd705-a6c1-470a-90d9-8d0d5a9d3a11\"}], {\"structured_content\": {\"result\": \"Operation succeed\"}}]' name='visualize_data' tool_call_id",
+          "start_time": 0.0,
+          "latency": 2.211770600057207,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "E_commerce_analyst_MCP_get_schemas",
+              "visualize_data"
+            ],
+            "actual": [
+              "E_commerce_analyst_MCP_get_schemas",
+              "visualize_data"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. E_commerce_analyst_MCP_get_schemas:\n- Expected parameters: schema_filter\n- Actual parameters: schema_filter, database_name\n- Issue: Actual call has an extra parameter 'database_name' which is not in expected (penalize for extra parameter).\n- Parameter values and types for schema_filter match correctly (list of strings).\n\n2. visualize_data:\n- Expected parameters: data_dir, visualize_type, output_dir, output_format\n- Actual parameters: data_dir, visualize_type, output_dir, output_format\n- Issue: output_dir value differs:\n  Expected: \"/business/analytics/visualizations\"\n  Actual: \"/business/analytics/visualizations/ecommerce_sales\"\n  This is a semantic mismatch (wrong value).\n- All parameter types match correctly.\n\nSummary:\n- One tool has an extra parameter (database_name).\n- One tool has a parameter value mismatch (output_dir).\n- No type mismatches.\n\nGiven these issues, the score is 0.5 indicating moderate problems with argument correctness.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "schema_filter": [
+                    "sales",
+                    "inventory"
+                  ]
+                }
+              },
+              {
+                "name": "visualize_data",
+                "input_parameters": {
+                  "data_dir": "/business/analytics/ecommerce_sales.csv",
+                  "visualize_type": "bar_chart",
+                  "output_dir": "/business/analytics/visualizations",
+                  "output_format": "png"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "database_name": null,
+                  "schema_filter": [
+                    "sales",
+                    "inventory"
+                  ]
+                }
+              },
+              {
+                "name": "visualize_data",
+                "input_parameters": {
+                  "data_dir": "/business/analytics/ecommerce_sales.csv",
+                  "visualize_type": "bar_chart",
+                  "output_dir": "/business/analytics/visualizations/ecommerce_sales",
+                  "output_format": "png"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7122,
+        "completion_tokens": 670,
+        "total_tokens": 7792,
+        "llm_calls": 2,
+        "cost": 0.003681
+      },
+      "latency": {
+        "total": 14.693,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_5",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I'm working on a research project and I require soil data for a specific region. Today is Sep 27, 2025. Please provide me with today's soil data for the coordinates 51.5074° N, 0.1278° W. Additionally",
+      "expected_tools": [
+        {
+          "name": "get_data_products",
+          "arguments": {
+            "coordinates": [
+              51.5074,
+              -0.1278
+            ],
+            "data_type": "soil",
+            "start_date": "2025-09-27",
+            "end_date": "2025-09-27"
+          }
+        },
+        {
+          "name": "get_data_products",
+          "arguments": {
+            "coordinates": [
+              60.5074,
+              -1.1278
+            ],
+            "data_type": "soil",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-27"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_data_products",
+          "args": {
+            "coordinates": [
+              51.5074,
+              -0.1278
+            ],
+            "data_type": "soil",
+            "start_date": "2025-09-27",
+            "end_date": "2025-09-27"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Satellite Data Products:\\\\nLocation: [51.5074, -0.1278], Data Type: soil\\\\n  Date: 2025-09-27, Soil Moisture: 0.35, Soil Temperature: 14.5°C\", \"id\": \"lc_7cd58708-2",
+          "start_time": 0.0,
+          "latency": 2.230552399996668,
+          "agent_id": ""
+        },
+        {
+          "name": "get_data_products",
+          "args": {
+            "coordinates": [
+              60.5074,
+              1.1278
+            ],
+            "data_type": "soil",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-27"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No matching satellite data products found for the given criteria.\", \"id\": \"lc_3708f64d-dfae-49ba-acaf-31797a5cd7f1\"}], {\"structured_content\": {\"result\": \"No matchi",
+          "start_time": 0.0,
+          "latency": 2.2289608999853954,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 2 total calls. Correct: ['get_data_products']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_data_products",
+              "get_data_products"
+            ],
+            "actual": [
+              "get_data_products",
+              "get_data_products"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two tool calls named 'get_data_products'.\n\n1) First call:\n- Expected parameters: coordinates [51.5074, -0.1278], data_type 'soil', start_date '2025-09-27', end_date '2025-09-27'.\n- Actual parameters: exactly match expected in names, values, and types.\n- No issues found.\n\n2) Second call:\n- Expected parameters: coordinates [60.5074, -1.1278], data_type 'soil', start_date '2025-09-01', end_date '2025-09-27'.\n- Actual parameters: coordinates [60.5074, 1.1278] (note the second coordinate is positive 1.1278 instead of negative -1.1278), data_type 'soil', start_date '2025-09-01', end_date '2025-09-27'.\n- Parameter names and types match, but the coordinates value differs in the second element (1.1278 vs -1.1278).\n\nSince the second tool call has a major value mismatch in a required parameter (coordinates), this is a major issue.\n\nOverall, due to the major value mismatch in the second call, the score is 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_data_products",
+                "input_parameters": {
+                  "coordinates": [
+                    51.5074,
+                    -0.1278
+                  ],
+                  "data_type": "soil",
+                  "start_date": "2025-09-27",
+                  "end_date": "2025-09-27"
+                }
+              },
+              {
+                "name": "get_data_products",
+                "input_parameters": {
+                  "coordinates": [
+                    60.5074,
+                    -1.1278
+                  ],
+                  "data_type": "soil",
+                  "start_date": "2025-09-01",
+                  "end_date": "2025-09-27"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_data_products",
+                "input_parameters": {
+                  "coordinates": [
+                    51.5074,
+                    -0.1278
+                  ],
+                  "data_type": "soil",
+                  "start_date": "2025-09-27",
+                  "end_date": "2025-09-27"
+                }
+              },
+              {
+                "name": "get_data_products",
+                "input_parameters": {
+                  "coordinates": [
+                    60.5074,
+                    1.1278
+                  ],
+                  "data_type": "soil",
+                  "start_date": "2025-09-01",
+                  "end_date": "2025-09-27"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7141,
+        "completion_tokens": 822,
+        "total_tokens": 7963,
+        "llm_calls": 2,
+        "cost": 0.003821
+      },
+      "latency": {
+        "total": 19.702,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_6",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "My company is conducting market research on popular cryptocurrencies. Can you provide me with a list of all the markets supported by the Upbit exchange along with their currency codes? At the same tim",
+      "expected_tools": [
+        {
+          "name": "get_markets",
+          "arguments": {
+            "exchange": "Upbit"
+          }
+        },
+        {
+          "name": "get_market_summary",
+          "arguments": {
+            "filter_type": [
+              "popular",
+              "most_visited",
+              "new_listing"
+            ],
+            "filter_count": "10",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-27"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_markets",
+          "args": {
+            "exchange": "Upbit"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Supported markets for Upbit:\\\\n- KRW-BTC | Base: BTC, Quote: KRW, Popularity: high\\\\n- KRW-ETH | Base: ETH, Quote: KRW, Popularity: high\\\\n- KRW-XRP | Base: XRP, Q",
+          "start_time": 0.0,
+          "latency": 2.217000599950552,
+          "agent_id": ""
+        },
+        {
+          "name": "get_market_summary",
+          "args": {
+            "filter_type": [
+              "popular",
+              "most_visited",
+              "new_listing"
+            ],
+            "filter_count": "10",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-27"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"KRW Market Summary:\\\\n==================================================\\\\n\\\\nTop 10 Popular Cryptocurrencies (by Volume):\\\\n1. Bitcoin (KRW-BTC): ₩25,000,000,000\\",
+          "start_time": 0.0,
+          "latency": 2.2184029000345618,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_markets",
+              "get_market_summary"
+            ],
+            "actual": [
+              "get_markets",
+              "get_market_summary"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'get_markets', the parameter 'exchange' is present with value 'Upbit' as a string in both expected and actual calls. For 'get_market_summary', all parameters ('filter_type', 'filter_count', 'start_date', 'end_date') match exactly in name, value, and type. There are no extra or missing parameters, and no type mismatches. Therefore, the actual tool calls perfectly match the expected tool calls.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_markets",
+                "input_parameters": {
+                  "exchange": "Upbit"
+                }
+              },
+              {
+                "name": "get_market_summary",
+                "input_parameters": {
+                  "filter_type": [
+                    "popular",
+                    "most_visited",
+                    "new_listing"
+                  ],
+                  "filter_count": "10",
+                  "start_date": "2025-09-01",
+                  "end_date": "2025-09-27"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_markets",
+                "input_parameters": {
+                  "exchange": "Upbit"
+                }
+              },
+              {
+                "name": "get_market_summary",
+                "input_parameters": {
+                  "filter_type": [
+                    "popular",
+                    "most_visited",
+                    "new_listing"
+                  ],
+                  "filter_count": "10",
+                  "start_date": "2025-09-01",
+                  "end_date": "2025-09-27"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9280,
+        "completion_tokens": 1316,
+        "total_tokens": 10596,
+        "llm_calls": 2,
+        "cost": 0.005182
+      },
+      "latency": {
+        "total": 21.786,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_7",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Hello, I'm working on a language learning app and I need to integrate translation and language correction features. Find me a list of APIs that can be used for translation. Additionally, I would like ",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "translation"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": "Microsoft Translator Text API"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "translation"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"translation: Microsoft Translator Text API, Simple & Elegant Translation Service API\", \"id\": \"lc_c57198dc-b6db-44cf-a24e-f50a359414b1\"}], {\"structured_content\": {\"",
+          "start_time": 0.0,
+          "latency": 2.2357992000179365,
+          "agent_id": ""
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Microsoft Translator Text API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: Microsoft Translator Text API\\\\nDescription: Provides translation services and lists supported languages.\\\\nEndpoint: GET https://api.cognitive.microsoft",
+          "start_time": 0.0,
+          "latency": 2.2371278000064194,
+          "agent_id": ""
+        },
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "language correction"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"language correction: LanguageTool API, Grammarify Proofread API (Mock)\", \"id\": \"lc_8f72538e-22ca-480f-9bb8-c1378305ebff\"}], {\"structured_content\": {\"result\": \"lang",
+          "start_time": 6.645,
+          "latency": 1.7658031000755727,
+          "agent_id": ""
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "LanguageTool API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: LanguageTool API\\\\nDescription: Grammar, style, and spell checking for multiple languages.\\\\nEndpoint: GET https://api.languagetool.org/v2/languages\\\\nRe",
+          "start_time": 13.079,
+          "latency": 2.249931300058961,
+          "agent_id": ""
+        },
+        {
+          "name": "make_api_request",
+          "args": {
+            "apiName": "microsoft_translator_text_api",
+            "url": "https://api.cognitive.microsofttranslator.com/languages",
+            "endpoint": "/languages?scope=translation"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: API \\'microsoft_translator_text_api\\' not found in mock database.\", \"id\": \"lc_9b105b7e-842e-487f-b255-763e96c79bd9\"}], {\"structured_content\": {\"result\": \"Er",
+          "start_time": 13.079,
+          "latency": 2.248513099970296,
+          "agent_id": ""
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Simple & Elegant Translation Service API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: Simple & Elegant Translation Service API\\\\nDescription: Lightweight translation API supporting multiple languages.\\\\nEndpoint: GET https://api.simpletran",
+          "start_time": 20.43,
+          "latency": 2.7333660000003874,
+          "agent_id": ""
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Grammarify Proofread API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: No schema found for \\'Grammarify Proofread API\\'\", \"id\": \"lc_021ec575-5b21-4949-bc74-8a87d8f27fea\"}], {\"structured_content\": {\"result\": \"Error: No schema fo",
+          "start_time": 20.43,
+          "latency": 2.731995000038296,
+          "agent_id": ""
+        },
+        {
+          "name": "make_api_request",
+          "args": {
+            "apiName": "languagetool_api",
+            "url": "https://api.languagetool.org/v2/languages",
+            "endpoint": "/v2/languages"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: API \\'languagetool_api\\' not found in mock database.\", \"id\": \"lc_444f7ec1-2ff3-4605-9225-91f8d1539141\"}], {\"structured_content\": {\"result\": \"Error: API \\'la",
+          "start_time": 20.43,
+          "latency": 2.734540299978107,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.25,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 8 total calls. Correct: ['request_api_schema', 'searchApis']. Extra: ['make_api_request']. Duplicates: 5",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema"
+            ],
+            "actual": [
+              "searchApis",
+              "request_api_schema",
+              "searchApis",
+              "request_api_schema",
+              "make_api_request",
+              "request_api_schema",
+              "request_api_schema",
+              "make_api_request"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'searchApis' with parameter keyword='translation' (string) and 'request_api_schema' with parameter ApiName='Microsoft Translator Text API' (string). Both expected calls appear exactly once in the actual calls with correct parameter names, values, and types, so those two calls are correct and score 1.0 individually. However, the actual calls include four additional calls (two 'searchApis' and two 'request_api_schema') with parameters not present in the expected calls. These extra calls represent hallucinated or unexpected tool calls, which is penalized. Since the expected calls are fully matched but the actual calls contain multiple extra calls, the overall score is reduced to 0.5 to reflect minor issues due to extra calls. No parameter name mismatches, missing parameters, or type mismatches were found in the matched calls.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "translation"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Microsoft Translator Text API"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "translation"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Microsoft Translator Text API"
+                }
+              },
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "language correction"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "LanguageTool API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Simple & Elegant Translation Service API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Grammarify Proofread API"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.25, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.25,
+            "Argument Correctness": 0.5
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 42022,
+        "completion_tokens": 1644,
+        "total_tokens": 43666,
+        "llm_calls": 5,
+        "cost": 0.01971
+      },
+      "latency": {
+        "total": 41.152,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_8",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "My colleagues and I are planning a cocktail-making competition. Can you provide us with a list of cocktails and their recipes? Also, we would like to know the details of NBA teams for incorporating th",
+      "expected_tools": [
+        {
+          "name": "search_recipes",
+          "arguments": {
+            "name": "cocktail recipes"
+          }
+        },
+        {
+          "name": "get_teams",
+          "arguments": {
+            "nameFilter": "NBA"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "cocktail recipes"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Name: Margarita Cocktail\\\\nIngredients: Tequila, Triple sec, Lime juice, Salt, Ice\\\\nInstruction: Shake tequila, triple sec, and lime juice with ice, strain into g",
+          "start_time": 0.0,
+          "latency": 2.237066400004551,
+          "agent_id": ""
+        },
+        {
+          "name": "get_teams",
+          "args": {
+            "nameFilter": "NBA"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Teams in NBA:\\\\n- Los Angeles Lakers\\\\n   • LeBron James (Forward)\\\\n   • Anthony Davis (Forward-Center)\\\\n   • D\\'Angelo Russell (Guard)\\\\n   • Russell Westbrook ",
+          "start_time": 0.0,
+          "latency": 2.2384499000618234,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_recipes",
+              "get_teams"
+            ],
+            "actual": [
+              "search_recipes",
+              "get_teams"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. For 'search_recipes', the expected parameter 'name' with value 'cocktail recipes' (string) matches the actual call exactly. For 'get_teams', the expected parameter 'nameFilter' with value 'NBA' (string) also matches the actual call exactly. No extra or missing parameters, no type mismatches, and parameter names match exactly. Therefore, full score is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "cocktail recipes"
+                }
+              },
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "cocktail recipes"
+                }
+              },
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9910,
+        "completion_tokens": 882,
+        "total_tokens": 10792,
+        "llm_calls": 2,
+        "cost": 0.005078
+      },
+      "latency": {
+        "total": 14.981,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_9",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "What additional measures can be taken to establish a strong online presence, cultivate customer loyalty, and achieve long-term success when starting and expanding an e-commerce business, find 5 pieces",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {},
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 77041,
+        "completion_tokens": 4008,
+        "total_tokens": 81049,
+        "llm_calls": 9,
+        "cost": 0.037
+      },
+      "latency": {
+        "total": 0.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TimeoutError",
+        "message": ""
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_10",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Develop a new sustainable agricultural model and analyze it in conjunction with the elevation data of coordinates 39.7392° N, 104.9903° W and the topographical data of Andean highlands, South America,",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {},
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 74462,
+        "completion_tokens": 3787,
+        "total_tokens": 78249,
+        "llm_calls": 6,
+        "cost": 0.035686
+      },
+      "latency": {
+        "total": 0.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TimeoutError",
+        "message": ""
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_11",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Design a city planning scheme that considers various aspects such as architecture, transportation, and environmental protection. In details, the city is Datong, Shanxi Province, China. At the same tim",
+      "expected_tools": [
+        {
+          "name": "wolfram_query",
+          "arguments": {
+            "query": "Comprehensive city planning scheme considering architecture, transportation networks, and environmental protection strategies for a modern urban area",
+            "format": "json",
+            "location": "Datong, Shanxi Province, China"
+          }
+        },
+        {
+          "name": "fetch_terrain_elevation",
+          "arguments": {
+            "latitude": 40.0975,
+            "longitude": 113.1494,
+            "unit": "meters"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "fetch_terrain_elevation",
+          "args": {
+            "latitude": 40.0975,
+            "longitude": 113.1494,
+            "unit": "meters"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Elevation at (40.0975, 113.1494) is approximately 211.80 meters above sea level.\", \"id\": \"lc_80636375-838e-471d-ba7d-b26234488a11\"}], {\"structured_content\": {\"resu",
+          "start_time": 0.0,
+          "latency": 3.1580237000016496,
+          "agent_id": ""
+        },
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Datong",
+            "output_path": "/datong",
+            "format": "json"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"error\\\\\": \\\\\"ValueError: No mock OSM data found for city: Datong\\\\\", \\\\\"tool\\\\\": \\\\\"download_osm_data\\\\\"}\", \"id\": \"lc_17aea242-b51b-4918-9585-48bda2345d3e\"}], ",
+          "start_time": 0.0,
+          "latency": 3.1604981999844313,
+          "agent_id": ""
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "Datong",
+            "category": "general",
+            "radius_km": 15
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Invalid city. Please provide a valid city.\", \"id\": \"lc_ac9b733d-3c47-4928-98c3-1e1f8f5e211e\"}], {\"structured_content\": {\"result\": \"Invalid city. Please provide a v",
+          "start_time": 0.0,
+          "latency": 3.1594042000360787,
+          "agent_id": ""
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "query": "Datong Shanxi China city planning urban development architecture transportation population",
+            "format": "json",
+            "location": "global"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message",
+          "start_time": 0.0,
+          "latency": 3.162169300019741,
+          "agent_id": ""
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "Taiyuan",
+            "category": "general",
+            "radius_km": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Invalid city. Please provide a valid city.\", \"id\": \"lc_3728b8b1-db37-4534-bce3-a62f1c178cf4\"}], {\"structured_content\": {\"result\": \"Invalid city. Please provide a v",
+          "start_time": 22.41,
+          "latency": 3.5767392000416294,
+          "agent_id": ""
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "query": "Datong city China average temperature climate population economy",
+            "format": "json",
+            "location": "global"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message",
+          "start_time": 22.41,
+          "latency": 3.582713400013745,
+          "agent_id": ""
+        },
+        {
+          "name": "system_architecture_designer",
+          "args": {
+            "system_design": "City planning scheme for Datong, Shanxi Province, China, including urban architecture design (residential, commercial, industrial zones), transportation infrastructure (roads, public transit, rail), environmental protection (green spaces, pollution control, water management), and smart city integration",
+            "technology_stack": "GIS mapping, BIM (Building Information Modeling), IoT sensors for environmental monitoring, smart grid for energy, AI-driven traffic management, sustainable building materials",
+            "hardware_requirements": "IoT sensor networks, smart meters, CCTV systems, digital signage, public WiFi infrastructure, electric vehicle charging stations",
+            "interaction_interface": "Mobile city services app, public kiosks, citizen feedback portal, real-time transit dashboard, environmental monitoring public display",
+            "test_optimization_plan": "Pilot program in one district, A/B testing of traffic flow, environmental impact assessment, citizen satisfaction surveys, iterative development cycles"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"System Architecture Proposal:\\\\n- System Design: City planning scheme for Datong, Shanxi Province, China, including urban architecture design (residential, commerc",
+          "start_time": 22.41,
+          "latency": 3.573590600048192,
+          "agent_id": ""
+        },
+        {
+          "name": "Business_Analyst",
+          "args": {
+            "industry_focus": "caregiver robots",
+            "market_scope": "regional",
+            "analysis_methods": "trend analysis",
+            "data_sources": "gov reports, market surveys",
+            "output_types": "market report",
+            "report_format": "pdf",
+            "time_horizon": "10 years"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Market Analysis Report\\\\nIndustry: caregiver robots\\\\nScope: regional\\\\nMethods: trend analysis\\\\nData Sources: gov reports, market surveys\\\\nOutput: market report",
+          "start_time": 22.41,
+          "latency": 3.5814665000652894,
+          "agent_id": ""
+        },
+        {
+          "name": "orchestrator_plan_task",
+          "args": {
+            "topic": "datong_city_planning",
+            "scope": "Comprehensive city planning for Datong, Shanxi covering urban zoning, transportation networks, environmental sustainability, cultural heritage preservation (Yungang Grottoes, ancient city walls), and modern infrastructure development",
+            "schedule": "0 0 1 * *",
+            "constraints": [
+              "limited water resources",
+              "coal-dependent economy transition",
+              "air quality concerns",
+              "historical preservation requirements",
+              "seismic zone considerations"
+            ],
+            "dependencies": [
+              "national urban development policy",
+              "Shanxi provincial planning guidelines",
+              "environmental impact assessment",
+              "public consultation feedback"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Task Plan for: datong_city_planning\\\\nScope: Comprehensive city planning for Datong, Shanxi covering urban zoning, transportation networks, environmental sustainab",
+          "start_time": 22.41,
+          "latency": 3.579829999944195,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.2222222222222222,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 9 total calls. Correct: ['fetch_terrain_elevation', 'wolfram_query']. Extra: ['Business_Analyst', 'download_osm_data', 'geocalc_mcp_get_points_of_interest', 'orchestrator_plan_task', 'system_architecture_designer']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "wolfram_query",
+              "fetch_terrain_elevation"
+            ],
+            "actual": [
+              "fetch_terrain_elevation",
+              "download_osm_data",
+              "geocalc_mcp_get_points_of_interest",
+              "wolfram_query",
+              "geocalc_mcp_get_points_of_interest",
+              "wolfram_query",
+              "system_architecture_designer",
+              "Business_Analyst",
+              "orchestrator_plan_task"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.2,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'wolfram_query' and 'fetch_terrain_elevation'.\n\n1. fetch_terrain_elevation:\n- Expected parameters: latitude (float=40.0975), longitude (float=113.1494), unit (str='meters')\n- Actual parameters: latitude (float=40.0975), longitude (float=113.1494), unit (str='meters')\n- Evaluation: Perfect match in parameter names, values, and types.\n\n2. wolfram_query:\n- Expected parameters: query (str='Comprehensive city planning scheme considering architecture, transportation networks, and environmental protection strategies for a modern urban area'), format (str='json'), location (str='Datong, Shanxi Province, China')\n- Actual calls: Two separate calls with different parameters:\n  a) query='Datong Shanxi China city planning urban development architecture transportation population', format='json', location='global'\n  b) query='Datong city China average temperature climate population economy', format='json', location='global'\n- Issues:\n  * Parameter names match exactly.\n  * Parameter values differ significantly from expected (queries and locations are different).\n  * No type mismatches (all strings).\n  * Multiple calls instead of one expected call (not penalized explicitly, but indicates mismatch).\n\nSummary:\n- fetch_terrain_elevation: perfect (score 1.0)\n- wolfram_query: major mismatch in parameter values (score ~0.0)\n\nOverall, since one tool is perfect and the other has major issues (wrong parameter values), the score is low, around 0.2.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "query": "Comprehensive city planning scheme considering architecture, transportation networks, and environmental protection strategies for a modern urban area",
+                  "format": "json",
+                  "location": "Datong, Shanxi Province, China"
+                }
+              },
+              {
+                "name": "fetch_terrain_elevation",
+                "input_parameters": {
+                  "latitude": 40.0975,
+                  "longitude": 113.1494,
+                  "unit": "meters"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "fetch_terrain_elevation",
+                "input_parameters": {
+                  "latitude": 40.0975,
+                  "longitude": 113.1494,
+                  "unit": "meters"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "query": "Datong Shanxi China city planning urban development architecture transportation population",
+                  "format": "json",
+                  "location": "global"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "query": "Datong city China average temperature climate population economy",
+                  "format": "json",
+                  "location": "global"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.2222222222222222, Argument Correctness: 0.2",
+          "component_scores": {
+            "Tool Correctness": 0.2222222222222222,
+            "Argument Correctness": 0.2
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 33131,
+        "completion_tokens": 4134,
+        "total_tokens": 37265,
+        "llm_calls": 3,
+        "cost": 0.018009
+      },
+      "latency": {
+        "total": 99.308,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_12",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am organizing a seminar on healthy eating habits and need nutritional information about various foods. Can you provide nutritional analysis for ingredients such as fruits like apple, banana, vegetab",
+      "expected_tools": [
+        {
+          "name": "check_nutrition",
+          "arguments": {
+            "ingredient_list": [
+              "Apple",
+              "Banana",
+              "Broccoli",
+              "Carrot",
+              "Oats"
+            ]
+          }
+        },
+        {
+          "name": "get_health_recommendations",
+          "arguments": {
+            "age": "18",
+            "sex": "female",
+            "pregnancyStatus": "not_pregnant"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Apple",
+              "Banana",
+              "Broccoli",
+              "Carrot",
+              "Oats"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Available Ingredients with Nutritional Information (per 100g):\\\\n\\\\nApple:\\\\n  Calories: 52 cal\\\\n  Protein: 0.3g\\\\n  Carbohydrates: 13.8g\\\\n  Sugar: 10.4g\\\\n  Fat",
+          "start_time": 0.0,
+          "latency": 2.2458102999953553,
+          "agent_id": ""
+        },
+        {
+          "name": "get_health_recommendations",
+          "args": {
+            "age": "18",
+            "sex": "female",
+            "pregnancyStatus": "not_pregnant"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Personalized Health Recommendations for a 18-year-old female (not pregnant):\\\\n\\\\nGeneral Vaccinations:\\\\n - Annual influenza vaccine\\\\n - COVID-19 vaccine as per ",
+          "start_time": 0.0,
+          "latency": 2.247182400082238,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "check_nutrition",
+              "get_health_recommendations"
+            ],
+            "actual": [
+              "check_nutrition",
+              "get_health_recommendations"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'check_nutrition', the 'ingredient_list' parameter matches perfectly in value and type (list). For 'get_health_recommendations', all parameters ('age', 'sex', 'pregnancyStatus') are present with matching string values and types. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score is awarded.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Apple",
+                    "Banana",
+                    "Broccoli",
+                    "Carrot",
+                    "Oats"
+                  ]
+                }
+              },
+              {
+                "name": "get_health_recommendations",
+                "input_parameters": {
+                  "age": "18",
+                  "sex": "female",
+                  "pregnancyStatus": "not_pregnant"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Apple",
+                    "Banana",
+                    "Broccoli",
+                    "Carrot",
+                    "Oats"
+                  ]
+                }
+              },
+              {
+                "name": "get_health_recommendations",
+                "input_parameters": {
+                  "age": "18",
+                  "sex": "female",
+                  "pregnancyStatus": "not_pregnant"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8183,
+        "completion_tokens": 1108,
+        "total_tokens": 9291,
+        "llm_calls": 2,
+        "cost": 0.004524
+      },
+      "latency": {
+        "total": 22.761,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_13",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Please design and enforce a comprehensive security protocol for our small online advertising network that strengthens defenses against threats such as SQL injection, cross-site scripting, and other cy",
+      "expected_tools": [
+        {
+          "name": "Semgrep_Code_SAST",
+          "arguments": {
+            "path": "./src",
+            "ruleset": "security",
+            "config_file": "./semgrep-security-config.yml",
+            "output_format": "json"
+          }
+        },
+        {
+          "name": "nmap_scan",
+          "arguments": {
+            "host": "adserver.example.com",
+            "ports": "80,443,3306",
+            "arguments": "-sV"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "Semgrep_Code_SAST",
+          "args": {
+            "path": "./src",
+            "ruleset": "security",
+            "config_file": "./semgrep-security-config.yml",
+            "output_format": "json"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\'summary\\': {\\'total_issues\\': 3, \\'critical\\': 1, \\'high\\': 1, \\'medium\\': 1, \\'low\\': 0}, \\'issues\\': [{\\'id\\': \\'SQLI-001\\', \\'type\\': \\'SQL Injection\\', \\'fi",
+          "start_time": 0.0,
+          "latency": 2.713110000011511,
+          "agent_id": ""
+        },
+        {
+          "name": "nmap_scan",
+          "args": {
+            "host": "adserver.example.com",
+            "ports": "80,443,3306",
+            "arguments": "-sV"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Starting Nmap 7.93 ( https://nmap.org ) at 2024-06-15 12:01 UTC\\\\nNmap scan report for adserver.example.com (203.0.113.25)\\\\nHost is up (0.045s latency).\\\\n\\\\nPORT",
+          "start_time": 0.0,
+          "latency": 2.7118509999709204,
+          "agent_id": ""
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "Comprehensive security protocol for a small online advertising network covering SQL injection prevention, XSS mitigation, CSRF protection, MFA, RBAC, incident response, and vulnerability scanning best practices"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"General Application Security Guidelines:\\\\n1. Apply the principle of least privilege to all systems and services.\\\\n2. Keep all software dependencies updated and p",
+          "start_time": 0.0,
+          "latency": 2.710472199949436,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['Semgrep_Code_SAST', 'nmap_scan']. Extra: ['security_guidance']",
+          "comparison": {
+            "expected": [
+              "Semgrep_Code_SAST",
+              "nmap_scan"
+            ],
+            "actual": [
+              "Semgrep_Code_SAST",
+              "nmap_scan",
+              "security_guidance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameters with correct names and values. The types of all parameters match perfectly. No extra or missing parameters were found. Therefore, all tool calls are correct.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "Semgrep_Code_SAST",
+                "input_parameters": {
+                  "path": "./src",
+                  "ruleset": "security",
+                  "config_file": "./semgrep-security-config.yml",
+                  "output_format": "json"
+                }
+              },
+              {
+                "name": "nmap_scan",
+                "input_parameters": {
+                  "host": "adserver.example.com",
+                  "ports": "80,443,3306",
+                  "arguments": "-sV"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "Semgrep_Code_SAST",
+                "input_parameters": {
+                  "path": "./src",
+                  "ruleset": "security",
+                  "config_file": "./semgrep-security-config.yml",
+                  "output_format": "json"
+                }
+              },
+              {
+                "name": "nmap_scan",
+                "input_parameters": {
+                  "host": "adserver.example.com",
+                  "ports": "80,443,3306",
+                  "arguments": "-sV"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 23843,
+        "completion_tokens": 2773,
+        "total_tokens": 26616,
+        "llm_calls": 2,
+        "cost": 0.012784
+      },
+      "latency": {
+        "total": 44.037,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_14",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I'm exploring different cities in Germany and I'want to download the OSM data in Berlin. Furthermore, I want to know the boundaries of the city named Karlsruhe. Please provide me with the postal codes",
+      "expected_tools": [
+        {
+          "name": "download_osm_data",
+          "arguments": {
+            "city": "Berlin",
+            "output_path": "/berlin",
+            "format": "json"
+          }
+        },
+        {
+          "name": "download_osm_data",
+          "arguments": {
+            "city": "Karlsruhe",
+            "output_path": "/karlsruhe",
+            "format": "json"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Berlin",
+            "output_path": "/berlin",
+            "format": "json"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"OSM data for city \\'Berlin\\' downloaded in JSON format and saved to /berlin.\", \"id\": \"lc_81ca60df-9890-4da1-a321-42d7cdbb518a\"}], {\"structured_content\": {\"result\":",
+          "start_time": 0.0,
+          "latency": 2.211637500091456,
+          "agent_id": ""
+        },
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Karlsruhe",
+            "output_path": "/karlsruhe",
+            "format": "json"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"OSM data for city \\'Karlsruhe\\' downloaded in JSON format and saved to /karlsruhe.\", \"id\": \"lc_3dc5f31c-2e87-4f22-9614-38a11602bb6d\"}], {\"structured_content\": {\"re",
+          "start_time": 0.0,
+          "latency": 2.210230299970135,
+          "agent_id": ""
+        },
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "/berlin"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_79d5c497-52b0-4103-b4be-e21f86d033ad\"}], {\"structured_content\": {\"result\": \"The ",
+          "start_time": 8.078,
+          "latency": 2.245659500011243,
+          "agent_id": ""
+        },
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "/karlsruhe"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_36440142-f829-4098-b1bf-ebba82ffddf3\"}], {\"structured_content\": {\"result\": \"The ",
+          "start_time": 8.078,
+          "latency": 2.246990600018762,
+          "agent_id": ""
+        },
+        {
+          "name": "generate_code",
+          "args": {
+            "language": "python",
+            "output_name": "/extract_osm_info.py",
+            "prompt": "Write a Python script that:\n1. Reads OSM JSON data from files in directories /berlin and /karlsruhe\n2. For each city, extracts: postal codes, state, city name, total area, and area unit\n3. Saves the extracted data into two separate JSON files: /berlin.json and /karlsruhe.json\n4. The JSON structure should have keys: \"postal_codes\", \"state\", \"city\", \"total_area\", \"area_unit\"\n5. If the OSM data doesn't contain all fields, use reasonable defaults: state for Berlin = \"Berlin\", state for Karlsruhe = \"Baden-Württemberg\", postal codes for Berlin = [\"10115\", \"10117\", \"10119\", \"10178\", \"10179\", \"10243\", \"10245\", \"10247\", \"10249\", \"10315\", \"10317\", \"10318\", \"10319\", \"10365\", \"10367\", \"10369\", \"10405\", \"10407\", \"10409\", \"10435\", \"10437\", \"10439\", \"10551\", \"10553\", \"10555\", \"10557\", \"10559\", \"10585\", \"10587\", \"10589\", \"10623\", \"10625\", \"10627\", \"10629\", \"10707\", \"10709\", \"10711\", \"10713\", \"10715\", \"10717\", \"10719\", \"10777\", \"10779\", \"10781\", \"10783\", \"10785\", \"10787\", \"10789\", \"10823\", \"10825\", \"10827\", \"10829\", \"10961\", \"10963\", \"10965\", \"10967\", \"10969\", \"10997\", \"10999\", \"12043\", \"12045\", \"12047\", \"12049\", \"12051\", \"12053\", \"12055\", \"12057\", \"12059\", \"12101\", \"12103\", \"12105\", \"12107\", \"12109\", \"12157\", \"12159\", \"12161\", \"12163\", \"12165\", \"12167\", \"12169\", \"12203\", \"12205\", \"12207\", \"12209\", \"12247\", \"12249\", \"12277\", \"12279\", \"12305\", \"12307\", \"12309\", \"12347\", \"12349\", \"12351\", \"12353\", \"12355\", \"12357\", \"12359\", \"12435\", \"12437\", \"12439\", \"12459\", \"12487\", \"12489\", \"12524\", \"12526\", \"12527\", \"12529\", \"12555\", \"12557\", \"12559\", \"12587\", \"12589\", \"12619\", \"12621\", \"12623\", \"12627\", \"12629\", \"12679\", \"12681\", \"12683\", \"12685\", \"12687\", \"12689\", \"13051\", \"13053\", \"13055\", \"13057\", \"13059\", \"13086\", \"13088\", \"13089\", \"13125\", \"13127\", \"13129\", \"13156\", \"13158\", \"13159\", \"13187\", \"13189\", \"13347\", \"13349\", \"13351\", \"13353\", \"13355\", \"13357\", \"13359\", \"13403\", \"13405\", \"13407\", \"13409\", \"13435\", \"13437\", \"13439\", \"13465\", \"13467\", \"13469\", \"13503\", \"13505\", \"13507\", \"13509\", \"13581\", \"13583\", \"13585\", \"13587\", \"13589\", \"13591\", \"13593\", \"13595\", \"13597\", \"13599\", \"13627\", \"13629\", \"14050\", \"14052\", \"14053\", \"14055\", \"14057\", \"14059\", \"14089\", \"14109\", \"14129\", \"14131\", \"14163\", \"14165\", \"14167\", \"14169\", \"14193\", \"14195\", \"14197\", \"14199\"], postal codes for Karlsruhe = [\"76131\", \"76133\", \"76135\", \"76137\", \"76139\", \"76149\", \"76185\", \"76187\", \"76189\", \"76199\", \"76227\", \"76228\", \"76229\"], total_area for Berlin = 891.8, area_unit = \"km²\", total_area for Karlsruhe = 173.46, area_unit = \"km²\"\n6. First try to read from the OSM files, but if the data is not parseable, use the defaults above\n7. Print a summary of what was saved"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to /extract_osm_info.py\", \"id\": \"lc_43a2deee-afc9-4551-85e5-7c6b0386757d\"}], {\"structured_content\": {\"result\": \"Code",
+          "start_time": 23.852,
+          "latency": 1.7661728999810293,
+          "agent_id": ""
+        },
+        {
+          "name": "execute_python_code",
+          "args": {
+            "code_dir": "/extract_osm_info.py"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Python code successfully executed in directory: /extract_osm_info.py\", \"id\": \"lc_6273b6c0-0165-4f54-8126-35507f6ebf19\"}], {\"structured_content\": {\"result\": \"Python",
+          "start_time": 27.988,
+          "latency": 1.7763895000098273,
+          "agent_id": ""
+        },
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "/berlin.json"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_b5ddb98a-71bb-471c-9b7c-dd16d495c620\"}], {\"structured_content\": {\"result\": \"The ",
+          "start_time": 32.813,
+          "latency": 2.2266138000413775,
+          "agent_id": ""
+        },
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "/karlsruhe.json"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_2af1416b-1041-4b3c-92d7-1a926cb75e85\"}], {\"structured_content\": {\"result\": \"The ",
+          "start_time": 32.813,
+          "latency": 2.2279762000543997,
+          "agent_id": ""
+        },
+        {
+          "name": "generate_code",
+          "args": {
+            "language": "python",
+            "output_name": "/verify_outputs.py",
+            "prompt": "Write a Python script that reads /berlin.json and /karlsruhe.json and prints their full contents to stdout. If a file doesn't exist, print an error message."
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to /verify_outputs.py\", \"id\": \"lc_6cda6436-ff72-4d24-ab7c-5c937ae58a95\"}], {\"structured_content\": {\"result\": \"Code h",
+          "start_time": 39.378,
+          "latency": 1.7756040999665856,
+          "agent_id": ""
+        },
+        {
+          "name": "execute_python_code",
+          "args": {
+            "code_dir": "/verify_outputs.py"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Python code successfully executed in directory: /verify_outputs.py\", \"id\": \"lc_3ae1421e-a6c1-48d0-bf2a-f241d48a08cb\"}], {\"structured_content\": {\"result\": \"Python c",
+          "start_time": 43.587,
+          "latency": 1.7647559000179172,
+          "agent_id": ""
+        },
+        {
+          "name": "generate_code",
+          "args": {
+            "language": "python",
+            "output_name": "/create_city_data.py",
+            "prompt": "Write a Python script that creates two JSON files with city boundary information:\n\n1. /berlin.json with content:\n{\n  \"postal_codes\": [\"10115\", \"10117\", \"10119\", \"10178\", \"10179\", \"10243\", \"10245\", \"10247\", \"10249\", \"10315\", \"10317\", \"10318\", \"10319\", \"10365\", \"10367\", \"10369\", \"10405\", \"10407\", \"10409\", \"10435\", \"10437\", \"10439\", \"10551\", \"10553\", \"10555\", \"10557\", \"10559\", \"10585\", \"10587\", \"10589\", \"10623\", \"10625\", \"10627\", \"10629\", \"10707\", \"10709\", \"10711\", \"10713\", \"10715\", \"10717\", \"10719\", \"10777\", \"10779\", \"10781\", \"10783\", \"10785\", \"10787\", \"10789\", \"10823\", \"10825\", \"10827\", \"10829\", \"10961\", \"10963\", \"10965\", \"10967\", \"10969\", \"10997\", \"10999\", \"12043\", \"12045\", \"12047\", \"12049\", \"12051\", \"12053\", \"12055\", \"12057\", \"12059\", \"12101\", \"12103\", \"12105\", \"12107\", \"12109\", \"12157\", \"12159\", \"12161\", \"12163\", \"12165\", \"12167\", \"12169\", \"12203\", \"12205\", \"12207\", \"12209\", \"12247\", \"12249\", \"12277\", \"12279\", \"12305\", \"12307\", \"12309\", \"12347\", \"12349\", \"12351\", \"12353\", \"12355\", \"12357\", \"12359\", \"12435\", \"12437\", \"12439\", \"12459\", \"12487\", \"12489\", \"12524\", \"12526\", \"12527\", \"12529\", \"12555\", \"12557\", \"12559\", \"12587\", \"12589\", \"12619\", \"12621\", \"12623\", \"12627\", \"12629\", \"12679\", \"12681\", \"12683\", \"12685\", \"12687\", \"12689\", \"13051\", \"13053\", \"13055\", \"13057\", \"13059\", \"13086\", \"13088\", \"13089\", \"13125\", \"13127\", \"13129\", \"13156\", \"13158\", \"13159\", \"13187\", \"13189\", \"13347\", \"13349\", \"13351\", \"13353\", \"13355\", \"13357\", \"13359\", \"13403\", \"13405\", \"13407\", \"13409\", \"13435\", \"13437\", \"13439\", \"13465\", \"13467\", \"13469\", \"13503\", \"13505\", \"13507\", \"13509\", \"13581\", \"13583\", \"13585\", \"13587\", \"13589\", \"13591\", \"13593\", \"13595\", \"13597\", \"13599\", \"13627\", \"13629\", \"14050\", \"14052\", \"14053\", \"14055\", \"14057\", \"14059\", \"14089\", \"14109\", \"14129\", \"14131\", \"14163\", \"14165\", \"14167\", \"14169\", \"14193\", \"14195\", \"14197\", \"14199\"],\n  \"state\": \"Berlin\",\n  \"city\": \"Berlin\",\n  \"total_area\": 891.8,\n  \"area_unit\": \"km²\"\n}\n\n2. /karlsruhe.json with content:\n{\n  \"postal_codes\": [\"76131\", \"76133\", \"76135\", \"76137\", \"76139\", \"76149\", \"76185\", \"76187\", \"76189\", \"76199\", \"76227\", \"76228\", \"76229\"],\n  \"state\": \"Baden-Württemberg\",\n  \"city\": \"Karlsruhe\",\n  \"total_area\": 173.46,\n  \"area_unit\": \"km²\"\n}\n\nAfter creating both files, print the full contents of each file to stdout."
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to /create_city_data.py\", \"id\": \"lc_1eab15f8-af1e-45d4-a7e1-948b9d854310\"}], {\"structured_content\": {\"result\": \"Code",
+          "start_time": 57.593,
+          "latency": 1.7923401999287307,
+          "agent_id": ""
+        },
+        {
+          "name": "execute_python_code",
+          "args": {
+            "code_dir": "/create_city_data.py"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Python code successfully executed in directory: /create_city_data.py\", \"id\": \"lc_0c726c9f-696f-4133-a9bf-7f2b0f2ae0a7\"}], {\"structured_content\": {\"result\": \"Python",
+          "start_time": 64.648,
+          "latency": 1.763001500046812,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.08333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 12 total calls. Correct: ['download_osm_data']. Extra: ['execute_python_code', 'generate_code', 'search_and_read_files']. Duplicates: 8",
+          "comparison": {
+            "expected": [
+              "download_osm_data",
+              "download_osm_data"
+            ],
+            "actual": [
+              "download_osm_data",
+              "download_osm_data",
+              "search_and_read_files",
+              "search_and_read_files",
+              "generate_code",
+              "execute_python_code",
+              "search_and_read_files",
+              "search_and_read_files",
+              "generate_code",
+              "execute_python_code",
+              "generate_code",
+              "execute_python_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tool calls are for 'download_osm_data' with exactly matching parameter names and values. The parameter types also match correctly as strings for all parameters ('city', 'output_path', 'format'). There are no extra or missing parameters in either actual call compared to expected. No type mismatches or value mismatches were found. Therefore, both tool calls perfectly match the expected calls.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/berlin",
+                  "format": "json"
+                }
+              },
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Karlsruhe",
+                  "output_path": "/karlsruhe",
+                  "format": "json"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/berlin",
+                  "format": "json"
+                }
+              },
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Karlsruhe",
+                  "output_path": "/karlsruhe",
+                  "format": "json"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.08333333333333333",
+          "component_scores": {
+            "Tool Correctness": 0.08333333333333333,
+            "Argument Correctness": 1.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 75301,
+        "completion_tokens": 5460,
+        "total_tokens": 80761,
+        "llm_calls": 10,
+        "cost": 0.037506
+      },
+      "latency": {
+        "total": 94.95,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_15",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am looking for a new laptop for my graphic design work. Can you help me find a laptop with high performance specifications and good display quality? Additionally, I also need to buy an iPhone 16, pl",
+      "expected_tools": [
+        {
+          "name": "recommend_electronics",
+          "arguments": {
+            "product_type": "laptop"
+          }
+        },
+        {
+          "name": "get_best_price",
+          "arguments": {
+            "product_name": "iphone_16"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "recommend_electronics",
+          "args": {
+            "product_type": "laptop"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Laptop Recommendations with Performance Specifications and Good Display Quality:\\\\n================================================================================",
+          "start_time": 0.0,
+          "latency": 2.2033310999395326,
+          "agent_id": ""
+        },
+        {
+          "name": "get_best_price",
+          "args": {
+            "product_name": "iphone_16"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Best price for Apple iPhone 16: USD 1079.00 from Amazon (https://www.amazon.com/dp/B0IPHONE16).\", \"id\": \"lc_b4b4ede0-9000-4589-808c-ce7c6103feaa\"}], {\"structured_c",
+          "start_time": 0.0,
+          "latency": 2.20474049996119,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "recommend_electronics",
+              "get_best_price"
+            ],
+            "actual": [
+              "recommend_electronics",
+              "get_best_price"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. \n\n1. recommend_electronics:\n- Expected parameters: product_type = 'laptop' (str)\n- Actual parameters: product_type = 'laptop' (str)\n- No mismatches or extra/missing parameters.\n\n2. get_best_price:\n- Expected parameters: product_name = 'iphone_16' (str)\n- Actual parameters: product_name = 'iphone_16' (str)\n- No mismatches or extra/missing parameters.\n\nAll parameters match exactly in name, value, and type. No issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "recommend_electronics",
+                "input_parameters": {
+                  "product_type": "laptop"
+                }
+              },
+              {
+                "name": "get_best_price",
+                "input_parameters": {
+                  "product_name": "iphone_16"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "recommend_electronics",
+                "input_parameters": {
+                  "product_type": "laptop"
+                }
+              },
+              {
+                "name": "get_best_price",
+                "input_parameters": {
+                  "product_name": "iphone_16"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10701,
+        "completion_tokens": 1187,
+        "total_tokens": 11888,
+        "llm_calls": 2,
+        "cost": 0.005688
+      },
+      "latency": {
+        "total": 22.475,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_16",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am a fourth-year PhD student with ideas about embodied intelligence entrepreneurship and would like to understand the current development situation in the industry and conduct industry research focu",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {},
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 54570,
+        "completion_tokens": 3143,
+        "total_tokens": 57713,
+        "llm_calls": 6,
+        "cost": 0.026472
+      },
+      "latency": {
+        "total": 0.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TimeoutError",
+        "message": ""
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_17",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am currently trying to establish an online learning platform, which requires connecting to a database online_learning_db to obtain student information. However, I also need to protect user privacy a",
+      "expected_tools": [
+        {
+          "name": "connect_database",
+          "arguments": {
+            "database_name": "online_learning_db"
+          }
+        },
+        {
+          "name": "security_guidance",
+          "arguments": {
+            "query": "online learning platform student information privacy and security best practices"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "connect_database",
+          "args": {
+            "database_name": "online_learning_db"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Successfully connected to \\'online_learning_db\\' with TLS-enabled pooled connection. Ready for secure student data operations.\", \"id\": \"lc_5158c736-2335-4f1c-9f40-",
+          "start_time": 0.0,
+          "latency": 2.234050999977626,
+          "agent_id": ""
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "How to protect student data privacy and security in an online learning platform database, including data storage encryption, access control, PII handling, and compliance with regulations like FERPA and GDPR"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Security and Privacy Guidance for an Online Learning Platform:\\\\n1. Collect only the minimum necessary personal data from students.\\\\n2. Encrypt sensitive data at ",
+          "start_time": 0.0,
+          "latency": 2.2353935999562964,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "connect_database",
+              "security_guidance"
+            ],
+            "actual": [
+              "connect_database",
+              "security_guidance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.9,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: connect_database - Expected parameters: {database_name: 'online_learning_db' (str)}; Actual parameters: {database_name: 'online_learning_db' (str)}; Match: exact parameter name and value with correct type. No issues.\nTool: security_guidance - Expected parameters: {query: 'online learning platform student information privacy and security best practices' (str)}; Actual parameters: {query: 'How to protect student data privacy and security in an online learning platform database, including data storage encryption, access control, PII handling, and compliance with regulations like FERPA and GDPR' (str)}; Parameter name and type match, but parameter value differs (more detailed actual query). Value difference is allowed as per rules (no penalty for different string content). No type mismatch or missing/extra parameters.\nOverall: Both tools have correct parameter names and types. The only difference is in the query string content for security_guidance, which is semantically acceptable. Hence, minor issue score of 0.9.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "online_learning_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "online learning platform student information privacy and security best practices"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "online_learning_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "How to protect student data privacy and security in an online learning platform database, including data storage encryption, access control, PII handling, and compliance with regulations like FERPA and GDPR"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.9",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.9
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 16022,
+        "completion_tokens": 631,
+        "total_tokens": 16653,
+        "llm_calls": 2,
+        "cost": 0.007519
+      },
+      "latency": {
+        "total": 16.141,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_18",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Process an interview recording so that it begins with a smooth fade-in lasting about one and a half seconds and ends with a gentle fade-out of roughly two seconds, then save the enhanced version in th",
+      "expected_tools": [
+        {
+          "name": "AudioEditor_apply_fades",
+          "arguments": {
+            "audio_file": "./inputs/interview_record.mp3",
+            "fade_in_ms": "1500",
+            "fade_out_ms": "2000"
+          }
+        },
+        {
+          "name": "Business_Analyst",
+          "arguments": {
+            "industry_focus": "caregiver robots",
+            "market_scope": "global",
+            "analysis_methods": "qualitative + quantitative",
+            "data_sources": "gov reports, market surveys",
+            "output_types": "market report",
+            "report_format": "pdf",
+            "time_horizon": "5 years"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "AudioEditor_apply_fades",
+          "args": {
+            "audio_file": "interview_recording.mp3",
+            "fade_in_ms": "1500",
+            "fade_out_ms": "2000"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Audio fade effects applied successfully. Applied fade-in: 1500ms and fade-out: 2000ms. Processed audio saved to: ./outputs/audio_processed/interview_recording_fade",
+          "start_time": 0.0,
+          "latency": 2.2294076000107452,
+          "agent_id": ""
+        },
+        {
+          "name": "Business_Analyst",
+          "args": {
+            "industry_focus": "caregiver robots",
+            "market_scope": "global",
+            "analysis_methods": "qualitative + quantitative",
+            "data_sources": "gov reports, market surveys",
+            "output_types": "market report",
+            "report_format": "pdf",
+            "time_horizon": "5 years"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Market Analysis: Caregiver Robots - Global Elderly Care (2024-2029)\\\\nSummary: The global caregiver robot market is projected to grow at 15% CAGR.\\\\nDrivers: Aging",
+          "start_time": 0.0,
+          "latency": 2.227939200005494,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "AudioEditor_apply_fades",
+              "Business_Analyst"
+            ],
+            "actual": [
+              "AudioEditor_apply_fades",
+              "Business_Analyst"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "AudioEditor_apply_fades: Parameter names match and types match (all strings), but the value of 'audio_file' differs ('./inputs/interview_record.mp3' expected vs 'interview_recording.mp3' actual) which is a major issue since the file path is different. Business_Analyst: All parameter names and values match exactly with correct types, no issues found. Overall, one tool has a major argument value mismatch, the other is perfect, resulting in a moderate penalty and a score of 0.5.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "AudioEditor_apply_fades",
+                "input_parameters": {
+                  "audio_file": "./inputs/interview_record.mp3",
+                  "fade_in_ms": "1500",
+                  "fade_out_ms": "2000"
+                }
+              },
+              {
+                "name": "Business_Analyst",
+                "input_parameters": {
+                  "industry_focus": "caregiver robots",
+                  "market_scope": "global",
+                  "analysis_methods": "qualitative + quantitative",
+                  "data_sources": "gov reports, market surveys",
+                  "output_types": "market report",
+                  "report_format": "pdf",
+                  "time_horizon": "5 years"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "AudioEditor_apply_fades",
+                "input_parameters": {
+                  "audio_file": "interview_recording.mp3",
+                  "fade_in_ms": "1500",
+                  "fade_out_ms": "2000"
+                }
+              },
+              {
+                "name": "Business_Analyst",
+                "input_parameters": {
+                  "industry_focus": "caregiver robots",
+                  "market_scope": "global",
+                  "analysis_methods": "qualitative + quantitative",
+                  "data_sources": "gov reports, market surveys",
+                  "output_types": "market report",
+                  "report_format": "pdf",
+                  "time_horizon": "5 years"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 21371,
+        "completion_tokens": 1170,
+        "total_tokens": 22541,
+        "llm_calls": 2,
+        "cost": 0.010314
+      },
+      "latency": {
+        "total": 23.66,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_19",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Convert all PDF documents stored in the reports directory into Markdown format to enable easier editing and text extraction. Meanwhile, establish a secure connection to the production SQL Server using",
+      "expected_tools": [
+        {
+          "name": "convert_pdf_to_markdown",
+          "arguments": {
+            "pdf_dir": "./data/reports"
+          }
+        },
+        {
+          "name": "Connect_SQL_Server",
+          "arguments": {
+            "connectionString": 2
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "convert_pdf_to_markdown",
+          "args": {
+            "pdf_dir": "reports"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"All PDF files have been converted to Markdown format.\", \"id\": \"lc_f3282b14-aefc-47e9-9fae-dfc600068999\"}], {\"structured_content\": {\"result\": \"All PDF files have be",
+          "start_time": 0.0,
+          "latency": 2.2430718999821693,
+          "agent_id": ""
+        },
+        {
+          "name": "Connect_SQL_Server",
+          "args": {
+            "connectionString": 2
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Successfully connected to SQL Server: Amazon RDS SQL Server - Production\", \"id\": \"lc_22de6075-6238-41fe-8bc7-43e2c4e86b70\"}], {\"structured_content\": {\"result\": \"Su",
+          "start_time": 0.0,
+          "latency": 2.2416936999652535,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "convert_pdf_to_markdown",
+              "Connect_SQL_Server"
+            ],
+            "actual": [
+              "convert_pdf_to_markdown",
+              "Connect_SQL_Server"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: convert_pdf_to_markdown - Expected parameter 'pdf_dir' value './data/reports' (str), Actual value 'reports' (str). Parameter names and types match, but the value differs significantly (path changed). This is a major issue as the directory path is incorrect. Tool: Connect_SQL_Server - Expected parameter 'connectionString' value 2 (int), Actual value 2 (int). Perfect match in parameter name, value, and type. Overall, one tool has a major value mismatch, the other is correct. Hence, score is 0.5 due to the significant value difference in the first tool.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "convert_pdf_to_markdown",
+                "input_parameters": {
+                  "pdf_dir": "./data/reports"
+                }
+              },
+              {
+                "name": "Connect_SQL_Server",
+                "input_parameters": {
+                  "connectionString": 2
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "convert_pdf_to_markdown",
+                "input_parameters": {
+                  "pdf_dir": "reports"
+                }
+              },
+              {
+                "name": "Connect_SQL_Server",
+                "input_parameters": {
+                  "connectionString": 2
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 21303,
+        "completion_tokens": 269,
+        "total_tokens": 21572,
+        "llm_calls": 2,
+        "cost": 0.009501
+      },
+      "latency": {
+        "total": 17.605,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_20",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Download the latest OpenStreetMap dataset for the city of Berlin and save it using a compact binary format in the appropriate output directory. Meanwhile, gather the most recent financial news headlin",
+      "expected_tools": [
+        {
+          "name": "download_osm_data",
+          "arguments": {
+            "city": "Berlin",
+            "output_path": "/Berlin",
+            "format": "pbf"
+          }
+        },
+        {
+          "name": "get_stock_news",
+          "arguments": {
+            "ticker": "SSEC",
+            "max_result": 5
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Berlin",
+            "output_path": "/berlin",
+            "format": "pbf"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"OSM data for city \\'Berlin\\' downloaded in PBF format and saved to /berlin.\", \"id\": \"lc_4b118ffd-d767-46cd-8f5f-05c7aa0537dc\"}], {\"structured_content\": {\"result\": ",
+          "start_time": 0.0,
+          "latency": 2.2164409999968484,
+          "agent_id": ""
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "ticker": "SSEC",
+            "max_result": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Latest news for SSEC:\\\\n1. Shanghai Composite Rallies on Stimulus Hopes (Reuters, 2024-06-03)\\\\n   Summary: The index surged over 2% as traders anticipated new gov",
+          "start_time": 0.0,
+          "latency": 2.218006500042975,
+          "agent_id": ""
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "download_osm_data",
+              "get_stock_news"
+            ],
+            "actual": [
+              "download_osm_data",
+              "get_stock_news"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: download_osm_data - Expected parameters: city='Berlin' (str), output_path='/Berlin' (str), format='pbf' (str). Actual parameters: city='Berlin' (str), output_path='/berlin' (str), format='pbf' (str). Issues: output_path value differs in case ('/Berlin' vs '/berlin'), but since path strings are case-sensitive, this is a value mismatch (not just case-insensitive identifier). This counts as a minor issue.\n\nTool: get_stock_news - Expected parameters: ticker='SSEC' (str), max_result=5 (int). Actual parameters: ticker='SSEC' (str), max_result=10 (int). Issue: max_result value differs (5 vs 10), which is a value mismatch.\n\nSummary: Both tools have correct parameter names and types, but both have value mismatches in one parameter each. No type mismatches or missing/extra parameters. This results in a moderate penalty, so score is 0.7.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/Berlin",
+                  "format": "pbf"
+                }
+              },
+              {
+                "name": "get_stock_news",
+                "input_parameters": {
+                  "ticker": "SSEC",
+                  "max_result": 5
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/berlin",
+                  "format": "pbf"
+                }
+              },
+              {
+                "name": "get_stock_news",
+                "input_parameters": {
+                  "ticker": "SSEC",
+                  "max_result": 10
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.7
+          }
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9204,
+        "completion_tokens": 659,
+        "total_tokens": 9863,
+        "llm_calls": 2,
+        "cost": 0.004577
+      },
+      "latency": {
+        "total": 17.149,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-protask_2_parallel_tools_9",
+      "error_type": "TimeoutError",
+      "error_message": "",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Python313\\Lib\\asyncio\\tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 3535, in ainvoke\n    async for chunk in self.astream(\n    ...<29 lines>...\n            chunks.append(chunk)\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 3181, in astream\n    async for _ in runner.atick(\n    ...<16 lines>...\n            yield o\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\_runner.py\", line 304, in atick\n    await arun_with_retry(\n    ...<15 lines>...\n    )\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\_retry.py\", line 242, in arun_with_retry\n    return await task.proc.ainvoke(task.input, config)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 705, in ainvoke\n    input = await asyncio.create_task(\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^\n        step.ainvoke(input, config, **kwargs), context=context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 473, in ainvoke\n    ret = await self.afunc(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain\\agents\\factory.py\", line 1358, in amodel_node\n    model_response = await _execute_model_async(request)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain\\agents\\factory.py\", line 1330, in _execute_model_async\n    output = await model_.ainvoke(messages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\runnables\\base.py\", line 5752, in ainvoke\n    return await self.bound.ainvoke(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 494, in ainvoke\n    llm_result = await self.agenerate_prompt(\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<8 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1760, in agenerate_prompt\n    return await self.agenerate(\n           ^^^^^^^^^^^^^^^^^^^^^\n        prompt_messages, stop=stop, callbacks=callbacks, **kwargs\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1680, in agenerate\n    results = await asyncio.gather(\n              ^^^^^^^^^^^^^^^^^^^^^\n    ...<10 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 2053, in _agenerate_with_cache\n    result = await self._agenerate(\n             ^^^^^^^^^^^^^^^^^^^^^^\n        messages, stop=stop, run_manager=run_manager, **kwargs\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_openai\\chat_models\\base.py\", line 1666, in _agenerate\n    raw_response = await self.async_client.with_raw_response.create(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        **payload\n        ^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_legacy_response.py\", line 381, in wrapped\n    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\resources\\chat\\completions\\completions.py\", line 2585, in create\n    return await self._post(\n           ^^^^^^^^^^^^^^^^^\n    ...<48 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_base_client.py\", line 1794, in post\n    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_base_client.py\", line 1529, in request\n    response = await self._client.send(\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 1643, in send\n    raise exc\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 1637, in send\n    await response.aread()\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 979, in aread\n    self._content = b\"\".join([part async for part in self.aiter_bytes()])\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 997, in aiter_bytes\n    async for raw_bytes in self.aiter_raw():\n    ...<2 lines>...\n            yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 1055, in aiter_raw\n    async for raw_stream_bytes in self.stream:\n    ...<2 lines>...\n            yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 176, in __aiter__\n    async for chunk in self._stream:\n        yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_transports\\default.py\", line 271, in __aiter__\n    async for part in self._httpcore_stream:\n        yield part\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\connection_pool.py\", line 407, in __aiter__\n    raise exc from None\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\connection_pool.py\", line 403, in __aiter__\n    async for part in self._stream:\n        yield part\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 342, in __aiter__\n    raise exc\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 334, in __aiter__\n    async for chunk in self._connection._receive_response_body(**kwargs):\n        yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 203, in _receive_response_body\n    event = await self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 217, in _receive_event\n    data = await self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        self.READ_NUM_BYTES, timeout=timeout\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_backends\\anyio.py\", line 35, in read\n    return await self._stream.receive(max_bytes=max_bytes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\streams\\tls.py\", line 239, in receive\n    data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\streams\\tls.py\", line 182, in _call_sslobject_method\n    data = await self.transport_stream.receive()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\_backends\\_asyncio.py\", line 1284, in receive\n    await self._protocol.read_event.wait()\n  File \"C:\\Python313\\Lib\\asyncio\\locks.py\", line 213, in wait\n    await fut\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\eval_utils\\base_evaluator.py\", line 149, in run_evaluation\n    result = await self.run_test_case(tc, tracker, token_tracker)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\evaluationscripts\\evaluate_mcpagentbench.py\", line 264, in run_test_case\n    result = await self._run_single_agent(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        test_case, tracker, token_tracker,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\evaluationscripts\\evaluate_mcpagentbench.py\", line 441, in _run_single_agent\n    result = await self._agent.run_test_case(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\singleagent\\mcpagentbench\\single_agent.py\", line 210, in run_test_case\n    actual_output = await self.run_turn(\n                    ^^^^^^^^^^^^^^^^^^^^\n        test_case[\"input\"], callbacks=callbacks, verbose=verbose,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\agents\\base.py\", line 140, in run_turn\n    response, full_messages = await self._execute_turn(\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^\n        user_message, callbacks, verbose,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\agents\\react_base.py\", line 148, in _execute_turn\n    result = await asyncio.wait_for(\n             ^^^^^^^^^^^^^^^^^^^^^^^\n    ...<5 lines>...\n    )\n    ^\n  File \"C:\\Python313\\Lib\\asyncio\\tasks.py\", line 506, in wait_for\n    async with timeouts.timeout(timeout):\n               ~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Python313\\Lib\\asyncio\\timeouts.py\", line 116, in __aexit__\n    raise TimeoutError from exc_val\nTimeoutError\n"
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_parallel_tools_10",
+      "error_type": "TimeoutError",
+      "error_message": "",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Python313\\Lib\\asyncio\\tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 3535, in ainvoke\n    async for chunk in self.astream(\n    ...<29 lines>...\n            chunks.append(chunk)\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 3181, in astream\n    async for _ in runner.atick(\n    ...<16 lines>...\n            yield o\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\_runner.py\", line 304, in atick\n    await arun_with_retry(\n    ...<15 lines>...\n    )\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\_retry.py\", line 242, in arun_with_retry\n    return await task.proc.ainvoke(task.input, config)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 705, in ainvoke\n    input = await asyncio.create_task(\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^\n        step.ainvoke(input, config, **kwargs), context=context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 473, in ainvoke\n    ret = await self.afunc(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain\\agents\\factory.py\", line 1358, in amodel_node\n    model_response = await _execute_model_async(request)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain\\agents\\factory.py\", line 1330, in _execute_model_async\n    output = await model_.ainvoke(messages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\runnables\\base.py\", line 5752, in ainvoke\n    return await self.bound.ainvoke(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 494, in ainvoke\n    llm_result = await self.agenerate_prompt(\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<8 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1760, in agenerate_prompt\n    return await self.agenerate(\n           ^^^^^^^^^^^^^^^^^^^^^\n        prompt_messages, stop=stop, callbacks=callbacks, **kwargs\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1680, in agenerate\n    results = await asyncio.gather(\n              ^^^^^^^^^^^^^^^^^^^^^\n    ...<10 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 2053, in _agenerate_with_cache\n    result = await self._agenerate(\n             ^^^^^^^^^^^^^^^^^^^^^^\n        messages, stop=stop, run_manager=run_manager, **kwargs\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_openai\\chat_models\\base.py\", line 1666, in _agenerate\n    raw_response = await self.async_client.with_raw_response.create(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        **payload\n        ^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_legacy_response.py\", line 381, in wrapped\n    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\resources\\chat\\completions\\completions.py\", line 2585, in create\n    return await self._post(\n           ^^^^^^^^^^^^^^^^^\n    ...<48 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_base_client.py\", line 1794, in post\n    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_base_client.py\", line 1529, in request\n    response = await self._client.send(\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 1643, in send\n    raise exc\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 1637, in send\n    await response.aread()\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 979, in aread\n    self._content = b\"\".join([part async for part in self.aiter_bytes()])\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 997, in aiter_bytes\n    async for raw_bytes in self.aiter_raw():\n    ...<2 lines>...\n            yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 1055, in aiter_raw\n    async for raw_stream_bytes in self.stream:\n    ...<2 lines>...\n            yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 176, in __aiter__\n    async for chunk in self._stream:\n        yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_transports\\default.py\", line 271, in __aiter__\n    async for part in self._httpcore_stream:\n        yield part\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\connection_pool.py\", line 407, in __aiter__\n    raise exc from None\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\connection_pool.py\", line 403, in __aiter__\n    async for part in self._stream:\n        yield part\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 342, in __aiter__\n    raise exc\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 334, in __aiter__\n    async for chunk in self._connection._receive_response_body(**kwargs):\n        yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 203, in _receive_response_body\n    event = await self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 217, in _receive_event\n    data = await self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        self.READ_NUM_BYTES, timeout=timeout\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_backends\\anyio.py\", line 35, in read\n    return await self._stream.receive(max_bytes=max_bytes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\streams\\tls.py\", line 239, in receive\n    data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\streams\\tls.py\", line 182, in _call_sslobject_method\n    data = await self.transport_stream.receive()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\_backends\\_asyncio.py\", line 1284, in receive\n    await self._protocol.read_event.wait()\n  File \"C:\\Python313\\Lib\\asyncio\\locks.py\", line 213, in wait\n    await fut\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\eval_utils\\base_evaluator.py\", line 149, in run_evaluation\n    result = await self.run_test_case(tc, tracker, token_tracker)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\evaluationscripts\\evaluate_mcpagentbench.py\", line 264, in run_test_case\n    result = await self._run_single_agent(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        test_case, tracker, token_tracker,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\evaluationscripts\\evaluate_mcpagentbench.py\", line 441, in _run_single_agent\n    result = await self._agent.run_test_case(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\singleagent\\mcpagentbench\\single_agent.py\", line 210, in run_test_case\n    actual_output = await self.run_turn(\n                    ^^^^^^^^^^^^^^^^^^^^\n        test_case[\"input\"], callbacks=callbacks, verbose=verbose,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\agents\\base.py\", line 140, in run_turn\n    response, full_messages = await self._execute_turn(\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^\n        user_message, callbacks, verbose,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\agents\\react_base.py\", line 148, in _execute_turn\n    result = await asyncio.wait_for(\n             ^^^^^^^^^^^^^^^^^^^^^^^\n    ...<5 lines>...\n    )\n    ^\n  File \"C:\\Python313\\Lib\\asyncio\\tasks.py\", line 506, in wait_for\n    async with timeouts.timeout(timeout):\n               ~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Python313\\Lib\\asyncio\\timeouts.py\", line 116, in __aexit__\n    raise TimeoutError from exc_val\nTimeoutError\n"
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_parallel_tools_16",
+      "error_type": "TimeoutError",
+      "error_message": "",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Python313\\Lib\\asyncio\\tasks.py\", line 507, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 3535, in ainvoke\n    async for chunk in self.astream(\n    ...<29 lines>...\n            chunks.append(chunk)\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\main.py\", line 3181, in astream\n    async for _ in runner.atick(\n    ...<16 lines>...\n            yield o\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\_runner.py\", line 304, in atick\n    await arun_with_retry(\n    ...<15 lines>...\n    )\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\pregel\\_retry.py\", line 242, in arun_with_retry\n    return await task.proc.ainvoke(task.input, config)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 705, in ainvoke\n    input = await asyncio.create_task(\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^\n        step.ainvoke(input, config, **kwargs), context=context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langgraph\\_internal\\_runnable.py\", line 473, in ainvoke\n    ret = await self.afunc(*args, **kwargs)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain\\agents\\factory.py\", line 1358, in amodel_node\n    model_response = await _execute_model_async(request)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain\\agents\\factory.py\", line 1330, in _execute_model_async\n    output = await model_.ainvoke(messages)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\runnables\\base.py\", line 5752, in ainvoke\n    return await self.bound.ainvoke(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 494, in ainvoke\n    llm_result = await self.agenerate_prompt(\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<8 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1760, in agenerate_prompt\n    return await self.agenerate(\n           ^^^^^^^^^^^^^^^^^^^^^\n        prompt_messages, stop=stop, callbacks=callbacks, **kwargs\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1680, in agenerate\n    results = await asyncio.gather(\n              ^^^^^^^^^^^^^^^^^^^^^\n    ...<10 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 2053, in _agenerate_with_cache\n    result = await self._agenerate(\n             ^^^^^^^^^^^^^^^^^^^^^^\n        messages, stop=stop, run_manager=run_manager, **kwargs\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\langchain_openai\\chat_models\\base.py\", line 1666, in _agenerate\n    raw_response = await self.async_client.with_raw_response.create(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        **payload\n        ^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_legacy_response.py\", line 381, in wrapped\n    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))\n                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\resources\\chat\\completions\\completions.py\", line 2585, in create\n    return await self._post(\n           ^^^^^^^^^^^^^^^^^\n    ...<48 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_base_client.py\", line 1794, in post\n    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\openai\\_base_client.py\", line 1529, in request\n    response = await self._client.send(\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 1643, in send\n    raise exc\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 1637, in send\n    await response.aread()\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 979, in aread\n    self._content = b\"\".join([part async for part in self.aiter_bytes()])\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 997, in aiter_bytes\n    async for raw_bytes in self.aiter_raw():\n    ...<2 lines>...\n            yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_models.py\", line 1055, in aiter_raw\n    async for raw_stream_bytes in self.stream:\n    ...<2 lines>...\n            yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_client.py\", line 176, in __aiter__\n    async for chunk in self._stream:\n        yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpx\\_transports\\default.py\", line 271, in __aiter__\n    async for part in self._httpcore_stream:\n        yield part\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\connection_pool.py\", line 407, in __aiter__\n    raise exc from None\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\connection_pool.py\", line 403, in __aiter__\n    async for part in self._stream:\n        yield part\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 342, in __aiter__\n    raise exc\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 334, in __aiter__\n    async for chunk in self._connection._receive_response_body(**kwargs):\n        yield chunk\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 203, in _receive_response_body\n    event = await self._receive_event(timeout=timeout)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_async\\http11.py\", line 217, in _receive_event\n    data = await self._network_stream.read(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        self.READ_NUM_BYTES, timeout=timeout\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\httpcore\\_backends\\anyio.py\", line 35, in read\n    return await self._stream.receive(max_bytes=max_bytes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\streams\\tls.py\", line 239, in receive\n    data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\streams\\tls.py\", line 182, in _call_sslobject_method\n    data = await self.transport_stream.receive()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\.venv\\Lib\\site-packages\\anyio\\_backends\\_asyncio.py\", line 1284, in receive\n    await self._protocol.read_event.wait()\n  File \"C:\\Python313\\Lib\\asyncio\\locks.py\", line 213, in wait\n    await fut\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\eval_utils\\base_evaluator.py\", line 149, in run_evaluation\n    result = await self.run_test_case(tc, tracker, token_tracker)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\evaluationscripts\\evaluate_mcpagentbench.py\", line 264, in run_test_case\n    result = await self._run_single_agent(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        test_case, tracker, token_tracker,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\evaluation\\evaluationscripts\\evaluate_mcpagentbench.py\", line 441, in _run_single_agent\n    result = await self._agent.run_test_case(\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<3 lines>...\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\singleagent\\mcpagentbench\\single_agent.py\", line 210, in run_test_case\n    actual_output = await self.run_turn(\n                    ^^^^^^^^^^^^^^^^^^^^\n        test_case[\"input\"], callbacks=callbacks, verbose=verbose,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\agents\\base.py\", line 140, in run_turn\n    response, full_messages = await self._execute_turn(\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^\n        user_message, callbacks, verbose,\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File \"C:\\Dev\\Git\\JUNE\\src\\pythonServices\\agenttim\\agents\\react_base.py\", line 148, in _execute_turn\n    result = await asyncio.wait_for(\n             ^^^^^^^^^^^^^^^^^^^^^^^\n    ...<5 lines>...\n    )\n    ^\n  File \"C:\\Python313\\Lib\\asyncio\\tasks.py\", line 506, in wait_for\n    async with timeouts.timeout(timeout):\n               ~~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"C:\\Python313\\Lib\\asyncio\\timeouts.py\", line 116, in __aexit__\n    raise TimeoutError from exc_val\nTimeoutError\n"
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 17,
+      "mean": 0.7013,
+      "median": 1.0,
+      "std": 0.3577,
+      "variance": 0.128,
+      "ci_lower": 0.5312,
+      "ci_upper": 0.8714,
+      "min": 0.0833,
+      "max": 1.0,
+      "p25": 0.3333,
+      "p75": 1.0,
+      "iqr": 0.6667,
+      "pass_rate": 0.5294,
+      "pass_ci_lower": 0.3096,
+      "pass_ci_upper": 0.7384,
+      "passed": 9,
+      "total": 17
+    },
+    "Argument Correctness [Reference]": {
+      "n": 17,
+      "mean": 0.6235,
+      "median": 0.5,
+      "std": 0.3597,
+      "variance": 0.1294,
+      "ci_lower": 0.4525,
+      "ci_upper": 0.7945,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.5,
+      "p75": 1.0,
+      "iqr": 0.5,
+      "pass_rate": 0.3529,
+      "pass_ci_lower": 0.1731,
+      "pass_ci_upper": 0.587,
+      "passed": 6,
+      "total": 17
+    },
+    "Execution Efficiency": {
+      "n": 17,
+      "mean": 1.0,
+      "median": 1.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8157,
+      "pass_ci_upper": 1.0,
+      "passed": 17,
+      "total": 17
+    },
+    "Final State (Derived)": {
+      "n": 17,
+      "mean": 0.2353,
+      "median": 0.0,
+      "std": 0.4372,
+      "variance": 0.1912,
+      "ci_lower": 0.0274,
+      "ci_upper": 0.4431,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.2353,
+      "pass_ci_lower": 0.0955,
+      "pass_ci_upper": 0.4726,
+      "passed": 4,
+      "total": 17
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 28967.55,
+        "median": 21337.0,
+        "std": 24164.5678,
+        "variance": 583926336.9974,
+        "min": 7122.0,
+        "max": 77041.0,
+        "p25": 9261.0,
+        "p75": 38106.25,
+        "p95": 75388.0,
+        "p99": 76710.4,
+        "iqr": 28845.25
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 1971.85,
+        "median": 1251.5,
+        "std": 1462.5433,
+        "variance": 2139032.8711,
+        "min": 269.0,
+        "max": 5460.0,
+        "p25": 867.0,
+        "p75": 2865.5,
+        "p95": 4200.3,
+        "p99": 5208.06,
+        "iqr": 1998.5
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 30939.4,
+        "median": 22056.5,
+        "std": 25435.9628,
+        "variance": 646988201.7263,
+        "min": 7792.0,
+        "max": 81049.0,
+        "p25": 10412.75,
+        "p75": 40148.5,
+        "p95": 80775.4,
+        "p99": 80994.28,
+        "iqr": 29735.75
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0143,
+        "median": 0.0099,
+        "std": 0.0116,
+        "variance": 0.0001,
+        "min": 0.0037,
+        "max": 0.0375,
+        "p25": 0.005,
+        "p75": 0.0184,
+        "p95": 0.037,
+        "p99": 0.0374,
+        "iqr": 0.0135,
+        "total": 0.286329
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 9,
+      "failed": 8,
+      "errors": 3,
+      "total_tokens": 618788,
+      "tokens_per_pass": 68754.22,
+      "success_per_1k_tokens": 0.0145,
+      "pass_rate": 0.45,
+      "error_rate": 0.15
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:01.494465",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 0,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

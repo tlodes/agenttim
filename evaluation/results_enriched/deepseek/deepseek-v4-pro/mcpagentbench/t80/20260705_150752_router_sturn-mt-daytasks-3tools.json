@@ -1,0 +1,4031 @@
+{
+  "timestamp": "2026-07-05T15:07:52.948835+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "router",
+  "mode": "sturn-mt-daytasks-3tools",
+  "num_tools": 80,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 1,
+    "total_test_cases": 20,
+    "error_rate": 0.05
+  },
+  "aggregate": {
+    "total_prompt_tokens": 285825,
+    "total_completion_tokens": 38196,
+    "total_tokens": 324021,
+    "total_llm_calls": 161,
+    "total_cost": 0.157564,
+    "total_latency": 880.448,
+    "avg_latency": 44.022,
+    "pass_rate": 0.3,
+    "passed": 6,
+    "failed": 13,
+    "errors": 1
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-daytask_3_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for an American-style restaurant in San Jose and then requests the address and contact information. After checking, they want to make a booking for 11:30 am on the 4th of the month",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "San Jose",
+            "cuisineTypes": "American"
+          }
+        },
+        {
+          "name": "get_restaurant_details",
+          "arguments": {
+            "restaurant_name": "American Bistro"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "American Bistro"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "San Jose",
+            "cuisineTypes": "American"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: American Bistro, Location: San Jose, Cuisine: American, Price Level: 3', 'id': 'lc_bf414329-d7a8-49f0-b53f-a6fa41f45921'}] name='search_restaurant' tool_call_id='call_18cbaf4c69b04eaa90e27170' artifact={'structured_content': {'result': 'Found the following restaurant: Name: American Bistro, Location: San Jose, Cuisine: American, Price Level: 3'}}",
+          "start_time": 0.0,
+          "latency": 1.7899064000230283,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "American Bistro"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Restaurant Name: American Bistro\\nAddress: 1234 San Jose Ave, San Jose, CA\\nPhone Number: (408) 555-1234\\nServes Liquor: Yes\\nCuisine: American\\nLive Music: No', 'id': 'lc_3ea923ff-91a1-4701-8a2f-dd0f9149d853'}] name='get_restaurant_details' tool_call_id='call_858e8e3174d74b88a21e9b7b' artifact={'structured_content': {'result': 'Restaurant Name: American Bistro\\nAddress: 1234 San Jose Ave, San Jose, CA\\nPhone Number: (408) 555-1234\\nServes Liquor: Yes\\nCuisine:",
+          "start_time": 5.398,
+          "latency": 2.307309399941005,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "American Bistro"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at American Bistro.', 'id': 'lc_0da6eef5-4e96-4739-b4e2-47fbf0e48280'}] name='make_reservation' tool_call_id='call_b25bde00c9b84b0c9042b00a' artifact={'structured_content': {'result': 'Success: Reservation made at American Bistro.'}}",
+          "start_time": 5.398,
+          "latency": 2.308688099961728,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "get_restaurant_details",
+              "make_reservation"
+            ],
+            "actual": [
+              "search_restaurant",
+              "get_restaurant_details",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have exact matching parameter names and values. The types of all parameters match exactly as expected (all strings). There are no extra or missing parameters in any tool call. Therefore, all tool calls are correct with correct argument types and values.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Jose",
+                  "cuisineTypes": "American"
+                }
+              },
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "American Bistro"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "American Bistro"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Jose",
+                  "cuisineTypes": "American"
+                }
+              },
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "American Bistro"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "American Bistro"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -92.5% (MAS: 7312 vs SAS: 97128 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6533,
+        "completion_tokens": 779,
+        "total_tokens": 7312,
+        "llm_calls": 4,
+        "cost": 0.00352
+      },
+      "latency": {
+        "total": 26.283,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a place to eat in San Mateo, specifically for seafood, and inquires about phone numbers, live music, and liquor availability. They ask for additional suggestions and decide to ",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "San Mateo",
+            "cuisineTypes": "Seafood"
+          }
+        },
+        {
+          "name": "get_restaurant_details",
+          "arguments": {
+            "restaurant_name": "Lobster Shack"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Lobster Shack"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "San Mateo",
+            "cuisineTypes": "Seafood"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: Lobster Shack, Location: San Mateo, Cuisine: Seafood, Price Level: 4', 'id': 'lc_c51ca55d-5ad6-4f1c-b61e-3dc2eeb4c143'}] name='search_restaurant' tool_call_id='call_7ce5c51a09554a859130e9e7' artifact={'structured_content': {'result': 'Found the following restaurant: Name: Lobster Shack, Location: San Mateo, Cuisine: Seafood, Price Level: 4'}}",
+          "start_time": 0.0,
+          "latency": 1.7607808000175282,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Lobster Shack"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Restaurant Name: Lobster Shack\\nAddress: 5678 Ocean Blvd, San Mateo, CA\\nPhone Number: (650) 555-5678\\nServes Liquor: Yes\\nCuisine: Seafood\\nLive Music: Yes', 'id': 'lc_eee2c405-24ea-4758-992c-9ed04bb15d5e'}] name='get_restaurant_details' tool_call_id='call_3209d4be9f22418bbdb3bdc9' artifact={'structured_content': {'result': 'Restaurant Name: Lobster Shack\\nAddress: 5678 Ocean Blvd, San Mateo, CA\\nPhone Number: (650) 555-5678\\nServes Liquor: Yes\\nCuisine: Seafo",
+          "start_time": 4.484,
+          "latency": 1.7721873000264168,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "meshi_doko",
+          "args": {
+            "LOCATION": "San Mateo",
+            "BUDGET": 100,
+            "query": "seafood restaurant with live music and liquor",
+            "conversation_id": 1
+          },
+          "output": "content=[{'type': 'text', 'text': \"Sorry, I couldn't find any restaurants in San Mateo within your budget of 100 yen matching your query 'seafood restaurant with live music and liquor'.\", 'id': 'lc_ce38b3c2-fab4-407c-94e7-dc294ddae54f'}] name='meshi_doko' tool_call_id='call_f95da484e1794d389bc059b5' artifact={'structured_content': {'result': \"Sorry, I couldn't find any restaurants in San Mateo within your budget of 100 yen matching your query 'seafood restaurant with live music and liquor'.\"}}",
+          "start_time": 11.263,
+          "latency": 2.6359646000200883,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Lobster Shack"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Lobster Shack.', 'id': 'lc_56333941-f6b0-4068-9d16-c937ee0be651'}] name='make_reservation' tool_call_id='call_919f48b332024662ac1c1028' artifact={'structured_content': {'result': 'Success: Reservation made at Lobster Shack.'}}",
+          "start_time": 11.263,
+          "latency": 2.634496200014837,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_restaurant",
+          "args": {
+            "cuisineTypes": "Freshwater Fish",
+            "location": "San Mateo"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No restaurants found for Freshwater Fish cuisine in San Mateo.', 'id': 'lc_ef2591e0-f4a8-4e4e-a31f-179f4ff35e9d'}] name='search_restaurant' tool_call_id='call_598e7ee92cff4cd9b4ec02ba' artifact={'structured_content': {'result': 'No restaurants found for Freshwater Fish cuisine in San Mateo.'}}",
+          "start_time": 21.274,
+          "latency": 1.7666445999639109,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 5 total calls. Correct: ['get_restaurant_details', 'make_reservation', 'search_restaurant']. Extra: ['meshi_doko']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "get_restaurant_details",
+              "make_reservation"
+            ],
+            "actual": [
+              "search_restaurant",
+              "get_restaurant_details",
+              "meshi_doko",
+              "make_reservation",
+              "search_restaurant"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. search_restaurant:\n   - Expected parameters: location='San Mateo' (str), cuisineTypes='Seafood' (str)\n   - Actual calls: Two instances found.\n     a) First instance matches exactly with expected parameters and types.\n     b) Second instance has parameters location='San Mateo' (str), cuisineTypes='Freshwater Fish' (str).\n        The value for cuisineTypes differs from expected ('Freshwater Fish' vs 'Seafood'), which is a semantic mismatch.\n   - Since there is one correct call and one incorrect call for the same tool, this introduces ambiguity and partial correctness.\n\n2. get_restaurant_details:\n   - Expected parameters: restaurant_name='Lobster Shack' (str)\n   - Actual parameters match exactly in name, value, and type.\n\n3. make_reservation:\n   - Expected parameters: restaurant_name='Lobster Shack' (str)\n   - Actual parameters match exactly in name, value, and type.\n\nAdditional notes:\n- There is an extra call to search_restaurant with incorrect cuisineTypes value.\n- No missing parameters or type mismatches in expected calls.\n- No extra or missing parameters in expected calls.\n\nOverall, the presence of an extra call with incorrect argument value for search_restaurant reduces the score significantly but since other calls are correct, the score is moderate.\n\nHence, score is 0.5 reflecting minor to moderate issues due to one incorrect argument value in an extra call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Mateo",
+                  "cuisineTypes": "Seafood"
+                }
+              },
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "Lobster Shack"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Lobster Shack"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Mateo",
+                  "cuisineTypes": "Seafood"
+                }
+              },
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "Lobster Shack"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Lobster Shack"
+                }
+              },
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "cuisineTypes": "Freshwater Fish",
+                  "location": "San Mateo"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.6,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -89.4% (MAS: 12461 vs SAS: 117166 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11095,
+        "completion_tokens": 1366,
+        "total_tokens": 12461,
+        "llm_calls": 6,
+        "cost": 0.006015
+      },
+      "latency": {
+        "total": 37.739,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user requested the weather for San Jose on March 7th and asked for rock songs similar to Brunettes Shoot Blondes in the Bittersweet album, with a preference to play them on iTunes.",
+      "expected_tools": [
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "San Jose",
+            "date": "03/07"
+          }
+        },
+        {
+          "name": "itunes_search",
+          "arguments": {
+            "artist": "Brunettes Shoot Blondes"
+          }
+        },
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Every Monday"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "San Jose",
+            "date": "03/07"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The weather in San Jose on 03/07 is as follows:\\nTemperature: 18°C\\nHumidity: 50%\\nWind: 10 km/h', 'id': 'lc_95e98188-3cd9-462a-bb99-4707f22310c2'}] name='weather_tool' tool_call_id='call_ea4993452a574fb5b3882231' artifact={'structured_content': {'result': 'The weather in San Jose on 03/07 is as follows:\\nTemperature: 18°C\\nHumidity: 50%\\nWind: 10 km/h'}}",
+          "start_time": 0.0,
+          "latency": 2.449299499974586,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Brunettes Shoot Blondes"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Brunettes Shoot Blondes - Every Monday (Bittersweet, Rock)', 'id': 'lc_15e370e9-4450-47d3-b828-a7984f3c2dc2'}] name='itunes_search' tool_call_id='call_1c94268e0611482f97c80caf' artifact={'structured_content': {'result': 'Brunettes Shoot Blondes - Every Monday (Bittersweet, Rock)'}}",
+          "start_time": 0.748,
+          "latency": 2.2415132999885827,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "Bittersweet"
+            ],
+            "result_num": 10
+          },
+          "output": "content=[{'type': 'text', 'text': 'No recommendations found for the given track IDs and filter criteria.', 'id': 'lc_e328eb43-6aac-4507-aa55-65fc0726e41e'}] name='recommend_musictracks' tool_call_id='call_afb08b308ac54b099de15bc9' artifact={'structured_content': {'result': 'No recommendations found for the given track IDs and filter criteria.'}}",
+          "start_time": 0.748,
+          "latency": 2.239966900087893,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "Every Monday",
+              "Brunettes Shoot Blondes"
+            ],
+            "result_num": 10
+          },
+          "output": "content=[{'type': 'text', 'text': 'No recommendations found for the given track IDs and filter criteria.', 'id': 'lc_b0daf51e-adc2-401e-b8b2-ce35d8fee5cd'}] name='recommend_musictracks' tool_call_id='call_eac37c0c5793403cb76f1f2f' artifact={'structured_content': {'result': 'No recommendations found for the given track IDs and filter criteria.'}}",
+          "start_time": 7.314,
+          "latency": 1.8149397999513894,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Bittersweet"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_76bcd7fc-975c-4636-8f85-8f2b2cc91302'}] name='itunes_search' tool_call_id='call_a183dfa45ad74a74bf8a9aa5' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 13.667,
+          "latency": 2.2351183999562636,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "Rock"
+            ],
+            "result_num": 10
+          },
+          "output": "content=[{'type': 'text', 'text': 'No recommendations found for the given track IDs and filter criteria.', 'id': 'lc_d97efe37-b25d-49c4-9a9b-dca4c344cd98'}] name='recommend_musictracks' tool_call_id='call_abdbe10058624e8f96149273' artifact={'structured_content': {'result': 'No recommendations found for the given track IDs and filter criteria.'}}",
+          "start_time": 13.667,
+          "latency": 2.2337264999514446,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "result_num": 5,
+            "music_name": [
+              "Every Monday"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'No recommendations found for the given track IDs and filter criteria.', 'id': 'lc_740ceb65-977a-4aea-95aa-a6fc56db5fd1'}] name='recommend_musictracks' tool_call_id='call_957149b0f11d4ee5b0c5c7aa' artifact={'structured_content': {'result': 'No recommendations found for the given track IDs and filter criteria.'}}",
+          "start_time": 20.308,
+          "latency": 2.7249936000443995,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "The Strokes"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_afd59f6a-615a-4193-992d-607eccfce099'}] name='itunes_search' tool_call_id='call_516f3c3926174e9fb5fd1360' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 20.308,
+          "latency": 2.726283800089732,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Arctic Monkeys"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_9d8d0498-da1f-47b2-b992-e9dd2eb18c60'}] name='itunes_search' tool_call_id='call_85cb0616a35641839fe0de9e' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 20.308,
+          "latency": 2.7274655000073835,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Foo Fighters"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_5753cef4-7898-482a-adb4-49902e847da1'}] name='itunes_search' tool_call_id='call_e77e5924444b4001997d4a04' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 27.377,
+          "latency": 3.1541240999940783,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Nirvana"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_51664bac-ba03-4142-9fe6-fd10b25e3f3d'}] name='itunes_search' tool_call_id='call_ba04ff0e136947429bb1cd17' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 27.377,
+          "latency": 3.1522484000306576,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Red Hot Chili Peppers"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_447c2fce-caf2-46a2-b0ca-a21317ea9c6b'}] name='itunes_search' tool_call_id='call_809d684cf89e407f8371be35' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 27.377,
+          "latency": 3.1568989000516012,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Queens of the Stone Age"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_6ce1de67-00a9-460d-9e81-8c037d643c38'}] name='itunes_search' tool_call_id='call_3c12374a75b240e8a3944e60' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 27.377,
+          "latency": 3.155114399967715,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Every Monday"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Every Monday' on iTunes.\", 'id': 'lc_ec5a191f-76f1-4897-8ab7-9dc7956eaf2c'}] name='itunes_play_song' tool_call_id='call_04f9e442e3714aaf9fa18ca9' artifact={'structured_content': {'result': \"Playing 'Every Monday' on iTunes.\"}}",
+          "start_time": 37.865,
+          "latency": 1.7692095000529662,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.21428571428571427,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 14 total calls. Correct: ['itunes_play_song', 'itunes_search', 'weather_tool']. Extra: ['recommend_musictracks']. Duplicates: 10",
+          "comparison": {
+            "expected": [
+              "weather_tool",
+              "itunes_search",
+              "itunes_play_song"
+            ],
+            "actual": [
+              "weather_tool",
+              "itunes_search",
+              "recommend_musictracks",
+              "recommend_musictracks",
+              "itunes_search",
+              "recommend_musictracks",
+              "recommend_musictracks",
+              "itunes_search",
+              "itunes_search",
+              "itunes_search",
+              "itunes_search",
+              "itunes_search",
+              "itunes_search",
+              "itunes_play_song"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.9,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. weather_tool:\n- Expected parameters: city='San Jose' (str), date='03/07' (str)\n- Actual parameters: city='San Jose' (str), date='03/07' (str)\n- Match: Perfect match in parameter names, values, and types.\n\n2. itunes_search:\n- Expected parameters: artist='Brunettes Shoot Blondes' (str)\n- Actual parameters: Multiple calls with artist parameter, including one with artist='Brunettes Shoot Blondes' (str).\n- Match: The expected call is present exactly once with correct parameter and type.\n- Issue: Actual has many extra itunes_search calls with different artist values not expected.\n- According to rules, extra calls of the same tool with different parameters are not penalized unless they have wrong parameters or types. Since the expected call is matched correctly, extra calls do not reduce score.\n\n3. itunes_play_song:\n- Expected parameters: song='Every Monday' (str)\n- Actual parameters: song='Every Monday' (str)\n- Match: Perfect match.\n\nSummary:\n- All expected tool calls are present with correct parameters and types.\n- No missing parameters.\n- No type mismatches.\n- No extra parameters in expected calls.\n- Extra calls of itunes_search with different parameters exist but do not violate rules.\n\nTherefore, minor issue is presence of multiple extra itunes_search calls (not penalized heavily), resulting in a slight deduction.\n\nFinal score: 0.9",
+          "comparison": {
+            "expected": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "San Jose",
+                  "date": "03/07"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Brunettes Shoot Blondes"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Every Monday"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "San Jose",
+                  "date": "03/07"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Brunettes Shoot Blondes"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Bittersweet"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "The Strokes"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Arctic Monkeys"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Foo Fighters"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Nirvana"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Red Hot Chili Peppers"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Queens of the Stone Age"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Every Monday"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.21428571428571427, Argument Correctness: 0.9",
+          "component_scores": {
+            "Tool Correctness": 0.21428571428571427,
+            "Argument Correctness": 0.9
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -74.2% (MAS: 28015 vs SAS: 108707 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 25710,
+        "completion_tokens": 2305,
+        "total_tokens": 28015,
+        "llm_calls": 11,
+        "cost": 0.013189
+      },
+      "latency": {
+        "total": 59.468,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user inquired about the weather in London on May 1st, including humidity and wind conditions. They also requested help finding a house for one person, arriving on the 1st and checking out on the 4",
+      "expected_tools": [
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "London",
+            "date": "05/01"
+          }
+        },
+        {
+          "name": "search_rental_properties",
+          "arguments": {
+            "location": "London",
+            "property_type": "house"
+          }
+        },
+        {
+          "name": "get_rental_property_details",
+          "arguments": {
+            "property_id": "LN987"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "London",
+            "date": "05/01"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Weather data for London on 05/01 is not available.', 'id': 'lc_cb512d1e-9470-4094-93b8-5e59867ac604'}] name='weather_tool' tool_call_id='call_699b8fd6d6f7489eb99c5951' artifact={'structured_content': {'result': 'Weather data for London on 05/01 is not available.'}}",
+          "start_time": 0.0,
+          "latency": 2.1472131999908015,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_rental_properties",
+          "args": {
+            "location": "London",
+            "property_type": "house"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Type: house, Rating: 4.4, Property ID: LN987, Address: 123 London Ave\\n', 'id': 'lc_c5c4410d-8702-4841-99f4-b4f026bcca6b'}] name='search_rental_properties' tool_call_id='call_e55f128d8d574c8883239178' artifact={'structured_content': {'result': 'Type: house, Rating: 4.4, Property ID: LN987, Address: 123 London Ave\\n'}}",
+          "start_time": 1.165,
+          "latency": 1.7737770999083295,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "weather_data_retriever",
+          "args": {
+            "start_date": "05/01",
+            "end_date": "05/01",
+            "range": "2019-2024",
+            "location": "London"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: No data found for the specified date range.', 'id': 'lc_d58bd11a-4842-43fa-aef2-f82d52be025e'}] name='weather_data_retriever' tool_call_id='call_78d44dc45d564da3b0f672e6' artifact={'structured_content': {'result': 'Error: No data found for the specified date range.'}}",
+          "start_time": 6.848,
+          "latency": 1.7777821000199765,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_rental_property_details",
+          "args": {
+            "property_id": "LN987"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Property ID: LN987\\nLocation: London\\nDescription: Modern apartment with all amenities, suited for single travelers.\\nCapacity: 1 persons\\nAvailable Date: 1st to 4th\\nPrice per Night: $120\\nContact Number: +44-20-7946-0958\\nLaundry Service: No\\nAir Conditioning: Yes', 'id': 'lc_0143cb35-3f21-43e7-a49f-068bd0433742'}] name='get_rental_property_details' tool_call_id='call_ba56b0ef4efd4763bd4be4f0' artifact={'structured_content': {'result': 'Property ID: LN987\\nLo",
+          "start_time": 16.706,
+          "latency": 1.778076000045985,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.75,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 4 total calls. Correct: ['get_rental_property_details', 'search_rental_properties', 'weather_tool']. Extra: ['weather_data_retriever']",
+          "comparison": {
+            "expected": [
+              "weather_tool",
+              "search_rental_properties",
+              "get_rental_property_details"
+            ],
+            "actual": [
+              "weather_tool",
+              "search_rental_properties",
+              "weather_data_retriever",
+              "get_rental_property_details"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have exact matches in parameter names and values. The types for all parameters are consistent between expected and actual calls. There are no extra or missing parameters in any tool call. Therefore, all tool calls are correct with correct argument types.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "date": "05/01"
+                }
+              },
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "London",
+                  "property_type": "house"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "LN987"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "date": "05/01"
+                }
+              },
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "London",
+                  "property_type": "house"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "LN987"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.75",
+          "component_scores": {
+            "Tool Correctness": 0.75,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -83.8% (MAS: 11921 vs SAS: 73351 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10127,
+        "completion_tokens": 1794,
+        "total_tokens": 11921,
+        "llm_calls": 8,
+        "cost": 0.005966
+      },
+      "latency": {
+        "total": 42.028,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user requested to play \"Let Me Love You\" by Ariana Grande, and wanted to transfer $970 from their savings account to Tom. They also expressed interest in watching non-fiction movies, mentioning a ",
+      "expected_tools": [
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Let Me Love You"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Tom",
+            "amount": 970
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "JT Leroy"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "savings"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's savings account is 3000 USD.\", 'id': 'lc_8b5cd531-1e9e-449c-9889-b39d74154f4b'}] name='get_balance' tool_call_id='call_3fa2d7e2e361487697e4e9fe' artifact={'structured_content': {'result': \"The balance of the user's savings account is 3000 USD.\"}}",
+          "start_time": 0.0,
+          "latency": 2.5510425999527797,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Let Me Love You"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Let Me Love You' on iTunes.\", 'id': 'lc_a58f1155-8694-4739-ac42-6c6bc77919d4'}] name='itunes_play_song' tool_call_id='call_012a3a9a8fdc4c3a9ee4e34a' artifact={'structured_content': {'result': \"Playing 'Let Me Love You' on iTunes.\"}}",
+          "start_time": 1.096,
+          "latency": 2.2597503000870347,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "JT Leroy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: JT Leroy\\nGenre: Non-fiction\\nSubtitles available: No\\nIMDb ID: tt5460522', 'id': 'lc_2b3b1c5e-1442-49e4-b83a-b23eaa76cf68'}] name='search_imdb' tool_call_id='call_9735cbf2354e44478843d0d2' artifact={'structured_content': {'result': 'Title: JT Leroy\\nGenre: Non-fiction\\nSubtitles available: No\\nIMDb ID: tt5460522'}}",
+          "start_time": 1.096,
+          "latency": 2.2610861000139266,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Tom",
+            "amount": 970
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Tom received 970.0 USD.', 'id': 'lc_a217e3dc-ba3f-48d6-972c-21a9359526b0'}] name='send_transaction' tool_call_id='call_d68af3dc59ef4a219e763e06' artifact={'structured_content': {'result': 'Transaction successful! The Tom received 970.0 USD.'}}",
+          "start_time": 7.415,
+          "latency": 1.7897097000386566,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.75,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 4 total calls. Correct: ['itunes_play_song', 'search_imdb', 'send_transaction']. Extra: ['get_balance']",
+          "comparison": {
+            "expected": [
+              "itunes_play_song",
+              "send_transaction",
+              "search_imdb"
+            ],
+            "actual": [
+              "get_balance",
+              "itunes_play_song",
+              "search_imdb",
+              "send_transaction"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have matching parameter names and values with correct types. \n\n1. itunes_play_song: Expected parameter 'song' with value 'Let Me Love You' (str), actual matches exactly.\n2. send_transaction: Expected parameters 'target'='Tom' (str) and 'amount'=970 (int), actual matches exactly.\n3. search_imdb: Expected parameter 'primary_title'='JT Leroy' (str), actual matches exactly.\n\nNo missing or extra parameters, no type mismatches, and parameter values are semantically equivalent. The order of tool calls differs but that does not affect argument correctness.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Let Me Love You"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Tom",
+                  "amount": 970
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "JT Leroy"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Let Me Love You"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "JT Leroy"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Tom",
+                  "amount": 970
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.3333333333333333,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "1/3 checks passed. Issues: Tools ran sequentially (missed parallelization); Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.75",
+          "component_scores": {
+            "Tool Correctness": 0.75,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -83.4% (MAS: 12892 vs SAS: 77502 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11158,
+        "completion_tokens": 1734,
+        "total_tokens": 12892,
+        "llm_calls": 7,
+        "cost": 0.006362
+      },
+      "latency": {
+        "total": 38.356,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to play Nick Murphy's song \"No Diggity\". They also want to transfer $1030 to Jerry using their savings account. Additionally, they are looking to stream an adventure movie directed by A",
+      "expected_tools": [
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "No Diggity"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Jerry",
+            "amount": 1030
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Captain Marvel"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "savings"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's savings account is 3000 USD.\", 'id': 'lc_d0519172-0dc1-4ce6-9ef7-b0d6682afe3d'}] name='get_balance' tool_call_id='call_7110790c39f74f9593059bd5' artifact={'structured_content': {'result': \"The balance of the user's savings account is 3000 USD.\"}}",
+          "start_time": 0.0,
+          "latency": 1.7701622999738902,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "No Diggity"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'No Diggity' on iTunes.\", 'id': 'lc_f9c191fb-aa7d-42bd-99b9-8b5bba493dcd'}] name='itunes_play_song' tool_call_id='call_aa550ab99e4a43c9a9e1e2e8' artifact={'structured_content': {'result': \"Playing 'No Diggity' on iTunes.\"}}",
+          "start_time": 3.383,
+          "latency": 2.69291829993017,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Captain Marvel"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Captain Marvel\\nGenre: Adventure\\nSubtitles available: Yes\\nIMDb ID: tt4154664', 'id': 'lc_ca874684-0b49-45f7-af7b-d8a101fba8f7'}] name='search_imdb' tool_call_id='call_ea002d3499134c3da8deba9d' artifact={'structured_content': {'result': 'Title: Captain Marvel\\nGenre: Adventure\\nSubtitles available: Yes\\nIMDb ID: tt4154664'}}",
+          "start_time": 3.383,
+          "latency": 2.6968824999639764,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Captain Marvel"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_4777331e-e903-4bb5-91db-68ff40a7d26e'}] name='itunes_search' tool_call_id='call_e65af3862f7149d79b6394b0' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 3.383,
+          "latency": 2.6942169000394642,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Jerry",
+            "amount": 1030
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Jerry received 1030.0 USD.', 'id': 'lc_89c3ee5f-4df0-4e65-8cee-36b4e1ab3fa7'}] name='send_transaction' tool_call_id='call_563f0b32ed1a4afaade95691' artifact={'structured_content': {'result': 'Transaction successful! The Jerry received 1030.0 USD.'}}",
+          "start_time": 6.082,
+          "latency": 1.781813699984923,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt4154664"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_98e94171-7e80-4d5b-a6d5-785a77e71700'}] name='get_directors' tool_call_id='call_fa22240348a944f185cee933' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 12.789,
+          "latency": 2.218684299965389,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Nick Murphy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_06504c33-b5f1-4e6d-a3f3-8528f6396cda'}] name='itunes_search' tool_call_id='call_da1a99292356464284d5c0bc' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 12.789,
+          "latency": 2.2173159000230953,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Mississippi Grind"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'Mississippi Grind'. Please check the title and try again.\", 'id': 'lc_263ace1a-1d71-4c71-afa7-98f904794a0b'}] name='search_imdb' tool_call_id='call_19e6c236175c4f4f98f2f73a' artifact={'structured_content': {'result': \"No results found for the title 'Mississippi Grind'. Please check the title and try again.\"}}",
+          "start_time": 24.153,
+          "latency": 3.606915900018066,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "It's Kind of a Funny Story"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'It's Kind of a Funny Story'. Please check the title and try again.\", 'id': 'lc_0cc7a8f0-6ebc-4999-8fbb-184850898bb7'}] name='search_imdb' tool_call_id='call_290e2c64152b427facad5888' artifact={'structured_content': {'result': \"No results found for the title 'It's Kind of a Funny Story'. Please check the title and try again.\"}}",
+          "start_time": 24.153,
+          "latency": 3.609449899988249,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Sugar"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'Sugar'. Please check the title and try again.\", 'id': 'lc_f0c7a5c5-3d79-4e7c-b690-84a3387d991b'}] name='search_imdb' tool_call_id='call_8ceafe91788340419acfbd05' artifact={'structured_content': {'result': \"No results found for the title 'Sugar'. Please check the title and try again.\"}}",
+          "start_time": 24.153,
+          "latency": 3.6082461000187322,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Pinar Toprak"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_a8d52061-8e13-4be1-9e32-dfe306b71c7f'}] name='itunes_search' tool_call_id='call_2e7e1ce5320e4159ad0d324c' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 24.153,
+          "latency": 3.6109313999768347,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Captain Marvel Soundtrack"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_4d961a01-a6cc-43b3-9736-054afc05e102'}] name='itunes_search' tool_call_id='call_49f55577ee8641f7a02c2383' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 37.483,
+          "latency": 1.8345658000325784,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.25,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 12 total calls. Correct: ['itunes_play_song', 'search_imdb', 'send_transaction']. Extra: ['get_balance', 'get_directors', 'itunes_search']. Duplicates: 6",
+          "comparison": {
+            "expected": [
+              "itunes_play_song",
+              "send_transaction",
+              "search_imdb"
+            ],
+            "actual": [
+              "get_balance",
+              "itunes_play_song",
+              "search_imdb",
+              "itunes_search",
+              "send_transaction",
+              "get_directors",
+              "itunes_search",
+              "search_imdb",
+              "search_imdb",
+              "search_imdb",
+              "itunes_search",
+              "itunes_search"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All expected tools are present in the actual calls with correct parameter names and types. \n\n1. itunes_play_song:\n- Expected parameters: {song: 'No Diggity' (str)}\n- Actual parameters: {song: 'No Diggity' (str)}\n- Match: exact parameter names and values with correct types.\n\n2. send_transaction:\n- Expected parameters: {target: 'Jerry' (str), amount: 1030 (int)}\n- Actual parameters: {target: 'Jerry' (str), amount: 1030 (int)}\n- Match: exact parameter names and values with correct types.\n\n3. search_imdb:\n- Expected parameters: {primary_title: 'Captain Marvel' (str)}\n- Actual parameters: {primary_title: 'Captain Marvel' (str)}\n- Match: exact parameter names and values with correct types.\n\nExtra calls to search_imdb with different titles do not affect the score since they are not expected but also do not violate any rules. No missing or extra parameters in expected tools, no type mismatches, and no hallucinated parameters.\n\nTherefore, the score is 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "No Diggity"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Jerry",
+                  "amount": 1030
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Captain Marvel"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "No Diggity"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Captain Marvel"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Jerry",
+                  "amount": 1030
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Mississippi Grind"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "It's Kind of a Funny Story"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Sugar"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.3333333333333333,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "1/3 checks passed. Issues: Tools ran sequentially (missed parallelization); Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.25",
+          "component_scores": {
+            "Tool Correctness": 0.25,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -61.2% (MAS: 26850 vs SAS: 69137 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 23293,
+        "completion_tokens": 3557,
+        "total_tokens": 26850,
+        "llm_calls": 10,
+        "cost": 0.013227
+      },
+      "latency": {
+        "total": 88.004,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to cast the song \"Music Never Sleeps\" by Jason Chen on iTunes. They also want to transfer $1150 from their savings account to Pranav. Additionally, they are interested in a fantasy movi",
+      "expected_tools": [
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Music Never Sleeps"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Pranav",
+            "amount": 1150
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Mad Max"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Jason Chen"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No tracks found matching your search criteria.', 'id': 'lc_ff780014-ba25-4fdd-939d-27bd7839ef83'}] name='itunes_search' tool_call_id='call_3a8267dea96f4b60b0aae4a3' artifact={'structured_content': {'result': 'No tracks found matching your search criteria.'}}",
+          "start_time": 0.0,
+          "latency": 2.7119424999691546,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Pranav",
+            "amount": 1150
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Pranav received 1150.0 USD.', 'id': 'lc_01365c3f-2094-4e54-b5cd-8e99e205f436'}] name='send_transaction' tool_call_id='call_089b7724b2ac468b9f486109' artifact={'structured_content': {'result': 'Transaction successful! The Pranav received 1150.0 USD.'}}",
+          "start_time": 0.608,
+          "latency": 2.3710565000073984,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Mad Max"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Mad Max\\nGenre: Fantasy\\nSubtitles available: Yes\\nIMDb ID: tt1392190', 'id': 'lc_4d62883d-6e82-4a68-a92c-ea5d1d1805af'}] name='search_imdb' tool_call_id='call_2f7ed1ab25384209a904e211' artifact={'structured_content': {'result': 'Title: Mad Max\\nGenre: Fantasy\\nSubtitles available: Yes\\nIMDb ID: tt1392190'}}",
+          "start_time": 2.252,
+          "latency": 1.796379299950786,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Music Never Sleeps"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Music Never Sleeps' on iTunes.\", 'id': 'lc_fa45ab29-a85f-4406-b15c-827f83616434'}] name='itunes_play_song' tool_call_id='call_cacf11c05aee4fe8bdc94cca' artifact={'structured_content': {'result': \"Playing 'Music Never Sleeps' on iTunes.\"}}",
+          "start_time": 6.989,
+          "latency": 2.3270357999717817,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt1392190"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_6fe0face-b482-4ecf-954c-909ec5689fc0'}] name='get_directors' tool_call_id='call_c57968299dc54036a99238d4' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 7.676,
+          "latency": 1.9072169000282884,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt0079501"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_2a5c8db3-0d56-49fc-b48b-be8271a47495'}] name='get_directors' tool_call_id='call_7e240d5cb8454e7eb946361c' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 16.134,
+          "latency": 1.7851921999827027,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt1392190"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_a19c7ec8-1c7d-4e49-86b9-12cb1d9492f2'}] name='get_directors' tool_call_id='call_289b1fde44dc491181bd9f23' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 25.186,
+          "latency": 1.7595453000394627,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.42857142857142855,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 7 total calls. Correct: ['itunes_play_song', 'search_imdb', 'send_transaction']. Extra: ['get_directors', 'itunes_search']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "itunes_play_song",
+              "send_transaction",
+              "search_imdb"
+            ],
+            "actual": [
+              "itunes_search",
+              "send_transaction",
+              "search_imdb",
+              "itunes_play_song",
+              "get_directors",
+              "get_directors",
+              "get_directors"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have matching arguments with correct parameter names and types. \n\n1. itunes_play_song:\n- Expected parameters: {song: 'Music Never Sleeps' (str)}\n- Actual parameters: {song: 'Music Never Sleeps' (str)}\n- No missing or extra parameters, types match exactly.\n\n2. send_transaction:\n- Expected parameters: {target: 'Pranav' (str), amount: 1150 (int)}\n- Actual parameters: {target: 'Pranav' (str), amount: 1150 (int)}\n- No missing or extra parameters, types match exactly.\n\n3. search_imdb:\n- Expected parameters: {primary_title: 'Mad Max' (str)}\n- Actual parameters: {primary_title: 'Mad Max' (str)}\n- No missing or extra parameters, types match exactly.\n\nAll tools have correct arguments with correct types and no extra or missing parameters.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Music Never Sleeps"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Pranav",
+                  "amount": 1150
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Mad Max"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Pranav",
+                  "amount": 1150
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Mad Max"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Music Never Sleeps"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.3333333333333333,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "1/3 checks passed. Issues: Tools ran sequentially (missed parallelization); Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.42857142857142855",
+          "component_scores": {
+            "Tool Correctness": 0.42857142857142855,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -81.4% (MAS: 20198 vs SAS: 108612 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 18043,
+        "completion_tokens": 2155,
+        "total_tokens": 20198,
+        "llm_calls": 12,
+        "cost": 0.009724
+      },
+      "latency": {
+        "total": 48.487,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to listen to the song \"Stitches\" in their bedroom. They also request a transfer of $980 from their savings account to Abhinav. Additionally, they want to watch the movie \"Dogman\" and as",
+      "expected_tools": [
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Stitches"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Abhinav",
+            "amount": 980
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Dogman"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Abhinav",
+            "amount": 980
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Abhinav received 980.0 USD.', 'id': 'lc_f307d31b-e6d8-42da-ba70-3006f236ea0e'}] name='send_transaction' tool_call_id='call_cecc7354cfa34f5b8287a6e5' artifact={'structured_content': {'result': 'Transaction successful! The Abhinav received 980.0 USD.'}}",
+          "start_time": 0.0,
+          "latency": 2.525148899992928,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Stitches"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Stitches' on iTunes.\", 'id': 'lc_d24eceb8-5dd1-48ce-85f3-89089e262785'}] name='itunes_play_song' tool_call_id='call_05c44cecad914f8f9ae34523' artifact={'structured_content': {'result': \"Playing 'Stitches' on iTunes.\"}}",
+          "start_time": 1.087,
+          "latency": 2.2319097999716178,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Dogman"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Dogman\\nGenre: Drama\\nSubtitles available: No\\nIMDb ID: tt6768578', 'id': 'lc_c76f7b35-f1e2-4720-bcdd-2c28ca818b56'}] name='search_imdb' tool_call_id='call_5f042e7188a34793bb53e4af' artifact={'structured_content': {'result': 'Title: Dogman\\nGenre: Drama\\nSubtitles available: No\\nIMDb ID: tt6768578'}}",
+          "start_time": 1.087,
+          "latency": 2.230506499996409,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "itunes_play_song",
+              "send_transaction",
+              "search_imdb"
+            ],
+            "actual": [
+              "send_transaction",
+              "itunes_play_song",
+              "search_imdb"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have exact matching parameter names and values. The types for all parameters match correctly: 'song' is a string with value 'Stitches' for itunes_play_song; 'target' is a string 'Abhinav' and 'amount' is an integer 980 for send_transaction; 'primary_title' is a string 'Dogman' for search_imdb. There are no extra or missing parameters in any tool call. The order of tools differs but order is not penalized. Therefore, all tool calls are correct with correct argument types and values.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Stitches"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Abhinav",
+                  "amount": 980
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Dogman"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Abhinav",
+                  "amount": 980
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Stitches"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Dogman"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.1% (MAS: 10933 vs SAS: 68908 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9452,
+        "completion_tokens": 1481,
+        "total_tokens": 10933,
+        "llm_calls": 6,
+        "cost": 0.0054
+      },
+      "latency": {
+        "total": 29.485,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for attractions to visit in San Francisco, specifically a museum. They are also interested in finding a romance movie to watch online, mentioning \"Say Anything\" and asking about it",
+      "expected_tools": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Francisco",
+            "category": "museum"
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Say Anything"
+          }
+        },
+        {
+          "name": "get_directors",
+          "arguments": {
+            "imdb_id": "tt0098258"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Say Anything"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Say Anything\\nGenre: Romance\\nSubtitles available: No\\nIMDb ID: tt0098258', 'id': 'lc_b63a158c-d264-426e-be0d-0d7f1e2b1d12'}] name='search_imdb' tool_call_id='call_5b65ec2f30724d53b6d2cc30' artifact={'structured_content': {'result': 'Title: Say Anything\\nGenre: Romance\\nSubtitles available: No\\nIMDb ID: tt0098258'}}",
+          "start_time": 0.0,
+          "latency": 1.96290919999592,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Museum Event",
+            "city": "San Francisco"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_399e66ce-1a45-4c87-afe0-738a207626ac'}] name='search_ticketmaster' tool_call_id='call_bba4a7b3cf6f4e6f82d72134' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 3.046,
+          "latency": 2.2171395000768825,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt0098258"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The director of the movie with IMDb ID tt0098258 is Cameron Crowe.', 'id': 'lc_c2f62ab1-7105-447d-b41a-e97e7f9a7e75'}] name='get_directors' tool_call_id='call_9e5727c9ef394d9eb2f4d0cf' artifact={'structured_content': {'result': 'The director of the movie with IMDb ID tt0098258 is Cameron Crowe.'}}",
+          "start_time": 4.274,
+          "latency": 1.7778657999588177,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Art Event",
+            "city": "San Francisco"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_15b9a172-4dbc-466b-8ead-74c79cf0868e'}] name='search_ticketmaster' tool_call_id='call_d787a8df84dc495fbfcf33e5' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 10.149,
+          "latency": 2.7426115999696776,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Tour Event",
+            "city": "San Francisco"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_4e67dd62-0015-4f16-b079-dd2e920a0dc4'}] name='search_ticketmaster' tool_call_id='call_993c73158dcb475ba02b4173' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 10.149,
+          "latency": 2.741255300003104,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "city": "San Francisco",
+            "type": "Exhibit Event"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_7d8a6111-50d4-4cd1-a122-66dd9fc3421b'}] name='search_ticketmaster' tool_call_id='call_1c91c40d708a4ac7abfca657' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 16.812,
+          "latency": 2.4129101999569684,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Festival Event",
+            "city": "San Francisco"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_5d74af0b-75e1-4b33-a651-f13f1e4756da'}] name='search_ticketmaster' tool_call_id='call_374b9f2c9add4e9c9cb970cc' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 16.812,
+          "latency": 2.382167699979618,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.2857142857142857,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/3 expected tools found, 7 total calls. Correct: ['get_directors', 'search_imdb']. Missing: ['geocalc_mcp_get_points_of_interest']. Extra: ['search_ticketmaster']. Duplicates: 4",
+          "comparison": {
+            "expected": [
+              "geocalc_mcp_get_points_of_interest",
+              "search_imdb",
+              "get_directors"
+            ],
+            "actual": [
+              "search_imdb",
+              "search_ticketmaster",
+              "get_directors",
+              "search_ticketmaster",
+              "search_ticketmaster",
+              "search_ticketmaster",
+              "search_ticketmaster"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. For 'search_imdb', the expected and actual parameter 'primary_title' is 'Say Anything' of type string, matching perfectly. For 'get_directors', the expected and actual parameter 'imdb_id' is 'tt0098258' of type string, also matching perfectly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Say Anything"
+                }
+              },
+              {
+                "name": "get_directors",
+                "input_parameters": {
+                  "imdb_id": "tt0098258"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Say Anything"
+                }
+              },
+              {
+                "name": "get_directors",
+                "input_parameters": {
+                  "imdb_id": "tt0098258"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.2857142857142857",
+          "component_scores": {
+            "Tool Correctness": 0.2857142857142857,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -80.2% (MAS: 16166 vs SAS: 81515 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 14764,
+        "completion_tokens": 1402,
+        "total_tokens": 16166,
+        "llm_calls": 9,
+        "cost": 0.007642
+      },
+      "latency": {
+        "total": 32.451,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to find a garden to visit in San Francisco. They are also interested in the fantasy movie \"Alice in Wonderland\" by Tim Burton and want to play the song \"Dumbo\" now.",
+      "expected_tools": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Francisco",
+            "category": "garden"
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Alice in Wonderland"
+          }
+        },
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Dumbo"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Alice in Wonderland"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Alice in Wonderland\\nGenre: Fantasy\\nSubtitles available: Yes\\nIMDb ID: tt1014759', 'id': 'lc_73897406-c887-4d9e-a1c5-1fc3f30d291d'}] name='search_imdb' tool_call_id='call_53f6abfdb67540c99e09f50e' artifact={'structured_content': {'result': 'Title: Alice in Wonderland\\nGenre: Fantasy\\nSubtitles available: Yes\\nIMDb ID: tt1014759'}}",
+          "start_time": 0.0,
+          "latency": 2.6824984999839216,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Dumbo"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Dumbo' on iTunes.\", 'id': 'lc_6c01aa68-c0db-4dea-b3c2-01da5efc2d64'}] name='itunes_play_song' tool_call_id='call_c482ee160cb644148b05476d' artifact={'structured_content': {'result': \"Playing 'Dumbo' on iTunes.\"}}",
+          "start_time": 0.0,
+          "latency": 2.6860069000395015,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "San Francisco",
+            "category": "garden"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Points of Interest in San Francisco:\\n- San Francisco Botanical Garden (Garden), 2km away from the searching point\\n', 'id': 'lc_9ffaa3ab-5558-4c35-80fc-529a2b1b5cf5'}] name='geocalc_mcp_get_points_of_interest' tool_call_id='call_c9f9e611a1c4402ba636c9c2' artifact={'structured_content': {'result': 'Points of Interest in San Francisco:\\n- San Francisco Botanical Garden (Garden), 2km away from the searching point\\n'}}",
+          "start_time": 0.897,
+          "latency": 1.7866993000498042,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt1014759"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_8b870eb2-e048-48e3-ae15-1740426f69c6'}] name='get_directors' tool_call_id='call_3409f3d68d9e427c91f320b4' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 7.163,
+          "latency": 1.8980825999751687,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.75,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 4 total calls. Correct: ['geocalc_mcp_get_points_of_interest', 'itunes_play_song', 'search_imdb']. Extra: ['get_directors']",
+          "comparison": {
+            "expected": [
+              "geocalc_mcp_get_points_of_interest",
+              "search_imdb",
+              "itunes_play_song"
+            ],
+            "actual": [
+              "search_imdb",
+              "itunes_play_song",
+              "geocalc_mcp_get_points_of_interest",
+              "get_directors"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have been called with exactly the expected parameters and values. Parameter names match exactly for all tools. Parameter values are semantically equivalent with correct types (all strings as expected). There are no extra or missing parameters in any tool call. The order of tool calls does not affect correctness. Therefore, all tool calls are correct with no issues.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Francisco",
+                  "category": "garden"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Alice in Wonderland"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Dumbo"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Alice in Wonderland"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Dumbo"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Francisco",
+                  "category": "garden"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.75",
+          "component_scores": {
+            "Tool Correctness": 0.75,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -75.0% (MAS: 12900 vs SAS: 51526 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10957,
+        "completion_tokens": 1943,
+        "total_tokens": 12900,
+        "llm_calls": 7,
+        "cost": 0.006457
+      },
+      "latency": {
+        "total": 42.38,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to visit a free museum in San Francisco. They also want to watch the movie \"Hackers\" online with subtitles, which is a drama, and are curious about the director.",
+      "expected_tools": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Francisco",
+            "category": "museum"
+          }
+        },
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Hackers"
+          }
+        },
+        {
+          "name": "get_directors",
+          "arguments": {
+            "imdb_id": "tt0113243"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Hackers"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Hackers\\nGenre: Drama\\nSubtitles available: Yes\\nIMDb ID: tt0113243', 'id': 'lc_a30f2add-358c-42c8-8062-84f5118de7e7'}] name='search_imdb' tool_call_id='call_df969b1cf3d04128847ffeef' artifact={'structured_content': {'result': 'Title: Hackers\\nGenre: Drama\\nSubtitles available: Yes\\nIMDb ID: tt0113243'}}",
+          "start_time": 0.0,
+          "latency": 1.7751639001071453,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Museum Event",
+            "city": "San Francisco"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_d64cca21-f484-4eb8-859a-00a4c2bd6526'}] name='search_ticketmaster' tool_call_id='call_06e1aa8e696c457695f0f106' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 2.475,
+          "latency": 1.778107399935834,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt0113243"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The director of the movie with IMDb ID tt0113243 is Iain Softley.', 'id': 'lc_422b9082-85a7-4a72-9df1-b3be5bd0a5d6'}] name='get_directors' tool_call_id='call_5df0dcb8fd0948d7b9c1371a' artifact={'structured_content': {'result': 'The director of the movie with IMDb ID tt0113243 is Iain Softley.'}}",
+          "start_time": 6.13,
+          "latency": 1.8028506999835372,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/3 expected tools found, 3 total calls. Correct: ['get_directors', 'search_imdb']. Missing: ['geocalc_mcp_get_points_of_interest']. Extra: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "geocalc_mcp_get_points_of_interest",
+              "search_imdb",
+              "get_directors"
+            ],
+            "actual": [
+              "search_imdb",
+              "search_ticketmaster",
+              "get_directors"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have matching parameter names and values with correct types. For 'search_imdb', expected and actual have parameter 'primary_title' with value 'Hackers' as string, matching exactly. For 'get_directors', expected and actual have parameter 'imdb_id' with value 'tt0113243' as string, matching exactly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hackers"
+                }
+              },
+              {
+                "name": "get_directors",
+                "input_parameters": {
+                  "imdb_id": "tt0113243"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hackers"
+                }
+              },
+              {
+                "name": "get_directors",
+                "input_parameters": {
+                  "imdb_id": "tt0113243"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -86.8% (MAS: 15348 vs SAS: 116096 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13847,
+        "completion_tokens": 1501,
+        "total_tokens": 15348,
+        "llm_calls": 7,
+        "cost": 0.007329
+      },
+      "latency": {
+        "total": 28.011,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user requested help finding comic movies online, expressed interest in \"Dr. Strangelove\". They also inquired about the movie's director. Meanwhile, they asked to make a reservation at Taste of Ind",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -40.7% (MAS: 45710 vs SAS: 77056 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 42520,
+        "completion_tokens": 3190,
+        "total_tokens": 45710,
+        "llm_calls": 13,
+        "cost": 0.021272
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to watch the drama movie \"The Dogman\" online. They also want to inquire about the pricing and liquor options at Aato, San Francisco and then decide to make a reservation for four people",
+      "expected_tools": [
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "The Dogman"
+          }
+        },
+        {
+          "name": "get_restaurant_details",
+          "arguments": {
+            "restaurant_name": "Aato"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Aato"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Aato"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Restaurant Name: Aato\\nAddress: 7890 Bay St, San Francisco, CA\\nPhone Number: (415) 555-7890\\nServes Liquor: Yes\\nCuisine: Japanese\\nLive Music: No', 'id': 'lc_4b764ce3-0add-472d-b62f-a4fc754579ca'}] name='get_restaurant_details' tool_call_id='call_c4c082c81c6b41499acd8e88' artifact={'structured_content': {'result': 'Restaurant Name: Aato\\nAddress: 7890 Bay St, San Francisco, CA\\nPhone Number: (415) 555-7890\\nServes Liquor: Yes\\nCuisine: Japanese\\nLive Music: N",
+          "start_time": 0.0,
+          "latency": 1.790991299902089,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "The Dogman"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'The Dogman'. Please check the title and try again.\", 'id': 'lc_f52a55b3-cf7d-4c7a-880c-6b8a97f0cfca'}] name='search_imdb' tool_call_id='call_feeda15def5a42dabb7da06b' artifact={'structured_content': {'result': \"No results found for the title 'The Dogman'. Please check the title and try again.\"}}",
+          "start_time": 4.845,
+          "latency": 1.7621076999930665,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Aato"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Aato.', 'id': 'lc_d9e88888-4980-4819-9417-4ac0388211cc'}] name='make_reservation' tool_call_id='call_48c600166c88494d98fff451' artifact={'structured_content': {'result': 'Success: Reservation made at Aato.'}}",
+          "start_time": 6.907,
+          "latency": 1.7712380000157282,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Dogman"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Dogman\\nGenre: Drama\\nSubtitles available: No\\nIMDb ID: tt6768578', 'id': 'lc_07c3a615-e14b-45a5-8ec0-d271c3e49b14'}] name='search_imdb' tool_call_id='call_f3098bfd7fcf4b8e987a5919' artifact={'structured_content': {'result': 'Title: Dogman\\nGenre: Drama\\nSubtitles available: No\\nIMDb ID: tt6768578'}}",
+          "start_time": 9.403,
+          "latency": 2.2310308000305668,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "The Dog Man"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'The Dog Man'. Please check the title and try again.\", 'id': 'lc_079b117d-df7d-4ba1-a982-caebe4fe7acf'}] name='search_imdb' tool_call_id='call_1eb63b17c39042f6b44799f5' artifact={'structured_content': {'result': \"No results found for the title 'The Dog Man'. Please check the title and try again.\"}}",
+          "start_time": 9.403,
+          "latency": 2.23254390002694,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 5 total calls. Correct: ['get_restaurant_details', 'make_reservation', 'search_imdb']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "search_imdb",
+              "get_restaurant_details",
+              "make_reservation"
+            ],
+            "actual": [
+              "get_restaurant_details",
+              "search_imdb",
+              "make_reservation",
+              "search_imdb",
+              "search_imdb"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. search_imdb:\n- Expected: one call with primary_title = 'The Dogman' (string).\n- Actual: three calls with primary_title values: 'The Dogman', 'Dogman', 'The Dog Man'.\n- The first actual call matches exactly.\n- The other two calls have different values ('Dogman' vs 'The Dogman', 'The Dog Man' vs 'The Dogman'), which are not semantically equivalent (missing or extra spaces/words).\n- Extra calls with different values are considered incorrect or hallucinated.\n\n2. get_restaurant_details:\n- Expected: one call with restaurant_name = 'Aato' (string).\n- Actual: one call with restaurant_name = 'Aato' (string), matches perfectly.\n\n3. make_reservation:\n- Expected: one call with restaurant_name = 'Aato' (string).\n- Actual: one call with restaurant_name = 'Aato' (string), matches perfectly.\n\nSummary:\n- All expected tools are called with correct parameters and types at least once.\n- However, for search_imdb, there are two extra calls with incorrect parameter values (not semantically equivalent), which count as hallucinated or incorrect calls.\n- No type mismatches or missing parameters.\n- No extra parameters.\n\nScoring rationale:\n- Perfect matches for get_restaurant_details and make_reservation.\n- Partial correctness for search_imdb due to extra incorrect calls.\n- Minor issue due to extra incorrect calls for search_imdb lowers score.\n\nFinal score: 0.6 (reflecting mostly correct calls but penalized for extra incorrect calls on search_imdb).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Dogman"
+                }
+              },
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "Aato"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Aato"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "Aato"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Dogman"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Aato"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Dogman"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Dog Man"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.6666666666666666,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "2/3 checks passed. Issues: Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6, Argument Correctness: 0.6",
+          "component_scores": {
+            "Tool Correctness": 0.6,
+            "Argument Correctness": 0.6
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -82.9% (MAS: 12537 vs SAS: 73426 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10521,
+        "completion_tokens": 2016,
+        "total_tokens": 12537,
+        "llm_calls": 8,
+        "cost": 0.006331
+      },
+      "latency": {
+        "total": 37.972,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for the fantasy movie \"Hellboy\" and asks for the director's name. They also want to make a reservation at The Cantina in Mill Valley for 11:30.",
+      "expected_tools": [
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Hellboy"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "The Cantina"
+          }
+        },
+        {
+          "name": "get_directors",
+          "arguments": {
+            "imdb_id": "tt2274648"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Hellboy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Hellboy\\nGenre: Fantasy\\nSubtitles available: Yes\\nIMDb ID: tt2274648', 'id': 'lc_77039461-3707-4042-b339-1a6f10289802'}] name='search_imdb' tool_call_id='call_41e73ddb229b48dcafc121b2' artifact={'structured_content': {'result': 'Title: Hellboy\\nGenre: Fantasy\\nSubtitles available: Yes\\nIMDb ID: tt2274648'}}",
+          "start_time": 0.0,
+          "latency": 1.7648416000884026,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt2274648"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The director of the movie with IMDb ID tt2274648 is Neil Marshall.', 'id': 'lc_c8498597-d660-4db0-bfcc-2df46a61594d'}] name='get_directors' tool_call_id='call_ba75c63e0d6547f0a4318d33' artifact={'structured_content': {'result': 'The director of the movie with IMDb ID tt2274648 is Neil Marshall.'}}",
+          "start_time": 5.238,
+          "latency": 2.171627899981104,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "The Cantina"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at The Cantina.', 'id': 'lc_d56adec7-5341-4b31-9a65-ca7ed3701e0f'}] name='make_reservation' tool_call_id='call_93200e84208046a7b31ec8ad' artifact={'structured_content': {'result': 'Success: Reservation made at The Cantina.'}}",
+          "start_time": 6.437,
+          "latency": 1.763600500067696,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_imdb",
+              "make_reservation",
+              "get_directors"
+            ],
+            "actual": [
+              "search_imdb",
+              "get_directors",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools (search_imdb, make_reservation, get_directors) have exactly matching parameter names and values. The types for all parameters match correctly as strings. The order of tool calls differs but that does not affect argument correctness. There are no extra or missing parameters, no type mismatches, and no hallucinated arguments. Therefore, the actual tool calls perfectly match the expected tool calls.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hellboy"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "The Cantina"
+                }
+              },
+              {
+                "name": "get_directors",
+                "input_parameters": {
+                  "imdb_id": "tt2274648"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hellboy"
+                }
+              },
+              {
+                "name": "get_directors",
+                "input_parameters": {
+                  "imdb_id": "tt2274648"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "The Cantina"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.3333333333333333,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "1/3 checks passed. Issues: Tools ran sequentially (missed parallelization); get_directors started before make_reservation finished (dependency violated)"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -82.7% (MAS: 11601 vs SAS: 67000 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10485,
+        "completion_tokens": 1116,
+        "total_tokens": 11601,
+        "llm_calls": 7,
+        "cost": 0.005532
+      },
+      "latency": {
+        "total": 36.118,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for adventure movies directed by Ronald Neame, specifically mentioning \"The Poseidon Adventure\" as a good choice. They also want to inquire about the restaurant Union located in Sa",
+      "expected_tools": [
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "The Poseidon Adventure"
+          }
+        },
+        {
+          "name": "get_restaurant_details",
+          "arguments": {
+            "restaurant_name": "Union"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Union"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Union"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Restaurant Name: Union\\nAddress: 1357 Market St, Santa Rosa, CA\\nPhone Number: (707) 555-1357\\nServes Liquor: Yes\\nCuisine: Italian\\nLive Music: No', 'id': 'lc_4606d8b7-636c-493d-84cb-6e4c02a14a28'}] name='get_restaurant_details' tool_call_id='call_74ff3bcc3a724cf582676bb0' artifact={'structured_content': {'result': 'Restaurant Name: Union\\nAddress: 1357 Market St, Santa Rosa, CA\\nPhone Number: (707) 555-1357\\nServes Liquor: Yes\\nCuisine: Italian\\nLive Music: N",
+          "start_time": 0.0,
+          "latency": 2.098245400004089,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "The Poseidon Adventure"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: The Poseidon Adventure\\nGenre: Adventure\\nSubtitles available: No\\nIMDb ID: tt0069113', 'id': 'lc_a1eee47e-6ae2-40b5-8279-a0fa48d6ab70'}] name='search_imdb' tool_call_id='call_00fbf12fed874e31ac2b8afd' artifact={'structured_content': {'result': 'Title: The Poseidon Adventure\\nGenre: Adventure\\nSubtitles available: No\\nIMDb ID: tt0069113'}}",
+          "start_time": 0.453,
+          "latency": 1.908779399935156,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt0069113"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_dd11ae8d-b5e1-48f7-9409-03da96cb93f0'}] name='get_directors' tool_call_id='call_9f373933713a42a9b391abf9' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 5.529,
+          "latency": 1.7662927000783384,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Union"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Union.', 'id': 'lc_5c81eb4a-947d-4a3d-a1c2-ec54236ea216'}] name='make_reservation' tool_call_id='call_9773a3d5014f4ffd9a554ae0' artifact={'structured_content': {'result': 'Success: Reservation made at Union.'}}",
+          "start_time": 8.566,
+          "latency": 1.768249300075695,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Meteor"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'Meteor'. Please check the title and try again.\", 'id': 'lc_5b08f9d2-ca17-42f2-862e-e8be23afcff0'}] name='search_imdb' tool_call_id='call_cab30ec84bdc4e2da411fa70' artifact={'structured_content': {'result': \"No results found for the title 'Meteor'. Please check the title and try again.\"}}",
+          "start_time": 14.285,
+          "latency": 1.7646498999092728,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "The Prime of Miss Jean Brodie"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'The Prime of Miss Jean Brodie'. Please check the title and try again.\", 'id': 'lc_22962e44-65ee-44c0-b8a0-17194c3667d3'}] name='search_imdb' tool_call_id='call_fd81de0382ec428abaf6a2ff' artifact={'structured_content': {'result': \"No results found for the title 'The Prime of Miss Jean Brodie'. Please check the title and try again.\"}}",
+          "start_time": 21.579,
+          "latency": 1.7721094000153244,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "The Horse's Mouth"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'The Horse's Mouth'. Please check the title and try again.\", 'id': 'lc_00ad94e7-86c8-40f3-acb8-16f29f1b487c'}] name='search_imdb' tool_call_id='call_623beda4e3c94fef87d21760' artifact={'structured_content': {'result': \"No results found for the title 'The Horse's Mouth'. Please check the title and try again.\"}}",
+          "start_time": 28.647,
+          "latency": 2.2659811000339687,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Tunes of Glory"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'Tunes of Glory'. Please check the title and try again.\", 'id': 'lc_3edd9290-1f30-45c9-8211-ee5085b97c50'}] name='search_imdb' tool_call_id='call_a6a77b34eec64bfeb9ad6a47' artifact={'structured_content': {'result': \"No results found for the title 'Tunes of Glory'. Please check the title and try again.\"}}",
+          "start_time": 28.647,
+          "latency": 2.2698070999467745,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Scrooge"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'Scrooge'. Please check the title and try again.\", 'id': 'lc_c71d240a-c59e-40a4-b5ba-3c495c947862'}] name='search_imdb' tool_call_id='call_57750a12e7a94661b0e089eb' artifact={'structured_content': {'result': \"No results found for the title 'Scrooge'. Please check the title and try again.\"}}",
+          "start_time": 36.517,
+          "latency": 2.225423900061287,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "The Odessa File"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No results found for the title 'The Odessa File'. Please check the title and try again.\", 'id': 'lc_d3fb60e9-26e1-4fce-ac74-639ebd4cdb6f'}] name='search_imdb' tool_call_id='call_a5016401aea84693932b342a' artifact={'structured_content': {'result': \"No results found for the title 'The Odessa File'. Please check the title and try again.\"}}",
+          "start_time": 36.517,
+          "latency": 2.2269181999145076,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 10 total calls. Correct: ['get_restaurant_details', 'make_reservation', 'search_imdb']. Extra: ['get_directors']. Duplicates: 6",
+          "comparison": {
+            "expected": [
+              "search_imdb",
+              "get_restaurant_details",
+              "make_reservation"
+            ],
+            "actual": [
+              "get_restaurant_details",
+              "search_imdb",
+              "get_directors",
+              "make_reservation",
+              "search_imdb",
+              "search_imdb",
+              "search_imdb",
+              "search_imdb",
+              "search_imdb",
+              "search_imdb"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation per tool:\n\n1. search_imdb:\n- Expected calls: 1 call with primary_title='The Poseidon Adventure'\n- Actual calls: 7 calls with primary_title values: 'The Poseidon Adventure', 'Meteor', 'The Prime of Miss Jean Brodie', 'The Horse's Mouth', 'Tunes of Glory', 'Scrooge', 'The Odessa File'\n- The expected call is present and correct (parameter name and type match).\n- However, there are 6 extra calls to search_imdb with different primary_title values that were not expected.\n- Extra calls are considered hallucinated or unnecessary, which is a penalty.\n\n2. get_restaurant_details:\n- Expected: 1 call with restaurant_name='Union'\n- Actual: 1 call with restaurant_name='Union'\n- Perfect match (parameter name, value, and type).\n\n3. make_reservation:\n- Expected: 1 call with restaurant_name='Union'\n- Actual: 1 call with restaurant_name='Union'\n- Perfect match (parameter name, value, and type).\n\nSummary:\n- All expected calls are present with correct parameters and types.\n- No missing parameters or type mismatches.\n- The only issue is the presence of multiple extra calls to search_imdb beyond the expected one.\n- According to the rules, extra parameters in a call are penalized, but extra calls themselves are not explicitly stated as penalized. However, since these extra calls have correct parameters, they do not cause parameter errors but represent hallucinated calls.\n\nGiven the presence of multiple extra calls (6 extra search_imdb calls), this is a moderate issue.\n\nScore rationale:\n- Perfect parameter matches for all expected calls: base score 1.0\n- Penalize for hallucinated extra calls: reduce score by about 0.3\n\nFinal score: 0.7",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Poseidon Adventure"
+                }
+              },
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "Union"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Union"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_restaurant_details",
+                "input_parameters": {
+                  "restaurant_name": "Union"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Poseidon Adventure"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Union"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Meteor"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Prime of Miss Jean Brodie"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Horse's Mouth"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Tunes of Glory"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Scrooge"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "The Odessa File"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3, Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 0.3,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -64.1% (MAS: 26333 vs SAS: 73271 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 23602,
+        "completion_tokens": 2731,
+        "total_tokens": 26333,
+        "llm_calls": 12,
+        "cost": 0.012643
+      },
+      "latency": {
+        "total": 69.098,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to find an Izakaya restaurant in San Francisco and make a reservation for two people at 5:45 PM on the 5th of May at 2g Japanese Brasserie. They also request to add this reservation to ",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "San Francisco",
+            "cuisineTypes": "Izakaya"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "2g Japanese Brasserie"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Restaurant reservation for 2 at 2g Japanese Brasserie",
+            "startDate": "05/05",
+            "startTime": "17:45",
+            "endDate": "05/05",
+            "location": "2g Japanese Brasserie"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Restaurant reservation for 2 at 2g Japanese Brasserie",
+            "startDate": "05/05",
+            "startTime": "17:45",
+            "endDate": "05/05",
+            "endTime": "17:45",
+            "location": "2g Japanese Brasserie"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: End date and time must be after start date and time.', 'id': 'lc_6d4b1dd1-8726-4136-92c1-650eecb975e6'}] name='create_event' tool_call_id='call_c05c58c67fc1417b90e91b1b' artifact={'structured_content': {'result': 'Error: End date and time must be after start date and time.'}}",
+          "start_time": 0.0,
+          "latency": 1.7662450999487191,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "San Francisco",
+            "cuisineTypes": "Izakaya"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: 2g Japanese Brasserie, Location: San Francisco, Cuisine: Izakaya, Japanese, Price Level: 3', 'id': 'lc_4113a397-348b-4dc2-bc29-dd6be6321e0b'}] name='search_restaurant' tool_call_id='call_1a3ec2f72ea943348964182c' artifact={'structured_content': {'result': 'Found the following restaurant: Name: 2g Japanese Brasserie, Location: San Francisco, Cuisine: Izakaya, Japanese, Price Level: 3'}}",
+          "start_time": 2.768,
+          "latency": 2.383731900015846,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "2g Japanese Brasserie"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at 2g Japanese Brasserie.', 'id': 'lc_7c335409-4d51-4d9e-bbf1-b7ca2adab294'}] name='make_reservation' tool_call_id='call_c37dd506ddf4441ea216b9ea' artifact={'structured_content': {'result': 'Success: Reservation made at 2g Japanese Brasserie.'}}",
+          "start_time": 2.768,
+          "latency": 2.382355000008829,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Restaurant reservation for 2 at 2g Japanese Brasserie",
+            "startDate": "05/05",
+            "startTime": "17:45",
+            "endDate": "05/05",
+            "endTime": "19:45",
+            "location": "2g Japanese Brasserie"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Restaurant reservation for 2 at 2g Japanese Brasserie' has been created on the default calendar.\\nStart: 05/05 17:45\\nEnd: 05/05 19:45\\nLocation: 2g Japanese Brasserie\\n\", 'id': 'lc_6a5f441f-2a01-4464-9d14-c9933ec81549'}] name='create_event' tool_call_id='call_9a78ad467c754fc69a1c9d53' artifact={'structured_content': {'result': \"Event 'Restaurant reservation for 2 at 2g Japanese Brasserie' has been created on the default calendar.\\nStart: 05/05 17:45\\nEn",
+          "start_time": 7.243,
+          "latency": 1.7682997999945655,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.75,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 4 total calls. Correct: ['create_event', 'make_reservation', 'search_restaurant']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ],
+            "actual": [
+              "create_event",
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. search_restaurant:\n- Expected parameters: location, cuisineTypes\n- Actual parameters: location, cuisineTypes\n- Parameter names match exactly.\n- Parameter values match (case-insensitive for identifiers).\n- Types match (all strings).\n- No extra or missing parameters.\n- Result: Correct.\n\n2. make_reservation:\n- Expected parameters: restaurant_name\n- Actual parameters: restaurant_name\n- Parameter names match exactly.\n- Parameter values match.\n- Types match (string).\n- No extra or missing parameters.\n- Result: Correct.\n\n3. create_event:\n- Expected parameters: subject, startDate, startTime, endDate, location\n- Actual calls: Two calls with name create_event.\n\n  a) First create_event call:\n  - Parameters: subject, startDate, startTime, endDate, endTime, location\n  - Extra parameter: endTime (not expected) => penalize for extra parameter.\n  - Parameter values and types match for expected parameters.\n\n  b) Second create_event call:\n  - Parameters: subject, startDate, startTime, endDate, endTime, location\n  - Extra parameter: endTime (not expected) => penalize for extra parameter.\n  - Parameter values match except endTime value is \"19:45\" instead of missing.\n  - Since endTime is extra, its value difference is irrelevant.\n\n- Both actual create_event calls have an extra parameter endTime.\n- Expected only one create_event call, actual has two.\n- Missing expected create_event call without endTime.\n\nSummary:\n- search_restaurant and make_reservation calls are correct.\n- create_event calls have extra parameter endTime and duplicated calls.\n- Extra parameters penalize.\n- No type mismatches.\n\nOverall, due to extra parameters and duplicated create_event calls, the score is reduced to 0.5 indicating minor to moderate issues.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "cuisineTypes": "Izakaya"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "2g Japanese Brasserie"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation for 2 at 2g Japanese Brasserie",
+                  "startDate": "05/05",
+                  "startTime": "17:45",
+                  "endDate": "05/05",
+                  "location": "2g Japanese Brasserie"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation for 2 at 2g Japanese Brasserie",
+                  "startDate": "05/05",
+                  "startTime": "17:45",
+                  "endDate": "05/05",
+                  "endTime": "17:45",
+                  "location": "2g Japanese Brasserie"
+                }
+              },
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "cuisineTypes": "Izakaya"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "2g Japanese Brasserie"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation for 2 at 2g Japanese Brasserie",
+                  "startDate": "05/05",
+                  "startTime": "17:45",
+                  "endDate": "05/05",
+                  "endTime": "19:45",
+                  "location": "2g Japanese Brasserie"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.75, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.75,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.0% (MAS: 11677 vs SAS: 73158 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9690,
+        "completion_tokens": 1987,
+        "total_tokens": 11677,
+        "llm_calls": 7,
+        "cost": 0.005944
+      },
+      "latency": {
+        "total": 30.026,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user requested help finding a seafood restaurant in San Francisco, and inquired about making a reservation for 11:30 AM on the 3rd of September. They confirmed the restaurant Akiko's Sushi Bar. Th",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "San Francisco",
+            "cuisineTypes": "Seafood"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Akiko's Sushi Bar"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Restaurant reservation at Akiko's Sushi Bar",
+            "startDate": "09/03",
+            "startTime": "11:30",
+            "endDate": "09/03",
+            "location": "Akiko's Sushi Bar"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Restaurant reservation at Akiko's Sushi Bar",
+            "startDate": "09/03",
+            "startTime": "11:30",
+            "endDate": "09/03",
+            "endTime": "13:00",
+            "location": "Akiko's Sushi Bar",
+            "isMeeting": false
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Restaurant reservation at Akiko's Sushi Bar' has been created on the default calendar.\\nStart: 09/03 11:30\\nEnd: 09/03 13:00\\nLocation: Akiko's Sushi Bar\\n\", 'id': 'lc_effe0563-bef8-4a89-a91c-4ed08be3f2a2'}] name='create_event' tool_call_id='call_00_iDqtAJeKG3yOkZ6WEHhl9807' artifact={'structured_content': {'result': \"Event 'Restaurant reservation at Akiko's Sushi Bar' has been created on the default calendar.\\nStart: 09/03 11:30\\nEnd: 09/03 13:00\\nLocat",
+          "start_time": 0.0,
+          "latency": 2.4411337000783533,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "San Francisco",
+            "cuisineTypes": "Seafood"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Found the following restaurant: Name: Akiko's Sushi Bar, Location: San Francisco, Cuisine: Japanese, Seafood, Price Level: 3\", 'id': 'lc_bdcdcd9b-74b3-4a44-8993-a91fa7a937fb'}] name='search_restaurant' tool_call_id='call_00_CX2wlTFg9h4RRpuz5Q8a1439' artifact={'structured_content': {'result': \"Found the following restaurant: Name: Akiko's Sushi Bar, Location: San Francisco, Cuisine: Japanese, Seafood, Price Level: 3\"}}",
+          "start_time": 1.018,
+          "latency": 2.2126774000935256,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Akiko's Sushi Bar"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Invalid restaurant name. The restaurant details could not be found.', 'id': 'lc_8cb0f518-f3dd-4b8f-bb3c-c18e04adfda3'}] name='get_restaurant_details' tool_call_id='call_01_7pabIKkBKOVPpLaXpDrb7553' artifact={'structured_content': {'result': 'Error: Invalid restaurant name. The restaurant details could not be found.'}}",
+          "start_time": 1.018,
+          "latency": 2.2110699000768363,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Akiko's Sushi Bar"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Success: Reservation made at Akiko's Sushi Bar.\", 'id': 'lc_bbd9963c-3e5b-4bcf-85a8-5ddfff374ea4'}] name='make_reservation' tool_call_id='call_00_x3b6WkLv2aLAvZJoZwhj9638' artifact={'structured_content': {'result': \"Success: Reservation made at Akiko's Sushi Bar.\"}}",
+          "start_time": 7.36,
+          "latency": 1.7899274999508634,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.75,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "3/3 expected tools found, 4 total calls. Correct: ['create_event', 'make_reservation', 'search_restaurant']. Extra: ['get_restaurant_details']",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ],
+            "actual": [
+              "create_event",
+              "search_restaurant",
+              "get_restaurant_details",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. search_restaurant:\n- Expected parameters: location (str), cuisineTypes (str)\n- Actual parameters: location (str), cuisineTypes (str)\n- All parameter names match exactly.\n- Parameter values match semantically (case-insensitive for identifiers).\n- Types match correctly.\n- No extra or missing parameters.\n- Result: Correct.\n\n2. make_reservation:\n- Expected parameters: restaurant_name (str)\n- Actual parameters: restaurant_name (str)\n- Parameter names match exactly.\n- Parameter values match.\n- Types match.\n- No extra or missing parameters.\n- Result: Correct.\n\n3. create_event:\n- Expected parameters: subject (str), startDate (str), startTime (str), endDate (str), location (str)\n- Actual parameters: subject (str), startDate (str), startTime (str), endDate (str), endTime (str), location (str), isMeeting (bool)\n- Parameter names: actual has two extra parameters: endTime and isMeeting.\n- Parameter values and types for expected parameters match correctly.\n- Extra parameters are penalized.\n- Result: Minor issue due to extra parameters.\n\nSummary:\n- Two tools perfectly match expected arguments.\n- One tool has extra parameters (endTime and isMeeting) not present in expected.\n- No type mismatches or missing parameters.\n\nScore rationale:\n- Perfect matches would be 1.0.\n- Extra parameters on one tool cause a minor penalty.\n- No major errors like missing parameters or type mismatches.\n\nFinal score: 0.8",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "cuisineTypes": "Seafood"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Akiko's Sushi Bar"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation at Akiko's Sushi Bar",
+                  "startDate": "09/03",
+                  "startTime": "11:30",
+                  "endDate": "09/03",
+                  "location": "Akiko's Sushi Bar"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation at Akiko's Sushi Bar",
+                  "startDate": "09/03",
+                  "startTime": "11:30",
+                  "endDate": "09/03",
+                  "endTime": "13:00",
+                  "location": "Akiko's Sushi Bar",
+                  "isMeeting": false
+                }
+              },
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "cuisineTypes": "Seafood"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Akiko's Sushi Bar"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.75, Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 0.75,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.3% (MAS: 11672 vs SAS: 74375 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9512,
+        "completion_tokens": 2160,
+        "total_tokens": 11672,
+        "llm_calls": 7,
+        "cost": 0.006017
+      },
+      "latency": {
+        "total": 33.858,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a Parisian restaurant in Ross. They requested to book a table for two at 11:30 AM and asked to add the reservation to their calendar on the 6th of March at 11:15 AM, naming the",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "Ross",
+            "cuisineTypes": "Parisian"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Marche Aux Fleurs"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Restaurant reservation for 5 at Marche Aux Fleurs",
+            "startDate": "03/06",
+            "startTime": "11:15",
+            "endDate": "03/06",
+            "location": "Marche Aux Fleurs"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "Ross",
+            "cuisineTypes": "Parisian"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: Marche Aux Fleurs, Location: Ross, Cuisine: Parisian, French, Price Level: 4', 'id': 'lc_0f5e5a5f-a455-4db9-989c-56d63a494d68'}] name='search_restaurant' tool_call_id='call_00_JaudAzhgqAl3cfOmz91r3318' artifact={'structured_content': {'result': 'Found the following restaurant: Name: Marche Aux Fleurs, Location: Ross, Cuisine: Parisian, French, Price Level: 4'}}",
+          "start_time": 0.0,
+          "latency": 1.7792550000594929,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Restaurant reservation for 5 at Marche Aux Fleurs",
+            "startDate": "03/06",
+            "startTime": "11:15",
+            "endDate": "03/06",
+            "location": "Marche Aux Fleurs"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Restaurant reservation for 5 at Marche Aux Fleurs' has been created on the default calendar.\\nStart: 03/06 11:15\\nLocation: Marche Aux Fleurs\\n\", 'id': 'lc_e4bd321d-5847-4c72-947e-4d2ec754bd83'}] name='create_event' tool_call_id='call_00_GlSFIO8xSyaFUQMHhS1H1294' artifact={'structured_content': {'result': \"Event 'Restaurant reservation for 5 at Marche Aux Fleurs' has been created on the default calendar.\\nStart: 03/06 11:15\\nLocation: Marche Aux Fleurs\\n",
+          "start_time": 3.766,
+          "latency": 2.1404775000410154,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Marche Aux Fleurs"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Marche Aux Fleurs.', 'id': 'lc_c4895231-cfff-4fdc-bb0f-bade583bd51d'}] name='make_reservation' tool_call_id='call_00_FHEhUTRFC3tX12dowJim6356' artifact={'structured_content': {'result': 'Success: Reservation made at Marche Aux Fleurs.'}}",
+          "start_time": 4.659,
+          "latency": 1.7781327000120655,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ],
+            "actual": [
+              "search_restaurant",
+              "create_event",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have been called with the correct parameters and matching types. \n\n1. search_restaurant:\n- Expected parameters: location (str='Ross'), cuisineTypes (str='Parisian')\n- Actual parameters: location (str='Ross'), cuisineTypes (str='Parisian')\n- No missing or extra parameters, values match exactly, types match.\n\n2. make_reservation:\n- Expected parameters: restaurant_name (str='Marche Aux Fleurs')\n- Actual parameters: restaurant_name (str='Marche Aux Fleurs')\n- No missing or extra parameters, values and types match.\n\n3. create_event:\n- Expected parameters: subject (str='Restaurant reservation for 5 at Marche Aux Fleurs'), startDate (str='03/06'), startTime (str='11:15'), endDate (str='03/06'), location (str='Marche Aux Fleurs')\n- Actual parameters: subject (str='Restaurant reservation for 5 at Marche Aux Fleurs'), startDate (str='03/06'), startTime (str='11:15'), endDate (str='03/06'), location (str='Marche Aux Fleurs')\n- No missing or extra parameters, values and types match.\n\nAll tools are present and correctly called with matching arguments and types. Therefore, the score is 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Ross",
+                  "cuisineTypes": "Parisian"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Marche Aux Fleurs"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation for 5 at Marche Aux Fleurs",
+                  "startDate": "03/06",
+                  "startTime": "11:15",
+                  "endDate": "03/06",
+                  "location": "Marche Aux Fleurs"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Ross",
+                  "cuisineTypes": "Parisian"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant reservation for 5 at Marche Aux Fleurs",
+                  "startDate": "03/06",
+                  "startTime": "11:15",
+                  "endDate": "03/06",
+                  "location": "Marche Aux Fleurs"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Marche Aux Fleurs"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -86.8% (MAS: 9521 vs SAS: 72262 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7566,
+        "completion_tokens": 1955,
+        "total_tokens": 9521,
+        "llm_calls": 7,
+        "cost": 0.004992
+      },
+      "latency": {
+        "total": 28.858,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_19",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for an Indian restaurant in Livermore to dine with friends. They want to book a table for four people on March 3rd at 6:45 PM. They also want to add the reservation to their calend",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "Livermore",
+            "cuisineTypes": "Indian"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Spice of India"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Food",
+            "startDate": "03/03",
+            "startTime": "18:45",
+            "endDate": "03/03",
+            "location": "Spice of India"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "Livermore",
+            "cuisineTypes": "Indian"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: Spice of India, Location: Livermore, Cuisine: Indian, Price Level: 2', 'id': 'lc_ce5268fa-abde-427d-a7ed-dd4a96c26dd6'}] name='search_restaurant' tool_call_id='call_0df095e174e440fcbf4f15e3' artifact={'structured_content': {'result': 'Found the following restaurant: Name: Spice of India, Location: Livermore, Cuisine: Indian, Price Level: 2'}}",
+          "start_time": 0.0,
+          "latency": 1.9196531999623403,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Food",
+            "startDate": "03/03",
+            "startTime": "18:45",
+            "endDate": "03/03"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Food' has been created on the default calendar.\\nStart: 03/03 18:45\\n\", 'id': 'lc_dd6ac06b-b8dc-4f87-88be-7bd628380214'}] name='create_event' tool_call_id='call_00_d3EZ7twawdzvGjWLeuJI7705' artifact={'structured_content': {'result': \"Event 'Food' has been created on the default calendar.\\nStart: 03/03 18:45\\n\"}}",
+          "start_time": 3.171,
+          "latency": 1.8504434999777004,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Spice of India"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Spice of India.', 'id': 'lc_bea91f2d-459c-4393-afe4-188408167965'}] name='make_reservation' tool_call_id='call_00_Qeh6VwA9Lv8dn04hIEUg6715' artifact={'structured_content': {'result': 'Success: Reservation made at Spice of India.'}}",
+          "start_time": 5.822,
+          "latency": 2.035504400031641,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ],
+            "actual": [
+              "search_restaurant",
+              "create_event",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. search_restaurant:\n- Expected parameters: location (str), cuisineTypes (str)\n- Actual parameters: location (str), cuisineTypes (str)\n- All parameters present, names match exactly, values and types match.\n- No issues.\n\n2. make_reservation:\n- Expected parameters: restaurant_name (str)\n- Actual parameters: restaurant_name (str)\n- All parameters present, names match exactly, values and types match.\n- No issues.\n\n3. create_event:\n- Expected parameters: subject (str), startDate (str), startTime (str), endDate (str), location (str)\n- Actual parameters: subject (str), startDate (str), startTime (str), endDate (str)\n- Missing parameter: location\n- This is a missing required parameter, which is a major issue.\n\nSummary:\n- Two tools fully correct.\n- One tool missing a required parameter.\n- No type mismatches or extra parameters.\n\nGiven one major issue (missing parameter) out of three tools, the score is reduced to 0.7.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Livermore",
+                  "cuisineTypes": "Indian"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Spice of India"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Food",
+                  "startDate": "03/03",
+                  "startTime": "18:45",
+                  "endDate": "03/03",
+                  "location": "Spice of India"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Livermore",
+                  "cuisineTypes": "Indian"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Food",
+                  "startDate": "03/03",
+                  "startTime": "18:45",
+                  "endDate": "03/03"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Spice of India"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.5% (MAS: 10843 vs SAS: 70120 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9625,
+        "completion_tokens": 1218,
+        "total_tokens": 10843,
+        "llm_calls": 7,
+        "cost": 0.005247
+      },
+      "latency": {
+        "total": 23.519,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_3_tools_20",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a good, bargain-priced Chinese restaurant in San Francisco. They want to book a table for six people at Mei-Don Chinese Cuisine at 7 PM on the 18th of June, and add the reserva",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "San Francisco",
+            "cuisineTypes": "Chinese"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Mei-Don Chinese Cuisine"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Restaurant Reservation",
+            "startDate": "06/18",
+            "startTime": "19:00",
+            "endDate": "06/18",
+            "location": "Mei-Don Chinese Cuisine"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "San Francisco",
+            "cuisineTypes": "Chinese"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: Mei-Don Chinese Cuisine, Location: San Francisco, Cuisine: Chinese, Price Level: 1', 'id': 'lc_cc0250cd-e352-414e-83d4-3698671a2611'}] name='search_restaurant' tool_call_id='call_2768a8785d9a4dcbb09f431e' artifact={'structured_content': {'result': 'Found the following restaurant: Name: Mei-Don Chinese Cuisine, Location: San Francisco, Cuisine: Chinese, Price Level: 1'}}",
+          "start_time": 0.0,
+          "latency": 2.2185631999745965,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Mei-Don Chinese Cuisine"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Mei-Don Chinese Cuisine.', 'id': 'lc_e942d61f-0b49-40b7-89ec-ee96871bca4b'}] name='make_reservation' tool_call_id='call_381d5ec2bfd64568b112b20b' artifact={'structured_content': {'result': 'Success: Reservation made at Mei-Don Chinese Cuisine.'}}",
+          "start_time": 0.0,
+          "latency": 2.2199199999449775,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Restaurant Reservation",
+            "startDate": "06/18",
+            "startTime": "19:00",
+            "endDate": "06/18",
+            "endTime": "21:00",
+            "location": "Mei-Don Chinese Cuisine",
+            "isMeeting": false
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Restaurant Reservation' has been created on the default calendar.\\nStart: 06/18 19:00\\nEnd: 06/18 21:00\\nLocation: Mei-Don Chinese Cuisine\\n\", 'id': 'lc_f0362a7c-edfd-4513-b6e8-23ae79694030'}] name='create_event' tool_call_id='call_308471f49741448cac0b6107' artifact={'structured_content': {'result': \"Event 'Restaurant Reservation' has been created on the default calendar.\\nStart: 06/18 19:00\\nEnd: 06/18 21:00\\nLocation: Mei-Don Chinese Cuisine\\n\"}}",
+          "start_time": 6.518,
+          "latency": 1.768124100053683,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ],
+            "actual": [
+              "search_restaurant",
+              "make_reservation",
+              "create_event"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. search_restaurant:\n- Expected parameters: location (str), cuisineTypes (str)\n- Actual parameters: location (str), cuisineTypes (str)\n- All parameter names match exactly.\n- Parameter values match semantically (case-insensitive for identifiers).\n- Types match correctly.\n- No extra or missing parameters.\n- Result: Correct arguments, no issues.\n\n2. make_reservation:\n- Expected parameters: restaurant_name (str)\n- Actual parameters: restaurant_name (str)\n- Parameter names match exactly.\n- Parameter values match.\n- Types match.\n- No extra or missing parameters.\n- Result: Correct arguments, no issues.\n\n3. create_event:\n- Expected parameters: subject (str), startDate (str), startTime (str), endDate (str), location (str)\n- Actual parameters: subject (str), startDate (str), startTime (str), endDate (str), endTime (str), location (str), isMeeting (bool)\n- Issues:\n  - Extra parameters in actual: endTime, isMeeting (not expected) => penalize for extra parameters.\n  - Parameter names for expected parameters match exactly.\n  - Parameter values for expected parameters match.\n  - Types for expected parameters match.\n- Result: Penalized for extra parameters.\n\nSummary:\n- Two tools fully correct.\n- One tool has extra parameters (2 extra parameters).\n\nAccording to scoring rules, extra parameters cause penalty but not as severe as missing or type mismatches.\nHence, score is reduced but not zero.\n\nFinal score: 0.7",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "cuisineTypes": "Chinese"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Mei-Don Chinese Cuisine"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant Reservation",
+                  "startDate": "06/18",
+                  "startTime": "19:00",
+                  "endDate": "06/18",
+                  "location": "Mei-Don Chinese Cuisine"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "cuisineTypes": "Chinese"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Mei-Don Chinese Cuisine"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Restaurant Reservation",
+                  "startDate": "06/18",
+                  "startTime": "19:00",
+                  "endDate": "06/18",
+                  "endTime": "21:00",
+                  "location": "Mei-Don Chinese Cuisine",
+                  "isMeeting": false
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -88.9% (MAS: 9131 vs SAS: 82451 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7325,
+        "completion_tokens": 1806,
+        "total_tokens": 9131,
+        "llm_calls": 6,
+        "cost": 0.004758
+      },
+      "latency": {
+        "total": 28.308,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-daytask_3_tools_12",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 19,
+      "mean": 0.6892,
+      "median": 0.75,
+      "std": 0.2804,
+      "variance": 0.0786,
+      "ci_lower": 0.5631,
+      "ci_upper": 0.8153,
+      "min": 0.2143,
+      "max": 1.0,
+      "p25": 0.5143,
+      "p75": 1.0,
+      "iqr": 0.4857,
+      "pass_rate": 0.3158,
+      "pass_ci_lower": 0.1536,
+      "pass_ci_upper": 0.5399,
+      "passed": 6,
+      "total": 19
+    },
+    "Argument Correctness [Reference]": {
+      "n": 19,
+      "mean": 0.8632,
+      "median": 1.0,
+      "std": 0.1862,
+      "variance": 0.0347,
+      "ci_lower": 0.7794,
+      "ci_upper": 0.9469,
+      "min": 0.5,
+      "max": 1.0,
+      "p25": 0.7,
+      "p75": 1.0,
+      "iqr": 0.3,
+      "pass_rate": 0.5789,
+      "pass_ci_lower": 0.3628,
+      "pass_ci_upper": 0.7686,
+      "passed": 11,
+      "total": 19
+    },
+    "Execution Efficiency": {
+      "n": 12,
+      "mean": 0.75,
+      "median": 1.0,
+      "std": 0.3218,
+      "variance": 0.1035,
+      "ci_lower": 0.5679,
+      "ci_upper": 0.9321,
+      "min": 0.3333,
+      "max": 1.0,
+      "p25": 0.3333,
+      "p75": 1.0,
+      "iqr": 0.6667,
+      "pass_rate": 0.5833,
+      "pass_ci_lower": 0.3195,
+      "pass_ci_upper": 0.8067,
+      "passed": 7,
+      "total": 12
+    },
+    "Final State (Derived)": {
+      "n": 19,
+      "mean": 0.2105,
+      "median": 0.0,
+      "std": 0.4189,
+      "variance": 0.1754,
+      "ci_lower": 0.0222,
+      "ci_upper": 0.3989,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.2105,
+      "pass_ci_lower": 0.0851,
+      "pass_ci_upper": 0.4333,
+      "passed": 4,
+      "total": 19
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 1.0,
+      "median": 1.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 14291.25,
+        "median": 10739.0,
+        "std": 8674.8731,
+        "variance": 75253423.7763,
+        "min": 6533.0,
+        "max": 42520.0,
+        "p25": 9596.75,
+        "p75": 15583.75,
+        "p95": 26550.5,
+        "p99": 39326.1,
+        "iqr": 5987.0
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 1909.8,
+        "median": 1874.5,
+        "std": 675.6248,
+        "variance": 456468.9053,
+        "min": 779.0,
+        "max": 3557.0,
+        "p25": 1461.25,
+        "p75": 2156.25,
+        "p95": 3208.35,
+        "p99": 3487.27,
+        "iqr": 695.0
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 16201.05,
+        "median": 12499.0,
+        "std": 9184.9767,
+        "variance": 84363797.3132,
+        "min": 7312.0,
+        "max": 45710.0,
+        "p25": 11434.0,
+        "p75": 17174.0,
+        "p95": 28899.75,
+        "p99": 42347.95,
+        "iqr": 5740.0
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0079,
+        "median": 0.0062,
+        "std": 0.0042,
+        "variance": 0.0,
+        "min": 0.0035,
+        "max": 0.0213,
+        "p25": 0.0055,
+        "p75": 0.0082,
+        "p95": 0.0136,
+        "p99": 0.0197,
+        "iqr": 0.0027,
+        "total": 0.157567
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 6,
+      "failed": 13,
+      "errors": 1,
+      "total_tokens": 324021,
+      "tokens_per_pass": 54003.5,
+      "success_per_1k_tokens": 0.0185,
+      "pass_rate": 0.3,
+      "error_rate": 0.05
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:03.488852",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 5,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

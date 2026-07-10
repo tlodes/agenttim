@@ -1,0 +1,5144 @@
+{
+  "timestamp": "2026-07-07T07:34:11.863491+00:00",
+  "model": "june-gpt-5-4-datazone",
+  "benchmark": "mcpagentbench",
+  "agent_type": "router",
+  "mode": "sturn-mt-daytasks-parallel",
+  "num_tools": 80,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 0,
+    "total_test_cases": 20,
+    "error_rate": 0.0
+  },
+  "aggregate": {
+    "total_prompt_tokens": 107093,
+    "total_completion_tokens": 13307,
+    "total_tokens": 120400,
+    "total_cached_tokens": 4736,
+    "total_reasoning_tokens": 0,
+    "total_llm_calls": 100,
+    "total_tool_call_llm_calls": 28,
+    "total_cost": 0.467338,
+    "total_latency": 236.741,
+    "avg_latency": 11.837,
+    "pass_rate": 0.4,
+    "passed": 8,
+    "failed": 12,
+    "errors": 0
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_1",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is in a good mood and wants to watch the suspense movie \"Hotel Mumbai\" directed by Anthony Maras, with subtitles due to a language issue. They also plan to eat out and request a reservation a",
+      "expected_tools": [
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Hotel Mumbai"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Marche Aux Fleurs"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Marche Aux Fleurs"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Marche Aux Fleurs.', 'id': 'lc_5aba4451-e192-479c-9d81-f2c8cfeb0f28'}] name='make_reservation' tool_call_id='call_3OQlNtr9dzaWpMmZlKx540YN' artifact={'structured_content': {'result': 'Success: Reservation made at Marche Aux Fleurs.'}}",
+          "start_time": 0.0,
+          "latency": 4.0426730000035604,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Hotel Mumbai"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Hotel Mumbai\\nGenre: Suspense\\nSubtitles available: Yes\\nIMDb ID: tt5461944', 'id': 'lc_721a6114-e8b3-415e-a03e-7f0bd0f3012b'}] name='search_imdb' tool_call_id='call_Acj9WwppcFdtV9UpR0Yl4y8d' artifact={'structured_content': {'result': 'Title: Hotel Mumbai\\nGenre: Suspense\\nSubtitles available: Yes\\nIMDb ID: tt5461944'}}",
+          "start_time": 1.205,
+          "latency": 2.8294201999960933,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_directors",
+          "args": {
+            "imdb_id": "tt5461944"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Movie not found in the database. Please check the IMDb ID and try again.', 'id': 'lc_9b050202-e97d-4d4f-8607-cf121aa2639c'}] name='get_directors' tool_call_id='call_epXK424FsuhVeH7prmre88l6' artifact={'structured_content': {'result': 'Error: Movie not found in the database. Please check the IMDb ID and try again.'}}",
+          "start_time": 5.349,
+          "latency": 2.7214793999883113,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['make_reservation', 'search_imdb']. Extra: ['get_directors']",
+          "comparison": {
+            "expected": [
+              "search_imdb",
+              "make_reservation"
+            ],
+            "actual": [
+              "make_reservation",
+              "search_imdb",
+              "get_directors"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. For 'search_imdb', expected parameter 'primary_title' is present with value 'Hotel Mumbai' as a string, matching the actual call. For 'make_reservation', expected parameter 'restaurant_name' is present with value 'Marche Aux Fleurs' as a string, matching the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. The order of tool calls differs but that does not affect correctness.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hotel Mumbai"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Marche Aux Fleurs"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Marche Aux Fleurs"
+                }
+              },
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hotel Mumbai"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -74.8% (MAS: 8734 vs SAS: 34718 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8243,
+        "completion_tokens": 491,
+        "total_tokens": 8734,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 7,
+        "tool_call_llm_calls": 3,
+        "cost": 0.027973,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 4084,
+            "completion_tokens": 232,
+            "total_tokens": 4316,
+            "cached_tokens": 0,
+            "count": 3
+          },
+          "response_steps": {
+            "prompt_tokens": 4159,
+            "completion_tokens": 259,
+            "total_tokens": 4418,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Dining Agent",
+            "prompt_tokens": 2713,
+            "completion_tokens": 115,
+            "total_tokens": 2828,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.998,
+            "tool_call_steps": {
+              "prompt_tokens": 1301,
+              "completion_tokens": 90,
+              "total_tokens": 1391,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1412,
+              "completion_tokens": 25,
+              "total_tokens": 1437,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 4326,
+            "completion_tokens": 242,
+            "total_tokens": 4568,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 6.541,
+            "tool_call_steps": {
+              "prompt_tokens": 2783,
+              "completion_tokens": 142,
+              "total_tokens": 2925,
+              "cached_tokens": 0,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 1543,
+              "completion_tokens": 100,
+              "total_tokens": 1643,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 983,
+            "completion_tokens": 77,
+            "total_tokens": 1060,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.171,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 983,
+              "completion_tokens": 77,
+              "total_tokens": 1060,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 221,
+            "completion_tokens": 57,
+            "total_tokens": 278,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.592,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 221,
+              "completion_tokens": 57,
+              "total_tokens": 278,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 15.892,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_2",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for round-trip economy flights for three people from San Francisco to Toronto, leaving on October 1st and returning on the 5th of October. They also asked for recommendations for a",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "SFO",
+            "destination": "YYZ",
+            "departure_date": "10/01",
+            "return_date": "10/05",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "Toronto",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "SFO",
+            "destination": "YYZ",
+            "departure_date": "10/01",
+            "return_date": "10/05",
+            "cabin_class": "economy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following flights: Departure Flight: AC123; Return Flight: AC456', 'id': 'lc_3a3d6ef0-e165-4625-8f53-193681fc2463'}] name='search_flights' tool_call_id='call_HZkxfgD0TTfuUAyegSOtgg2J' artifact={'structured_content': {'result': 'Found the following flights: Departure Flight: AC123; Return Flight: AC456'}}",
+          "start_time": 0.0,
+          "latency": 2.753568800006178,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['search_flights']. Missing: ['geocalc_mcp_get_points_of_interest']",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool: search_flights\n- Expected parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Actual parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Parameter names match exactly.\n- Parameter values match semantically (case-sensitive strings match exactly).\n- Parameter types match exactly (all strings).\n- No extra or missing parameters.\n- No type mismatches.\n\nAll parameters for the tool search_flights match perfectly in name, value, and type. Therefore, the overall score is 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SFO",
+                  "destination": "YYZ",
+                  "departure_date": "10/01",
+                  "return_date": "10/05",
+                  "cabin_class": "economy"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SFO",
+                  "destination": "YYZ",
+                  "departure_date": "10/01",
+                  "return_date": "10/05",
+                  "cabin_class": "economy"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['geocalc_mcp_get_points_of_interest']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -77.9% (MAS: 7314 vs SAS: 33157 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5866,
+        "completion_tokens": 1448,
+        "total_tokens": 7314,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.036385,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1209,
+            "completion_tokens": 162,
+            "total_tokens": 1371,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 4657,
+            "completion_tokens": 1286,
+            "total_tokens": 5943,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1456,
+            "completion_tokens": 662,
+            "total_tokens": 2118,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 9.905,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1456,
+              "completion_tokens": 662,
+              "total_tokens": 2118,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 2607,
+            "completion_tokens": 248,
+            "total_tokens": 2855,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.277,
+            "tool_call_steps": {
+              "prompt_tokens": 1209,
+              "completion_tokens": 162,
+              "total_tokens": 1371,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1398,
+              "completion_tokens": 86,
+              "total_tokens": 1484,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 971,
+            "completion_tokens": 67,
+            "total_tokens": 1038,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.311,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 971,
+              "completion_tokens": 67,
+              "total_tokens": 1038,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 832,
+            "completion_tokens": 471,
+            "total_tokens": 1303,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.014,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 832,
+              "completion_tokens": 471,
+              "total_tokens": 1303,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 16.251,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_3",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for a round trip flight from Seattle to Phoenix, departing on March 5th and returning on March 7th, with three economy tickets. They are also interested in finding child-friendly a",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "PHX",
+            "departure_date": "03/05",
+            "return_date": "03/07",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "Phoenix",
+            "category": "child-friendly"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "PHX",
+            "departure_date": "03/05",
+            "return_date": "03/07",
+            "cabin_class": "economy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following flights: Departure Flight: DL789; Return Flight: DL012', 'id': 'lc_06f7c00a-96b7-4d82-9be2-bcb37fc20b23'}] name='search_flights' tool_call_id='call_fXXCsPu8T4ypqdEmzniqNkhB' artifact={'structured_content': {'result': 'Found the following flights: Departure Flight: DL789; Return Flight: DL012'}}",
+          "start_time": 0.0,
+          "latency": 2.54508419999911,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['search_flights']. Missing: ['geocalc_mcp_get_points_of_interest']",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool: search_flights\n- Expected parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Actual parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Parameter names match exactly.\n- Parameter values match exactly (case-sensitive where applicable).\n- Parameter types match exactly (all strings).\n- No extra or missing parameters.\n- No type mismatches.\nAll parameters and types match perfectly for the search_flights tool.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "PHX",
+                  "departure_date": "03/05",
+                  "return_date": "03/07",
+                  "cabin_class": "economy"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "PHX",
+                  "departure_date": "03/05",
+                  "return_date": "03/07",
+                  "cabin_class": "economy"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['geocalc_mcp_get_points_of_interest']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -81.1% (MAS: 6982 vs SAS: 36942 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5351,
+        "completion_tokens": 1631,
+        "total_tokens": 6982,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.037843,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 761,
+            "completion_tokens": 147,
+            "total_tokens": 908,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 4590,
+            "completion_tokens": 1484,
+            "total_tokens": 6074,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1663,
+            "completion_tokens": 849,
+            "total_tokens": 2512,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 11.642,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1663,
+              "completion_tokens": 849,
+              "total_tokens": 2512,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 1696,
+            "completion_tokens": 233,
+            "total_tokens": 1929,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.144,
+            "tool_call_steps": {
+              "prompt_tokens": 761,
+              "completion_tokens": 147,
+              "total_tokens": 908,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 935,
+              "completion_tokens": 86,
+              "total_tokens": 1021,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 972,
+            "completion_tokens": 68,
+            "total_tokens": 1040,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.411,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 972,
+              "completion_tokens": 68,
+              "total_tokens": 1040,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 1020,
+            "completion_tokens": 481,
+            "total_tokens": 1501,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.989,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1020,
+              "completion_tokens": 481,
+              "total_tokens": 1501,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 19.065,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_4",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to book a round-trip Economy flight from Phoenix, AZ, to New York City, departing on the 7th of March and returning on the 14th. They are also interested in seeing some attractions in N",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "JFK",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "New York",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "JFK",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'No flights found for the given parameters.', 'id': 'lc_c6acacb8-df04-4d41-b5c8-11afb8e9a428'}] name='search_flights' tool_call_id='call_05OmLbCKIeeBQaKzvqCc6hkP' artifact={'structured_content': {'result': 'No flights found for the given parameters.'}}",
+          "start_time": 0.0,
+          "latency": 7.216174099987256,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "New York",
+            "category": "museum",
+            "radius_km": 15
+          },
+          "output": "content=[{'type': 'text', 'text': 'No points of interest found within 15.0km for the specified categories.', 'id': 'lc_173a3ee9-71de-4f95-9db1-f980f12d6950'}] name='geocalc_mcp_get_points_of_interest' tool_call_id='call_FsUqSH1s8PU3cL5hXrT5gGyH' artifact={'structured_content': {'result': 'No points of interest found within 15.0km for the specified categories.'}}",
+          "start_time": 1.225,
+          "latency": 6.3092800000013085,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "New York",
+            "category": "park",
+            "radius_km": 15
+          },
+          "output": "content=[{'type': 'text', 'text': 'No points of interest found within 15.0km for the specified categories.', 'id': 'lc_2a04d26c-7dd5-4b38-b03e-ac9a2a698e26'}] name='geocalc_mcp_get_points_of_interest' tool_call_id='call_kePQv5qrxYx295l9J4nza7hV' artifact={'structured_content': {'result': 'No points of interest found within 15.0km for the specified categories.'}}",
+          "start_time": 1.225,
+          "latency": 6.314188999996986,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "New York",
+            "category": "landmark",
+            "radius_km": 15
+          },
+          "output": "content=[{'type': 'text', 'text': 'No points of interest found within 15.0km for the specified categories.', 'id': 'lc_b1024cbc-1589-430a-b2e5-d02a3bb02462'}] name='geocalc_mcp_get_points_of_interest' tool_call_id='call_5Q75OBZsvCNCDg7WCc8pziyj' artifact={'structured_content': {'result': 'No points of interest found within 15.0km for the specified categories.'}}",
+          "start_time": 1.226,
+          "latency": 6.319736000004923,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "New York",
+            "category": "general",
+            "radius_km": 15
+          },
+          "output": "content=[{'type': 'text', 'text': 'Points of Interest in New York:\\n- Statue of Liberty (Landmark), 6km away from the searching point\\n- Central Park (Park), 3km away from the searching point\\n', 'id': 'lc_10b343f4-152e-4895-a5a3-9340606d9cc0'}] name='geocalc_mcp_get_points_of_interest' tool_call_id='call_Fh39SlblqpcnirAwDpktOf4G' artifact={'structured_content': {'result': 'Points of Interest in New York:\\n- Statue of Liberty (Landmark), 6km away from the searching point\\n- Central Park (Park), ",
+          "start_time": 1.226,
+          "latency": 6.228706899986719,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 5 total calls. Correct: ['geocalc_mcp_get_points_of_interest', 'search_flights']. Duplicates: 3",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest",
+              "geocalc_mcp_get_points_of_interest",
+              "geocalc_mcp_get_points_of_interest",
+              "geocalc_mcp_get_points_of_interest"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. search_flights:\n- Expected parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Actual parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Parameter names match exactly.\n- Parameter values match exactly (case-sensitive where relevant).\n- Parameter types match exactly (all strings).\n- No extra or missing parameters.\n- Result: Perfect match, score 1.0 for this tool.\n\n2. geocalc_mcp_get_points_of_interest:\n- Expected parameters: city, category\n- Actual calls: 4 calls with parameters city, category, radius_km\n- Parameter names: actual has an extra parameter radius_km not in expected (penalize).\n- Parameter values for city match exactly (\"New York\" string).\n- Parameter values for category differ in each call (museum, park, landmark, general).\n  - Only the last call has category \"general\" matching expected value \"general\".\n- Parameter types for city and category are strings as expected.\n- radius_km is int 15, which is an extra parameter (penalize).\n- Missing parameters: none (actual has extra, not missing).\n\nSummary for geocalc_mcp_get_points_of_interest:\n- Extra parameter radius_km in all actual calls (penalize).\n- Only one call matches expected category value exactly (\"general\").\n- Multiple calls with different category values are not expected (extra calls, but scoring focuses on argument correctness per tool name).\n\nOverall:\n- search_flights: perfect (1.0)\n- geocalc_mcp_get_points_of_interest: extra parameters and mismatched category values in 3 of 4 calls, only 1 call matches category value.\n\nGiven the extra parameters and mismatched values in majority of calls for geocalc_mcp_get_points_of_interest, this is a major issue.\n\nFinal score is between 0.0 and 0.5 due to major issues with geocalc_mcp_get_points_of_interest.\n\nAssigning 0.5 as a moderate penalty reflecting that one tool is perfect but the other has multiple issues.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "JFK",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "general"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "JFK",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "museum",
+                  "radius_km": 15
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "park",
+                  "radius_km": 15
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "landmark",
+                  "radius_km": 15
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "general",
+                  "radius_km": 15
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.4, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.4,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -76.6% (MAS: 7715 vs SAS: 32957 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6997,
+        "completion_tokens": 718,
+        "total_tokens": 7715,
+        "cached_tokens": 1152,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.028263,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 2658,
+            "completion_tokens": 373,
+            "total_tokens": 3031,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 4339,
+            "completion_tokens": 345,
+            "total_tokens": 4684,
+            "cached_tokens": 1152,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Geo Agent",
+            "prompt_tokens": 3430,
+            "completion_tokens": 314,
+            "total_tokens": 3744,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 5.25,
+            "tool_call_steps": {
+              "prompt_tokens": 1546,
+              "completion_tokens": 233,
+              "total_tokens": 1779,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1884,
+              "completion_tokens": 81,
+              "total_tokens": 1965,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 2383,
+            "completion_tokens": 180,
+            "total_tokens": 2563,
+            "cached_tokens": 1152,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.475,
+            "tool_call_steps": {
+              "prompt_tokens": 1112,
+              "completion_tokens": 140,
+              "total_tokens": 1252,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1271,
+              "completion_tokens": 40,
+              "total_tokens": 1311,
+              "cached_tokens": 1152,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 976,
+            "completion_tokens": 70,
+            "total_tokens": 1046,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.527,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 976,
+              "completion_tokens": 70,
+              "total_tokens": 1046,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 208,
+            "completion_tokens": 154,
+            "total_tokens": 362,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.751,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 208,
+              "completion_tokens": 154,
+              "total_tokens": 362,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 15.889,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_5",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user inquires about the weather, humidity, and wind levels there on March 1st in Chicago. They want to find hotels in Chicago, making a reservation for 2 rooms, checking in on the 1st and checking",
+      "expected_tools": [
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "Chicago",
+            "date": "03/01"
+          }
+        },
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "Chicago",
+            "checkinDate": "03/01",
+            "checkoutDate": "03/04"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "Chicago",
+            "date": "03/01"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The weather in Chicago on 03/01 is as follows:\\nTemperature: 5°C\\nHumidity: 60%\\nWind: 15 km/h', 'id': 'lc_82e85dfb-0925-4c3a-996b-f3dd73246152'}] name='weather_tool' tool_call_id='call_CevwPYbcgcRHL4GKeyqxOnFe' artifact={'structured_content': {'result': 'The weather in Chicago on 03/01 is as follows:\\nTemperature: 5°C\\nHumidity: 60%\\nWind: 15 km/h'}}",
+          "start_time": 0.0,
+          "latency": 3.610317500002566,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "Chicago",
+            "checkinDate": "03/01",
+            "checkoutDate": "03/04"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Booking successful!\\nHotel: Chicago Grand Hotel\\nAddress: 123 Grand Ave, Chicago, IL\\nPhone: 123-456-7890\\nCheck-in Date: 03/01\\nCheck-out Date: 03/04', 'id': 'lc_f2cd8cec-50a5-42a8-9d31-8c9ae037cd30'}] name='booking_tool' tool_call_id='call_ANlye0RKoUziR9ruwUAfIYeP' artifact={'structured_content': {'result': 'Booking successful!\\nHotel: Chicago Grand Hotel\\nAddress: 123 Grand Ave, Chicago, IL\\nPhone: 123-456-7890\\nCheck-in Date: 03/01\\nCheck-out Date: 03/04'}}",
+          "start_time": 1.267,
+          "latency": 2.627694499999052,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "weather_tool",
+              "booking_tool"
+            ],
+            "actual": [
+              "weather_tool",
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For weather_tool, expected parameters are city (str)='Chicago' and date (str)='03/01', actual matches exactly. For booking_tool, expected parameters are city (str)='Chicago', checkinDate (str)='03/01', checkoutDate (str)='03/04', actual matches exactly. No extra or missing parameters, no type mismatches, and values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "date": "03/01"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "checkinDate": "03/01",
+                  "checkoutDate": "03/04"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "date": "03/01"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "checkinDate": "03/01",
+                  "checkoutDate": "03/04"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -85.3% (MAS: 4920 vs SAS: 33547 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 4353,
+        "completion_tokens": 567,
+        "total_tokens": 4920,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.019388,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1415,
+            "completion_tokens": 208,
+            "total_tokens": 1623,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 2938,
+            "completion_tokens": 359,
+            "total_tokens": 3297,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 1755,
+            "completion_tokens": 234,
+            "total_tokens": 1989,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.26,
+            "tool_call_steps": {
+              "prompt_tokens": 785,
+              "completion_tokens": 128,
+              "total_tokens": 913,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 970,
+              "completion_tokens": 106,
+              "total_tokens": 1076,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Weather Agent",
+            "prompt_tokens": 1380,
+            "completion_tokens": 112,
+            "total_tokens": 1492,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.313,
+            "tool_call_steps": {
+              "prompt_tokens": 630,
+              "completion_tokens": 80,
+              "total_tokens": 710,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 750,
+              "completion_tokens": 32,
+              "total_tokens": 782,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 984,
+            "completion_tokens": 76,
+            "total_tokens": 1060,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.226,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 984,
+              "completion_tokens": 76,
+              "total_tokens": 1060,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 234,
+            "completion_tokens": 145,
+            "total_tokens": 379,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.075,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 234,
+              "completion_tokens": 145,
+              "total_tokens": 379,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 10.215,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_6",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to book a hotel in London from March 6th to March 11th, and inquires about the weather in London on March 11th.",
+      "expected_tools": [
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "London",
+            "checkinDate": "03/06",
+            "checkoutDate": "03/11"
+          }
+        },
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "London",
+            "date": "03/11"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "London",
+            "date": "03/11"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The weather in London on 03/11 is as follows:\\nTemperature: 12°C\\nHumidity: 75%\\nWind: 20 km/h', 'id': 'lc_5cf443e2-5180-42a3-b218-9cd4196b477f'}] name='weather_tool' tool_call_id='call_ctS1esuGjWeTvIwqobmNekhV' artifact={'structured_content': {'result': 'The weather in London on 03/11 is as follows:\\nTemperature: 12°C\\nHumidity: 75%\\nWind: 20 km/h'}}",
+          "start_time": 0.0,
+          "latency": 4.302154000004521,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "London",
+            "checkinDate": "03/06",
+            "checkoutDate": "03/11"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Booking successful!\\nHotel: London Bridge Hotel\\nAddress: London Bridge St, London\\nPhone: 020-7946-0958\\nCheck-in Date: 03/06\\nCheck-out Date: 03/11', 'id': 'lc_1e91f374-c848-48d6-9ca9-b06569ed6f83'}] name='booking_tool' tool_call_id='call_YXkn58kHV7gGyN2nHvSLFXFG' artifact={'structured_content': {'result': 'Booking successful!\\nHotel: London Bridge Hotel\\nAddress: London Bridge St, London\\nPhone: 020-7946-0958\\nCheck-in Date: 03/06\\nCheck-out Date: 03/11'}}",
+          "start_time": 1.573,
+          "latency": 2.7366934000019683,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "booking_tool",
+              "weather_tool"
+            ],
+            "actual": [
+              "weather_tool",
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. \n\n1. booking_tool:\n- Expected parameters: city (str='London'), checkinDate (str='03/06'), checkoutDate (str='03/11')\n- Actual parameters: city (str='London'), checkinDate (str='03/06'), checkoutDate (str='03/11')\n- No missing or extra parameters.\n- Types match exactly.\n\n2. weather_tool:\n- Expected parameters: city (str='London'), date (str='03/11')\n- Actual parameters: city (str='London'), date (str='03/11')\n- No missing or extra parameters.\n- Types match exactly.\n\nOrder of tool calls differs but that is not penalized. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "03/06",
+                  "checkoutDate": "03/11"
+                }
+              },
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "date": "03/11"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "date": "03/11"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "03/06",
+                  "checkoutDate": "03/11"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -83.7% (MAS: 5607 vs SAS: 34416 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5224,
+        "completion_tokens": 383,
+        "total_tokens": 5607,
+        "cached_tokens": 1152,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.018805,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1922,
+            "completion_tokens": 170,
+            "total_tokens": 2092,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 3302,
+            "completion_tokens": 213,
+            "total_tokens": 3515,
+            "cached_tokens": 1152,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 2360,
+            "completion_tokens": 146,
+            "total_tokens": 2506,
+            "cached_tokens": 1152,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.909,
+            "tool_call_steps": {
+              "prompt_tokens": 1101,
+              "completion_tokens": 103,
+              "total_tokens": 1204,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1259,
+              "completion_tokens": 43,
+              "total_tokens": 1302,
+              "cached_tokens": 1152,
+              "count": 1
+            }
+          },
+          {
+            "node": "Weather Agent",
+            "prompt_tokens": 1749,
+            "completion_tokens": 103,
+            "total_tokens": 1852,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.447,
+            "tool_call_steps": {
+              "prompt_tokens": 821,
+              "completion_tokens": 67,
+              "total_tokens": 888,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 928,
+              "completion_tokens": 36,
+              "total_tokens": 964,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 961,
+            "completion_tokens": 56,
+            "total_tokens": 1017,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.368,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 961,
+              "completion_tokens": 56,
+              "total_tokens": 1017,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 154,
+            "completion_tokens": 78,
+            "total_tokens": 232,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.514,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 154,
+              "completion_tokens": 78,
+              "total_tokens": 232,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 9.658,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_7",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to book a hotel room in or near New York City for a family stay, checking in on March 11th and checking out on March 14th. They also inquire about the weather conditions in New York Cit",
+      "expected_tools": [
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "New York",
+            "checkinDate": "03/11",
+            "checkoutDate": "03/14"
+          }
+        },
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "New York",
+            "date": "03/12"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "New York",
+            "date": "03/12"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The weather in New York on 03/12 is as follows:\\nTemperature: 10°C\\nHumidity: 65%\\nWind: 12 km/h', 'id': 'lc_e1f5431a-ecb3-4bcf-adbf-06011a001680'}] name='weather_tool' tool_call_id='call_aLVUUPJGio1m1COj2uKc5XWA' artifact={'structured_content': {'result': 'The weather in New York on 03/12 is as follows:\\nTemperature: 10°C\\nHumidity: 65%\\nWind: 12 km/h'}}",
+          "start_time": 0.0,
+          "latency": 4.5324774000037,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "New York",
+            "checkinDate": "03/11",
+            "checkoutDate": "03/14"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Booking successful!\\nHotel: NYC Central Hotel\\nAddress: 789 Broadway, New York, NY\\nPhone: 212-555-0198\\nCheck-in Date: 03/11\\nCheck-out Date: 03/14', 'id': 'lc_7da74656-1f53-4935-958d-1809bcd817c5'}] name='booking_tool' tool_call_id='call_fRsXX4PXEJhY36ZazoCy1rjQ' artifact={'structured_content': {'result': 'Booking successful!\\nHotel: NYC Central Hotel\\nAddress: 789 Broadway, New York, NY\\nPhone: 212-555-0198\\nCheck-in Date: 03/11\\nCheck-out Date: 03/14'}}",
+          "start_time": 1.637,
+          "latency": 2.8991765000100713,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "booking_tool",
+              "weather_tool"
+            ],
+            "actual": [
+              "weather_tool",
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameters with correct names and values. The types for all parameters match as expected (all strings). The order of tool calls differs but that does not affect argument correctness. No extra or missing parameters were found in either tool call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "checkinDate": "03/11",
+                  "checkoutDate": "03/14"
+                }
+              },
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "date": "03/12"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "date": "03/12"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "checkinDate": "03/11",
+                  "checkoutDate": "03/14"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -79.9% (MAS: 6965 vs SAS: 34622 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6349,
+        "completion_tokens": 616,
+        "total_tokens": 6965,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.025112,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 2387,
+            "completion_tokens": 283,
+            "total_tokens": 2670,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 3962,
+            "completion_tokens": 333,
+            "total_tokens": 4295,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 3366,
+            "completion_tokens": 267,
+            "total_tokens": 3633,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 5.017,
+            "tool_call_steps": {
+              "prompt_tokens": 1564,
+              "completion_tokens": 181,
+              "total_tokens": 1745,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1802,
+              "completion_tokens": 86,
+              "total_tokens": 1888,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Weather Agent",
+            "prompt_tokens": 1789,
+            "completion_tokens": 139,
+            "total_tokens": 1928,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.136,
+            "tool_call_steps": {
+              "prompt_tokens": 823,
+              "completion_tokens": 102,
+              "total_tokens": 925,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 966,
+              "completion_tokens": 37,
+              "total_tokens": 1003,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 979,
+            "completion_tokens": 74,
+            "total_tokens": 1053,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.562,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 979,
+              "completion_tokens": 74,
+              "total_tokens": 1053,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 215,
+            "completion_tokens": 136,
+            "total_tokens": 351,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.048,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 215,
+              "completion_tokens": 136,
+              "total_tokens": 351,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.555,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_8",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for a round-trip economy flight for three people traveling from Seattle to San Diego, departing on March 4th and returning on March 6th. They also requested information about attra",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "SAN",
+            "departure_date": "03/04",
+            "return_date": "03/06",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Diego",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "San Diego",
+            "category": "general",
+            "radius_km": 10
+          },
+          "output": "content=[{'type': 'text', 'text': 'Points of Interest in San Diego:\\n- Balboa Park (Park), 5km away from the searching point\\n- San Diego Zoo (Zoo), 7km away from the searching point\\n', 'id': 'lc_05843187-9751-43c8-824d-f247d624897d'}] name='geocalc_mcp_get_points_of_interest' tool_call_id='call_IONU21rhPAkO7tFMqJTZ09AF' artifact={'structured_content': {'result': 'Points of Interest in San Diego:\\n- Balboa Park (Park), 5km away from the searching point\\n- San Diego Zoo (Zoo), 7km away from the ",
+          "start_time": 0.0,
+          "latency": 3.5024749000003794,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "SAN",
+            "departure_date": "03/04",
+            "return_date": "03/06",
+            "cabin_class": "economy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following flights: Departure Flight: UA234; Return Flight: UA567', 'id': 'lc_3183f178-8e8e-49a4-a37a-bc5f52202af7'}] name='search_flights' tool_call_id='call_DqY4du62IrTuuqdxb0hlL4bG' artifact={'structured_content': {'result': 'Found the following flights: Departure Flight: UA234; Return Flight: UA567'}}",
+          "start_time": 1.285,
+          "latency": 2.5009087000071304,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "geocalc_mcp_get_points_of_interest",
+              "search_flights"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. geocalc_mcp_get_points_of_interest:\n- Expected parameters: city (str), category (str)\n- Actual parameters: city (str), category (str), radius_km (int)\n- Issues: Extra parameter 'radius_km' present in actual but not expected (penalize).\n- Parameter names and values for expected parameters match exactly with correct types.\n\n2. search_flights:\n- Expected parameters: type (str), origin (str), destination (str), departure_date (str), return_date (str), cabin_class (str)\n- Actual parameters: same as expected with matching values and types.\n- No issues found.\n\nSummary:\n- One tool (geocalc_mcp_get_points_of_interest) has an extra parameter, which is a minor issue.\n- No missing parameters or type mismatches.\n- The other tool (search_flights) matches perfectly.\n\nTherefore, the score is 0.8 reflecting a minor issue due to the extra parameter.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "SAN",
+                  "departure_date": "03/04",
+                  "return_date": "03/06",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Diego",
+                  "category": "general"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Diego",
+                  "category": "general",
+                  "radius_km": 10
+                }
+              },
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "SAN",
+                  "departure_date": "03/04",
+                  "return_date": "03/06",
+                  "cabin_class": "economy"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -79.4% (MAS: 7296 vs SAS: 35495 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6657,
+        "completion_tokens": 639,
+        "total_tokens": 7296,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.026227,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 2562,
+            "completion_tokens": 253,
+            "total_tokens": 2815,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 4095,
+            "completion_tokens": 386,
+            "total_tokens": 4481,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Geo Agent",
+            "prompt_tokens": 2863,
+            "completion_tokens": 174,
+            "total_tokens": 3037,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.684,
+            "tool_call_steps": {
+              "prompt_tokens": 1353,
+              "completion_tokens": 101,
+              "total_tokens": 1454,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1510,
+              "completion_tokens": 73,
+              "total_tokens": 1583,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 2597,
+            "completion_tokens": 223,
+            "total_tokens": 2820,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.882,
+            "tool_call_steps": {
+              "prompt_tokens": 1209,
+              "completion_tokens": 152,
+              "total_tokens": 1361,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1388,
+              "completion_tokens": 71,
+              "total_tokens": 1459,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 971,
+            "completion_tokens": 65,
+            "total_tokens": 1036,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.291,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 971,
+              "completion_tokens": 65,
+              "total_tokens": 1036,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 226,
+            "completion_tokens": 177,
+            "total_tokens": 403,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.565,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 226,
+              "completion_tokens": 177,
+              "total_tokens": 403,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.265,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_9",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user requested help booking a round-trip flight from LA to SF, departing on March 3rd and returning on March 12th in economy class. They also inquired about finding attractions in SF.",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "LAX",
+            "destination": "SFO",
+            "departure_date": "03/03",
+            "return_date": "03/12",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Francisco",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "LAX",
+            "destination": "SFO",
+            "departure_date": "03/03",
+            "return_date": "03/12",
+            "cabin_class": "economy"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following flights: Departure Flight: UA234; Return Flight: UA567', 'id': 'lc_0a61b277-bd04-4327-97b7-fae5e8f0abfc'}] name='search_flights' tool_call_id='call_WgxmpGv4dvQkbDVU7uw4kfuY' artifact={'structured_content': {'result': 'Found the following flights: Departure Flight: UA234; Return Flight: UA567'}}",
+          "start_time": 0.0,
+          "latency": 2.2871075000002747,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['search_flights']. Missing: ['geocalc_mcp_get_points_of_interest']",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "The tool 'search_flights' has all expected parameters: type, origin, destination, departure_date, return_date, and cabin_class. All parameter names match exactly with no extra or missing parameters. Parameter values are semantically equivalent and case matches exactly. Parameter types also match exactly (all strings). There are no type mismatches or other issues. Therefore, the actual tool call perfectly matches the expected tool call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "LAX",
+                  "destination": "SFO",
+                  "departure_date": "03/03",
+                  "return_date": "03/12",
+                  "cabin_class": "economy"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "LAX",
+                  "destination": "SFO",
+                  "departure_date": "03/03",
+                  "return_date": "03/12",
+                  "cabin_class": "economy"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['geocalc_mcp_get_points_of_interest']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -76.8% (MAS: 7823 vs SAS: 33678 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6401,
+        "completion_tokens": 1422,
+        "total_tokens": 7823,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.037333,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1325,
+            "completion_tokens": 176,
+            "total_tokens": 1501,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 5076,
+            "completion_tokens": 1246,
+            "total_tokens": 6322,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1862,
+            "completion_tokens": 593,
+            "total_tokens": 2455,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 8.947,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1862,
+              "completion_tokens": 593,
+              "total_tokens": 2455,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 2853,
+            "completion_tokens": 219,
+            "total_tokens": 3072,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.077,
+            "tool_call_steps": {
+              "prompt_tokens": 1325,
+              "completion_tokens": 176,
+              "total_tokens": 1501,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1528,
+              "completion_tokens": 43,
+              "total_tokens": 1571,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 968,
+            "completion_tokens": 66,
+            "total_tokens": 1034,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.634,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 968,
+              "completion_tokens": 66,
+              "total_tokens": 1034,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 718,
+            "completion_tokens": 544,
+            "total_tokens": 1262,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.719,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 718,
+              "completion_tokens": 544,
+              "total_tokens": 1262,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 16.318,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_10",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for interesting activities to do, particularly concert events in San Francisco, and also inquires about their checking account balances.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Concert Event",
+            "city": "San Francisco"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's checking account is 1500 USD.\", 'id': 'lc_9af3d597-bc5f-4563-9549-9466e2a1cdee'}] name='get_balance' tool_call_id='call_gahKbbPKxbfelLNw6IlqRVOA' artifact={'structured_content': {'result': \"The balance of the user's checking account is 1500 USD.\"}}",
+          "start_time": 0.0,
+          "latency": 2.6301582000014605,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['get_balance']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_balance': Expected parameters {'account_type': 'checking'} with type str; Actual parameters match exactly with same parameter name, value, and type. No extra or missing parameters, no type mismatches.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['search_ticketmaster']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.6% (MAS: 6478 vs SAS: 42040 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5617,
+        "completion_tokens": 861,
+        "total_tokens": 6478,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.026957,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1370,
+            "completion_tokens": 61,
+            "total_tokens": 1431,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 4247,
+            "completion_tokens": 800,
+            "total_tokens": 5047,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1305,
+            "completion_tokens": 453,
+            "total_tokens": 1758,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 6.924,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1305,
+              "completion_tokens": 453,
+              "total_tokens": 1758,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Finance Agent",
+            "prompt_tokens": 2824,
+            "completion_tokens": 75,
+            "total_tokens": 2899,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.405,
+            "tool_call_steps": {
+              "prompt_tokens": 1370,
+              "completion_tokens": 61,
+              "total_tokens": 1431,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1454,
+              "completion_tokens": 14,
+              "total_tokens": 1468,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 954,
+            "completion_tokens": 49,
+            "total_tokens": 1003,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 0.971,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 954,
+              "completion_tokens": 49,
+              "total_tokens": 1003,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 534,
+            "completion_tokens": 284,
+            "total_tokens": 818,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.277,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 534,
+              "completion_tokens": 284,
+              "total_tokens": 818,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.194,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_11",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for interesting activities in Boston, particularly sports events like football events. They also inquired about their checking account balance.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Football Event",
+            "city": "Boston"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's checking account is 1500 USD.\", 'id': 'lc_1308c58d-bf31-4292-a464-03f55cac195b'}] name='get_balance' tool_call_id='call_lhUBrnlSOls2DrnetsdMPXhU' artifact={'structured_content': {'result': \"The balance of the user's checking account is 1500 USD.\"}}",
+          "start_time": 0.0,
+          "latency": 4.731653599999845,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Football Event",
+            "city": "Boston"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: Football Event in Boston on 04/06 to 04/06', 'id': 'lc_d98af0ea-d461-403a-86cf-a6676f7225e1'}] name='search_ticketmaster' tool_call_id='call_b01PEpYxYST4uAYBvzrv5WLD' artifact={'structured_content': {'result': 'Found the following events: Football Event in Boston on 04/06 to 04/06'}}",
+          "start_time": 1.269,
+          "latency": 3.7494843999884324,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Sports Event",
+            "city": "Boston"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: ', 'id': 'lc_b3d48a17-ed33-41e4-b78d-e962588745e5'}] name='search_ticketmaster' tool_call_id='call_WicMgbofDyvoREig8BmM9PvG' artifact={'structured_content': {'result': 'Found the following events: '}}",
+          "start_time": 1.269,
+          "latency": 3.7464297999977134,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_balance', 'search_ticketmaster']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "get_balance",
+              "search_ticketmaster",
+              "search_ticketmaster"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'search_ticketmaster' with parameters {type: 'Football Event', city: 'Boston'} and 'get_balance' with {account_type: 'checking'}. The actual calls include: 1) 'get_balance' with correct parameters matching expected exactly (correct name, parameters, values, and types). 2) 'search_ticketmaster' with parameters exactly matching the expected first call (type: 'Football Event', city: 'Boston'), so this call is correct. 3) An extra 'search_ticketmaster' call with parameters {type: 'Sports Event', city: 'Boston'}. This call is not expected and has a different 'type' parameter value ('Sports Event' vs expected 'Football Event'), which is a semantic mismatch. Since the expected calls do not include this extra call, it counts as an extra call with incorrect arguments. The presence of this extra call with wrong parameter value is a major issue. The first two calls are correct, but the extra call causes a penalty. Overall, due to one extra call with wrong parameter value, the score is 0.5.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Boston"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Boston"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Sports Event",
+                  "city": "Boston"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -77.1% (MAS: 7424 vs SAS: 32429 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6933,
+        "completion_tokens": 491,
+        "total_tokens": 7424,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.024698,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 2758,
+            "completion_tokens": 218,
+            "total_tokens": 2976,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 4175,
+            "completion_tokens": 273,
+            "total_tokens": 4448,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Finance Agent",
+            "prompt_tokens": 2498,
+            "completion_tokens": 77,
+            "total_tokens": 2575,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.281,
+            "tool_call_steps": {
+              "prompt_tokens": 1207,
+              "completion_tokens": 61,
+              "total_tokens": 1268,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1291,
+              "completion_tokens": 16,
+              "total_tokens": 1307,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 3299,
+            "completion_tokens": 257,
+            "total_tokens": 3556,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.754,
+            "tool_call_steps": {
+              "prompt_tokens": 1551,
+              "completion_tokens": 157,
+              "total_tokens": 1708,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1748,
+              "completion_tokens": 100,
+              "total_tokens": 1848,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 954,
+            "completion_tokens": 52,
+            "total_tokens": 1006,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.244,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 954,
+              "completion_tokens": 52,
+              "total_tokens": 1006,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 182,
+            "completion_tokens": 105,
+            "total_tokens": 287,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.724,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 182,
+              "completion_tokens": 105,
+              "total_tokens": 287,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.501,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_12",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for a concert in Rohnert Park and wants to know their savings account balances.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Concert Event",
+            "city": "Rohnert Park"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "savings"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "savings"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's savings account is 3000 USD.\", 'id': 'lc_b4b4e67c-0a26-4093-bd2e-c1b07c6c9ddf'}] name='get_balance' tool_call_id='call_fDTJpsaBQpc6qCCxdd8q6Vkm' artifact={'structured_content': {'result': \"The balance of the user's savings account is 3000 USD.\"}}",
+          "start_time": 0.0,
+          "latency": 3.0717115000006743,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['get_balance']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_balance': Expected parameters {'account_type': 'savings'} (type str), Actual parameters {'account_type': 'savings'} (type str). Parameter names match exactly, values are semantically equivalent, and types match. No extra or missing parameters. No issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['search_ticketmaster']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -81.3% (MAS: 6148 vs SAS: 32799 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5579,
+        "completion_tokens": 569,
+        "total_tokens": 6148,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.022482,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1158,
+            "completion_tokens": 62,
+            "total_tokens": 1220,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 4421,
+            "completion_tokens": 507,
+            "total_tokens": 4928,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1863,
+            "completion_tokens": 289,
+            "total_tokens": 2152,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.42,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1863,
+              "completion_tokens": 289,
+              "total_tokens": 2152,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Finance Agent",
+            "prompt_tokens": 2401,
+            "completion_tokens": 79,
+            "total_tokens": 2480,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.315,
+            "tool_call_steps": {
+              "prompt_tokens": 1158,
+              "completion_tokens": 62,
+              "total_tokens": 1220,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1243,
+              "completion_tokens": 17,
+              "total_tokens": 1260,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 948,
+            "completion_tokens": 45,
+            "total_tokens": 993,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.124,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 948,
+              "completion_tokens": 45,
+              "total_tokens": 993,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 367,
+            "completion_tokens": 156,
+            "total_tokens": 523,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.531,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 367,
+              "completion_tokens": 156,
+              "total_tokens": 523,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 9.099,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_13",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for fun activities in Seattle, specifically a country show on April 10th, which they decide on. They also need a hotel room for a 4-day stay starting on April 8th.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Country Event",
+            "city": "Seattle"
+          }
+        },
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "Seattle",
+            "checkinDate": "04/08",
+            "checkoutDate": "04/12"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "Seattle",
+            "checkinDate": "04/08",
+            "checkoutDate": "04/12"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Booking successful!\\nHotel: Seattle Sky Hotel\\nAddress: 789 Rainy Ave, Seattle, WA\\nPhone: 206-555-0145\\nCheck-in Date: 04/08\\nCheck-out Date: 04/12', 'id': 'lc_d53718cc-75e0-40ff-84b4-97e2b67019a4'}] name='booking_tool' tool_call_id='call_vmlmxvljW6WEeZso3zPRtI3I' artifact={'structured_content': {'result': 'Booking successful!\\nHotel: Seattle Sky Hotel\\nAddress: 789 Rainy Ave, Seattle, WA\\nPhone: 206-555-0145\\nCheck-in Date: 04/08\\nCheck-out Date: 04/12'}}",
+          "start_time": 0.0,
+          "latency": 2.552296199995908,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['booking_tool']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "booking_tool"
+            ],
+            "actual": [
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'booking_tool': Expected parameters are city='Seattle' (str), checkinDate='04/08' (str), checkoutDate='04/12' (str). Actual parameters exactly match expected parameters in names, values, and types. No extra or missing parameters, no type mismatches found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Seattle",
+                  "checkinDate": "04/08",
+                  "checkoutDate": "04/12"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Seattle",
+                  "checkinDate": "04/08",
+                  "checkoutDate": "04/12"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['search_ticketmaster']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -83.5% (MAS: 6132 vs SAS: 37102 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5298,
+        "completion_tokens": 834,
+        "total_tokens": 6132,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.025755,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1436,
+            "completion_tokens": 146,
+            "total_tokens": 1582,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 3862,
+            "completion_tokens": 688,
+            "total_tokens": 4550,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 776,
+            "completion_tokens": 346,
+            "total_tokens": 1122,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 7.313,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 776,
+              "completion_tokens": 346,
+              "total_tokens": 1122,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 3076,
+            "completion_tokens": 189,
+            "total_tokens": 3265,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.335,
+            "tool_call_steps": {
+              "prompt_tokens": 1436,
+              "completion_tokens": 146,
+              "total_tokens": 1582,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1640,
+              "completion_tokens": 43,
+              "total_tokens": 1683,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 971,
+            "completion_tokens": 74,
+            "total_tokens": 1045,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.582,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 971,
+              "completion_tokens": 74,
+              "total_tokens": 1045,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 475,
+            "completion_tokens": 225,
+            "total_tokens": 700,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.073,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 475,
+              "completion_tokens": 225,
+              "total_tokens": 700,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.986,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_14",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to find pop music events in London on May 9th. They also want to reserve a hotel room in London for two days starting May 7th and request the phone number and address of the hotel.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Pop Event",
+            "city": "London"
+          }
+        },
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "London",
+            "checkinDate": "05/07",
+            "checkoutDate": "05/09"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "London",
+            "checkinDate": "05/07",
+            "checkoutDate": "05/09"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Booking successful!\\nHotel: London Bridge Hotel\\nAddress: London Bridge St, London\\nPhone: 020-7946-0958\\nCheck-in Date: 05/07\\nCheck-out Date: 05/09', 'id': 'lc_ae51cb48-48ef-42f1-9684-3527b60abb31'}] name='booking_tool' tool_call_id='call_b4UAeDnt1vX7NXLNDpuVLw0O' artifact={'structured_content': {'result': 'Booking successful!\\nHotel: London Bridge Hotel\\nAddress: London Bridge St, London\\nPhone: 020-7946-0958\\nCheck-in Date: 05/07\\nCheck-out Date: 05/09'}}",
+          "start_time": 0.0,
+          "latency": 2.4359961000009207,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['booking_tool']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "booking_tool"
+            ],
+            "actual": [
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'booking_tool': All expected parameters (city, checkinDate, checkoutDate) are present in actual call with matching names and values. Parameter types match exactly (all strings). No extra or missing parameters. No type mismatches or value discrepancies found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "05/07",
+                  "checkoutDate": "05/09"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "05/07",
+                  "checkoutDate": "05/09"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['search_ticketmaster']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.2% (MAS: 5384 vs SAS: 33965 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 4632,
+        "completion_tokens": 752,
+        "total_tokens": 5384,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.02286,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1116,
+            "completion_tokens": 176,
+            "total_tokens": 1292,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 3516,
+            "completion_tokens": 576,
+            "total_tokens": 4092,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 805,
+            "completion_tokens": 234,
+            "total_tokens": 1039,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.862,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 805,
+              "completion_tokens": 234,
+              "total_tokens": 1039,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 2463,
+            "completion_tokens": 247,
+            "total_tokens": 2710,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.883,
+            "tool_call_steps": {
+              "prompt_tokens": 1116,
+              "completion_tokens": 176,
+              "total_tokens": 1292,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1347,
+              "completion_tokens": 71,
+              "total_tokens": 1418,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 972,
+            "completion_tokens": 71,
+            "total_tokens": 1043,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.413,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 972,
+              "completion_tokens": 71,
+              "total_tokens": 1043,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 392,
+            "completion_tokens": 200,
+            "total_tokens": 592,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.844,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 392,
+              "completion_tokens": 200,
+              "total_tokens": 592,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.603,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_15",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to check their calendar for events on the 6th of May. They also want to know their availability and if there are any other available times on that day.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "05/06"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "05/06"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "05/06"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Events:\\n- 05/06: Meeting with Bob (Status: confirmed)\\n  Attendees: Alice, Bob\\n- 05/06: Lunch with Sarah (Status: tentative)\\n  Attendees: Alice, Sarah\\n', 'id': 'lc_5c80da12-9e04-4e7c-a572-95133b9d6e4d'}] name='list_events' tool_call_id='call_Kjnd5fJc8cG3887IeD1lOT4R' artifact={'structured_content': {'result': 'Events:\\n- 05/06: Meeting with Bob (Status: confirmed)\\n  Attendees: Alice, Bob\\n- 05/06: Lunch with Sarah (Status: tentative)\\n  Attendees: Alice, S",
+          "start_time": 0.0,
+          "latency": 3.6648329999879934,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "05/06"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The user is free from 7:00 PM to 10:00 PM on 05/06.', 'id': 'lc_e142c673-11a5-457b-9b52-b3c428c99153'}] name='find_free_slots' tool_call_id='call_S7ngGB2OrFmRHCpPkjBcGVum' artifact={'structured_content': {'result': 'The user is free from 7:00 PM to 10:00 PM on 05/06.'}}",
+          "start_time": 0.0,
+          "latency": 3.66753140000219,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '05/06' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls have correct arguments with correct types.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -88.8% (MAS: 3922 vs SAS: 35155 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 3632,
+        "completion_tokens": 290,
+        "total_tokens": 3922,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 3,
+        "tool_call_llm_calls": 1,
+        "cost": 0.01343,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1222,
+            "completion_tokens": 138,
+            "total_tokens": 1360,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 2410,
+            "completion_tokens": 152,
+            "total_tokens": 2562,
+            "cached_tokens": 0,
+            "count": 2
+          }
+        },
+        "per_node": [
+          {
+            "node": "Calendar Agent",
+            "prompt_tokens": 2669,
+            "completion_tokens": 241,
+            "total_tokens": 2910,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 4.025,
+            "tool_call_steps": {
+              "prompt_tokens": 1222,
+              "completion_tokens": 138,
+              "total_tokens": 1360,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1447,
+              "completion_tokens": 103,
+              "total_tokens": 1550,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 963,
+            "completion_tokens": 49,
+            "total_tokens": 1012,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.222,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 963,
+              "completion_tokens": 49,
+              "total_tokens": 1012,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 8.937,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_16",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is inquiring about their calendar schedule for March 13th, and when their schedule is clear.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "03/13"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "03/13"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "03/13"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Events:\\n- 03/13: Project Presentation (Status: confirmed)\\n  Attendees: Alice, Charlie\\n', 'id': 'lc_353eb6c0-1328-4549-b0fd-d724c5c74a26'}] name='list_events' tool_call_id='call_3f2piNXqvAjLdKFeT1prDtFX' artifact={'structured_content': {'result': 'Events:\\n- 03/13: Project Presentation (Status: confirmed)\\n  Attendees: Alice, Charlie\\n'}}",
+          "start_time": 0.0,
+          "latency": 4.118944300003932,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "03/13"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The user is free from 7:00 PM to 10:00 PM on 03/13.', 'id': 'lc_d50b070d-5fa1-4a01-a180-6518b5a2f87a'}] name='find_free_slots' tool_call_id='call_HquWmXHjWlAdJ1i54yzgQCYe' artifact={'structured_content': {'result': 'The user is free from 7:00 PM to 10:00 PM on 03/13.'}}",
+          "start_time": 0.0,
+          "latency": 4.059474199995748,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '03/13' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls have correct arguments with correct types.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -89.3% (MAS: 3615 vs SAS: 33922 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 3367,
+        "completion_tokens": 248,
+        "total_tokens": 3615,
+        "cached_tokens": 1152,
+        "reasoning_tokens": 0,
+        "llm_calls": 3,
+        "tool_call_llm_calls": 1,
+        "cost": 0.012138,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1103,
+            "completion_tokens": 149,
+            "total_tokens": 1252,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 2264,
+            "completion_tokens": 99,
+            "total_tokens": 2363,
+            "cached_tokens": 1152,
+            "count": 2
+          }
+        },
+        "per_node": [
+          {
+            "node": "Calendar Agent",
+            "prompt_tokens": 2418,
+            "completion_tokens": 205,
+            "total_tokens": 2623,
+            "cached_tokens": 1152,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.645,
+            "tool_call_steps": {
+              "prompt_tokens": 1103,
+              "completion_tokens": 149,
+              "total_tokens": 1252,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1315,
+              "completion_tokens": 56,
+              "total_tokens": 1371,
+              "cached_tokens": 1152,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 949,
+            "completion_tokens": 43,
+            "total_tokens": 992,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.315,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 949,
+              "completion_tokens": 43,
+              "total_tokens": 992,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 9.097,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_17",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to check their calendar for upcoming events, specifically for 04/01, and also wants to know their availability for the day.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "04/01"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "04/01"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "04/01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Events:\\n- 04/01: April Fool's Day Event (Status: confirmed)\\n  Attendees: Alice\\n\", 'id': 'lc_593581e4-533d-4bd6-a0d7-94d30c511d0a'}] name='list_events' tool_call_id='call_Txb0yBeUsFywMUWlgJambbWK' artifact={'structured_content': {'result': \"Events:\\n- 04/01: April Fool's Day Event (Status: confirmed)\\n  Attendees: Alice\\n\"}}",
+          "start_time": 0.0,
+          "latency": 3.7009873000060907,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "04/01"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The user is free from 7:00 PM to 10:00 PM on 04/01.', 'id': 'lc_ade7b86f-5dfb-458a-9c46-6358abc12ada'}] name='find_free_slots' tool_call_id='call_SPhtYN43n8eio9rusTPIXR8D' artifact={'structured_content': {'result': 'The user is free from 7:00 PM to 10:00 PM on 04/01.'}}",
+          "start_time": 0.0,
+          "latency": 3.6353639000008116,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have exact matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '04/01' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls match perfectly.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -88.8% (MAS: 3797 vs SAS: 33822 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 3568,
+        "completion_tokens": 229,
+        "total_tokens": 3797,
+        "cached_tokens": 1280,
+        "reasoning_tokens": 0,
+        "llm_calls": 3,
+        "tool_call_llm_calls": 1,
+        "cost": 0.012355,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1214,
+            "completion_tokens": 120,
+            "total_tokens": 1334,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 2354,
+            "completion_tokens": 109,
+            "total_tokens": 2463,
+            "cached_tokens": 1280,
+            "count": 2
+          }
+        },
+        "per_node": [
+          {
+            "node": "Calendar Agent",
+            "prompt_tokens": 2612,
+            "completion_tokens": 188,
+            "total_tokens": 2800,
+            "cached_tokens": 1280,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.083,
+            "tool_call_steps": {
+              "prompt_tokens": 1214,
+              "completion_tokens": 120,
+              "total_tokens": 1334,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1398,
+              "completion_tokens": 68,
+              "total_tokens": 1466,
+              "cached_tokens": 1280,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 956,
+            "completion_tokens": 41,
+            "total_tokens": 997,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.464,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 956,
+              "completion_tokens": 41,
+              "total_tokens": 997,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 9.271,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_18",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to check their calendar for events on Thursday next week, which is 04/06/2023, and know their availability.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "04/06"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "04/06"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "04/06"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Events:\\n- 04/06: Yoga Class (Status: confirmed)\\n  Attendees: Alice\\n', 'id': 'lc_1caf6a20-cc8d-4205-94f5-9dc1529d144a'}] name='list_events' tool_call_id='call_n5yzdvKkDJUnKNskhBaoQjR3' artifact={'structured_content': {'result': 'Events:\\n- 04/06: Yoga Class (Status: confirmed)\\n  Attendees: Alice\\n'}}",
+          "start_time": 0.0,
+          "latency": 4.5930121000128565,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "04/06"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The user is free from 7:00 PM to 10:00 PM on 04/06.', 'id': 'lc_d781f2f5-32db-420e-8c82-76f13f9ef06a'}] name='find_free_slots' tool_call_id='call_kRpYxiYdnq8T98ixqXhELkz0' artifact={'structured_content': {'result': 'The user is free from 7:00 PM to 10:00 PM on 04/06.'}}",
+          "start_time": 0.0,
+          "latency": 4.593794000000344,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '04/06' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls have correct arguments with correct types.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -91.3% (MAS: 3153 vs SAS: 36144 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 2912,
+        "completion_tokens": 241,
+        "total_tokens": 3153,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 3,
+        "tool_call_llm_calls": 1,
+        "cost": 0.010895,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 880,
+            "completion_tokens": 135,
+            "total_tokens": 1015,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 2032,
+            "completion_tokens": 106,
+            "total_tokens": 2138,
+            "cached_tokens": 0,
+            "count": 2
+          }
+        },
+        "per_node": [
+          {
+            "node": "Calendar Agent",
+            "prompt_tokens": 1956,
+            "completion_tokens": 195,
+            "total_tokens": 2151,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.105,
+            "tool_call_steps": {
+              "prompt_tokens": 880,
+              "completion_tokens": 135,
+              "total_tokens": 1015,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1076,
+              "completion_tokens": 60,
+              "total_tokens": 1136,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 956,
+            "completion_tokens": 46,
+            "total_tokens": 1002,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.344,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 956,
+              "completion_tokens": 46,
+              "total_tokens": 1002,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 9.062,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_19",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for events in Atlanta, including basketball events on March 5th, and football events on the 13th of the same month.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Basketball Event",
+            "city": "Atlanta"
+          }
+        },
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Football Event",
+            "city": "Atlanta"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Basketball Event",
+            "city": "Atlanta"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: Basketball Event in Atlanta on 03/05 to 03/05', 'id': 'lc_7e51857b-249e-4286-8156-c1408781ee70'}] name='search_ticketmaster' tool_call_id='call_8zqoq0E1YwjGXG1GCBr7aK6G' artifact={'structured_content': {'result': 'Found the following events: Basketball Event in Atlanta on 03/05 to 03/05'}}",
+          "start_time": 0.0,
+          "latency": 4.10176569999021,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Football Event",
+            "city": "Atlanta"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: Football Event in Atlanta on 03/13 to 03/13', 'id': 'lc_9b710658-d692-408e-bc58-66104784b0b7'}] name='search_ticketmaster' tool_call_id='call_IvQnl0mmOpLLjnRpoFDEABc1' artifact={'structured_content': {'result': 'Found the following events: Football Event in Atlanta on 03/13 to 03/13'}}",
+          "start_time": 0.0,
+          "latency": 4.105469000001904,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 2 total calls. Correct: ['search_ticketmaster']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "search_ticketmaster"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "search_ticketmaster"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tool calls match exactly in name and parameters. For the first call to 'search_ticketmaster', expected parameters are 'type'='Basketball Event' (str) and 'city'='Atlanta' (str), and actual parameters match exactly with correct types. For the second call to 'search_ticketmaster', expected parameters are 'type'='Football Event' (str) and 'city'='Atlanta' (str), and actual parameters also match exactly with correct types. There are no extra or missing parameters, no type mismatches, and parameter names match exactly. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Basketball Event",
+                  "city": "Atlanta"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Atlanta"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Basketball Event",
+                  "city": "Atlanta"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Atlanta"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -63.0% (MAS: 5905 vs SAS: 15971 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5371,
+        "completion_tokens": 534,
+        "total_tokens": 5905,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.021437,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1441,
+            "completion_tokens": 162,
+            "total_tokens": 1603,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 3930,
+            "completion_tokens": 372,
+            "total_tokens": 4302,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1021,
+            "completion_tokens": 169,
+            "total_tokens": 1190,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.542,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1021,
+              "completion_tokens": 169,
+              "total_tokens": 1190,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Travel Agent",
+            "prompt_tokens": 3098,
+            "completion_tokens": 216,
+            "total_tokens": 3314,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 3.593,
+            "tool_call_steps": {
+              "prompt_tokens": 1441,
+              "completion_tokens": 162,
+              "total_tokens": 1603,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1657,
+              "completion_tokens": 54,
+              "total_tokens": 1711,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 958,
+            "completion_tokens": 78,
+            "total_tokens": 1036,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.95,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 958,
+              "completion_tokens": 78,
+              "total_tokens": 1036,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 294,
+            "completion_tokens": 71,
+            "total_tokens": 365,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.702,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 294,
+              "completion_tokens": 71,
+              "total_tokens": 365,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 11.376,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_20",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to know about rock concerts in New York, and also wants to check the balances in their checking account.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Rock Event",
+            "city": "New York"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's checking account is 1500 USD.\", 'id': 'lc_9476c5af-7094-48e6-b349-f70a7dd0ccf9'}] name='get_balance' tool_call_id='call_0kvDcf2AaamaalVRXt9F02rj' artifact={'structured_content': {'result': \"The balance of the user's checking account is 1500 USD.\"}}",
+          "start_time": 0.0,
+          "latency": 2.3546596999949543,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['get_balance']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_balance': Expected parameters {'account_type': 'checking'} with type str; Actual parameters match exactly with same parameter name, value, and type. No extra or missing parameters, no type mismatches.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['search_ticketmaster']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -85.1% (MAS: 5086 vs SAS: 34106 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 4743,
+        "completion_tokens": 343,
+        "total_tokens": 5086,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.017003,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 1185,
+            "completion_tokens": 61,
+            "total_tokens": 1246,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 3558,
+            "completion_tokens": 282,
+            "total_tokens": 3840,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "Entertainment Agent",
+            "prompt_tokens": 1144,
+            "completion_tokens": 114,
+            "total_tokens": 1258,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.611,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1144,
+              "completion_tokens": 114,
+              "total_tokens": 1258,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "Finance Agent",
+            "prompt_tokens": 2454,
+            "completion_tokens": 77,
+            "total_tokens": 2531,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 2.528,
+            "tool_call_steps": {
+              "prompt_tokens": 1185,
+              "completion_tokens": 61,
+              "total_tokens": 1246,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 1269,
+              "completion_tokens": 16,
+              "total_tokens": 1285,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_classify",
+            "prompt_tokens": 951,
+            "completion_tokens": 47,
+            "total_tokens": 998,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.091,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 951,
+              "completion_tokens": 47,
+              "total_tokens": 998,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "router_synthesize",
+            "prompt_tokens": 194,
+            "completion_tokens": 105,
+            "total_tokens": 299,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.503,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 194,
+              "completion_tokens": 105,
+              "total_tokens": 299,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 7.506,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 20,
+      "mean": 0.7117,
+      "median": 0.5833,
+      "std": 0.2481,
+      "variance": 0.0616,
+      "ci_lower": 0.6029,
+      "ci_upper": 0.8204,
+      "min": 0.4,
+      "max": 1.0,
+      "p25": 0.5,
+      "p75": 1.0,
+      "iqr": 0.5,
+      "pass_rate": 0.4,
+      "pass_ci_lower": 0.2188,
+      "pass_ci_upper": 0.6134,
+      "passed": 8,
+      "total": 20
+    },
+    "Argument Correctness [Reference]": {
+      "n": 20,
+      "mean": 0.94,
+      "median": 1.0,
+      "std": 0.1569,
+      "variance": 0.0246,
+      "ci_lower": 0.8712,
+      "ci_upper": 1.0,
+      "min": 0.5,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 0.85,
+      "pass_ci_lower": 0.6396,
+      "pass_ci_upper": 0.9476,
+      "passed": 17,
+      "total": 20
+    },
+    "Execution Efficiency": {
+      "n": 12,
+      "mean": 1.0,
+      "median": 1.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 0.6,
+      "pass_ci_lower": 0.3866,
+      "pass_ci_upper": 0.7812,
+      "passed": 12,
+      "total": 20
+    },
+    "Final State (Derived)": {
+      "n": 20,
+      "mean": 0.35,
+      "median": 0.0,
+      "std": 0.4894,
+      "variance": 0.2395,
+      "ci_lower": 0.1355,
+      "ci_upper": 0.5645,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 1.0,
+      "iqr": 1.0,
+      "pass_rate": 0.35,
+      "pass_ci_lower": 0.1812,
+      "pass_ci_upper": 0.5671,
+      "passed": 7,
+      "total": 20
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 1.0,
+      "median": 1.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 5354.65,
+        "median": 5361.0,
+        "std": 1370.5269,
+        "variance": 1878344.0289,
+        "min": 2912.0,
+        "max": 8243.0,
+        "p25": 4562.25,
+        "p75": 6362.0,
+        "p95": 7059.3,
+        "p99": 8006.26,
+        "iqr": 1799.75
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 665.35,
+        "median": 568.0,
+        "std": 408.0667,
+        "variance": 166518.45,
+        "min": 229.0,
+        "max": 1631.0,
+        "p25": 373.0,
+        "p75": 772.5,
+        "p95": 1457.15,
+        "p99": 1596.23,
+        "iqr": 399.5
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 6020.0,
+        "median": 6140.0,
+        "std": 1570.0874,
+        "variance": 2465174.3158,
+        "min": 3153.0,
+        "max": 8734.0,
+        "p25": 5044.5,
+        "p75": 7300.5,
+        "p95": 7868.55,
+        "p99": 8560.91,
+        "iqr": 2256.0
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0234,
+        "median": 0.0238,
+        "std": 0.0081,
+        "variance": 0.0001,
+        "min": 0.0109,
+        "max": 0.0378,
+        "p25": 0.0184,
+        "p75": 0.0272,
+        "p95": 0.0374,
+        "p99": 0.0377,
+        "iqr": 0.0089,
+        "total": 0.467339
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 8,
+      "failed": 12,
+      "errors": 0,
+      "total_tokens": 120400,
+      "tokens_per_pass": 15050.0,
+      "success_per_1k_tokens": 0.0664,
+      "pass_rate": 0.4,
+      "error_rate": 0.0
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:07.664501",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 5,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

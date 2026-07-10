@@ -1,0 +1,2164 @@
+{
+  "timestamp": "2026-07-02T17:21:50.575135+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "orchestrator_fine",
+  "mode": "sturn-mt-protasks-sequential",
+  "num_tools": 20,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 13,
+    "total_test_cases": 20,
+    "error_rate": 0.65
+  },
+  "aggregate": {
+    "total_prompt_tokens": 471631,
+    "total_completion_tokens": 94271,
+    "total_tokens": 565902,
+    "total_llm_calls": 229,
+    "total_cost": 0.287175,
+    "total_latency": 2140.683,
+    "avg_latency": 107.034,
+    "pass_rate": 0.0,
+    "passed": 0,
+    "failed": 7,
+    "errors": 13
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_2_sequential_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm developing a mobile app that requires object detection functionality. Is there an API available that can take an image URL as input and return a modified image with bounding boxes around the detec",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "object detection"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": [
+              "Image Object Detection API",
+              "Vision Detect Pro API"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "object detection"
+          },
+          "output": "content=[{'type': 'text', 'text': 'object detection: Image Object Detection API', 'id': 'lc_37b19b5c-6a7f-4ea0-8fa6-cb0fd0c65a68'}] name='searchApis' tool_call_id='call_fc19b240656d4aea842024da' artifact={'structured_content': {'result': 'object detection: Image Object Detection API'}}",
+          "start_time": 3.158,
+          "latency": 2.271562800044194,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content=[{'type': 'text', 'text': \"API Name: Image Object Detection API\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\nEndpoint: POST https://api.example.com/v1/object-detection\\nRequest Schema: {'image_url': 'string (URL to the image to process)', 'return_json': 'boolean (optional, if true returns detection metadata)'}\", 'id': 'lc_c7305d84-78fa-4140-8bf",
+          "start_time": 8.569,
+          "latency": 2.3263144999509677,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "object detection"
+          },
+          "output": "content=[{'type': 'text', 'text': 'object detection: Image Object Detection API', 'id': 'lc_5722e408-7248-4bde-b0ca-4b4703534a8b'}] name='searchApis' tool_call_id='call_81c038afc487d1da' artifact={'structured_content': {'result': 'object detection: Image Object Detection API'}}",
+          "start_time": 44.283,
+          "latency": 3.280499199987389,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Object Detection API"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Error: No schema found for 'Object Detection API'\", 'id': 'lc_e874f2e3-67ed-46c1-9926-586a155fa1f3'}] name='request_api_schema' tool_call_id='call_b5e8c89da8f13c56' artifact={'structured_content': {'result': \"Error: No schema found for 'Object Detection API'\"}}",
+          "start_time": 44.283,
+          "latency": 3.2730543001089245,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content=[{'type': 'text', 'text': \"API Name: Image Object Detection API\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\nEndpoint: POST https://api.example.com/v1/object-detection\\nRequest Schema: {'image_url': 'string (URL to the image to process)', 'return_json': 'boolean (optional, if true returns detection metadata)'}\", 'id': 'lc_27379937-b85d-4fdf-83b",
+          "start_time": 52.787,
+          "latency": 2.452681199996732,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 5 total calls. Correct: ['request_api_schema', 'searchApis']. Duplicates: 3",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema"
+            ],
+            "actual": [
+              "searchApis",
+              "request_api_schema",
+              "searchApis",
+              "request_api_schema",
+              "request_api_schema"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. Tool: searchApis\n- Expected: keyword = 'object detection' (str)\n- Actual: keyword = 'object detection' (str)\n- Result: Perfect match.\n\n2. Tool: request_api_schema\n- Expected: ApiName = [\"Image Object Detection API\", \"Vision Detect Pro API\"] (list)\n- Actual calls for request_api_schema:\n  a) ApiName = \"Image Object Detection API\" (str) — TYPE MISMATCH (expected list, got str)\n  b) ApiName = \"Object Detection API\" (str) — TYPE MISMATCH and value mismatch (not in expected list)\n  c) ApiName = \"Image Object Detection API\" (str) — TYPE MISMATCH (expected list, got str)\n\n- None of the actual calls match the expected parameter type (list) or fully match the expected values.\n\nAdditional notes:\n- There are multiple actual calls for request_api_schema, but none match the expected argument type or values.\n- No extra or missing parameters in terms of parameter names.\n\nSummary:\n- One tool call (searchApis) is fully correct.\n- All request_api_schema calls have major issues: type mismatches and value mismatches.\n\nGiven the major type mismatches and value mismatches for the second tool, the overall score is low.\n\nScore assigned: 0.3 (major issues with request_api_schema calls, minor issue with multiple calls but only one expected per tool).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": [
+                    "Image Object Detection API",
+                    "Vision Detect Pro API"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              },
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Object Detection API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.4, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.4,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9339,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 19.8% (MAS: 29436 vs SAS: 24564 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 25854,
+        "completion_tokens": 3582,
+        "total_tokens": 29436,
+        "llm_calls": 11,
+        "cost": 0.014363
+      },
+      "latency": {
+        "total": 87.616,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm a project manager and I need to coordinate tasks with my team across different time zones. Can you give me the current time for a specific IP address 203.0.113.25 and the current time based on my ",
+      "expected_tools": [
+        {
+          "name": "get_ip_details",
+          "arguments": {
+            "ip_address": [
+              "203.0.113.25",
+              "198.51.100.42"
+            ]
+          }
+        },
+        {
+          "name": "get_time",
+          "arguments": {
+            "timezone": [
+              "America/New_York",
+              "Europe/London"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "203.0.113.25"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'IP Address: 203.0.113.25\\nCountry: United States\\nRegion: New York\\nCity: New York City\\nTimezone: America/New_York', 'id': 'lc_f1acac8f-7a2a-435d-be5d-13878551dd6e'}] name='get_ip_details' tool_call_id='call_01f760b9e0374e4380d07852' artifact={'structured_content': {'result': 'IP Address: 203.0.113.25\\nCountry: United States\\nRegion: New York\\nCity: New York City\\nTimezone: America/New_York'}}",
+          "start_time": 2.661,
+          "latency": 3.1577209000242874,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "198.51.100.42"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'IP Address: 198.51.100.42\\nCountry: United Kingdom\\nRegion: England\\nCity: London\\nTimezone: Europe/London', 'id': 'lc_567b0d3d-5e31-45ad-bb17-1b98a0584067'}] name='get_ip_details' tool_call_id='call_2d956f60043f40abaeef0fd3' artifact={'structured_content': {'result': 'IP Address: 198.51.100.42\\nCountry: United Kingdom\\nRegion: England\\nCity: London\\nTimezone: Europe/London'}}",
+          "start_time": 3.627,
+          "latency": 2.487238600035198,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "America/New_York"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'The current time in America/New_York is 18:00:00.', 'id': 'lc_7a72e75f-134b-4632-ba1e-34e596acf28c'}] name='get_time' tool_call_id='call_9a720451873a44928c0abc64' artifact={'structured_content': {'result': 'The current time in America/New_York is 18:00:00.'}}",
+          "start_time": 9.121,
+          "latency": 3.264189100009389,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "Europe/London"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'The current time in Europe/London is 23:00:00.', 'id': 'lc_088e47c3-8591-4cf7-afe5-cc86c53d24a2'}] name='get_time' tool_call_id='call_7efa8717ae6a42bc8f24d62b' artifact={'structured_content': {'result': 'The current time in Europe/London is 23:00:00.'}}",
+          "start_time": 10.218,
+          "latency": 2.466758899972774,
+          "agent_id": "utilities"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['get_ip_details', 'get_time']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "get_ip_details",
+              "get_time"
+            ],
+            "actual": [
+              "get_ip_details",
+              "get_ip_details",
+              "get_time",
+              "get_time"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "The expected tool calls are for two tools: get_ip_details and get_time, each with a list parameter containing two values. The actual calls split these lists into separate calls, each with a single-element list parameter. \n\nEvaluation per tool:\n\n1. get_ip_details:\n- Expected: ip_address parameter with list [\"203.0.113.25\", \"198.51.100.42\"]\n- Actual: Two calls, each with ip_address parameter as a list with one of the expected IPs.\n- Parameter names match exactly.\n- Parameter values are semantically equivalent (splitting a list into multiple calls with single-element lists is acceptable).\n- Types match (both are lists of strings).\n- No extra or missing parameters.\n\n2. get_time:\n- Expected: timezone parameter with list [\"America/New_York\", \"Europe/London\"]\n- Actual: Two calls, each with timezone parameter as a list with one of the expected timezones.\n- Parameter names match exactly.\n- Parameter values are semantically equivalent (splitting list into multiple calls with single-element lists).\n- Types match (both are lists of strings).\n- No extra or missing parameters.\n\nNo type mismatches, no extra or missing parameters, and parameter names match exactly. Splitting the list into multiple calls does not violate any rules. Therefore, the actual calls are fully correct in terms of argument correctness.\n\nScore: 1.0",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25",
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York",
+                    "Europe/London"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25"
+                  ]
+                }
+              },
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/London"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -33.9% (MAS: 16196 vs SAS: 24496 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 14780,
+        "completion_tokens": 1416,
+        "total_tokens": 16196,
+        "llm_calls": 8,
+        "cost": 0.007661
+      },
+      "latency": {
+        "total": 33.276,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I already have a vocabulary memorization app design named UI123VOCABAPP. The design includes NODE_HEADER, NODE_CARD, and NODE_TIMER, which implement the title, the word card, and the countdown functio",
+      "expected_tools": [
+        {
+          "name": "figma_export_code",
+          "arguments": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": "NODE_TIMER"
+          }
+        },
+        {
+          "name": "CountDown_StartAndEndDate",
+          "arguments": {
+            "Ele": "vocab_timer_user001",
+            "StartDate": "2025-07-15T09:00:00",
+            "EndDate": "2025-08-15T09:30:00"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "figma_export_code",
+          "args": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": "NODE_TIMER"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Export successful: Code for node 'NODE_TIMER'\\n<CountdownTimer start={Date.now()} duration={60000} onComplete={alert('Time up!')}/>\\n\\nParameters for NODE_TIMER:\\nEle: vocab_timer_user001\\nStartDate: 2025-07-15T09:00:00\\nEndDate: 20245-08-15T09:30:00\\n\", 'id': 'lc_0a1595be-855e-4297-8229-8e881b0130f4'}] name='figma_export_code' tool_call_id='call_45d8bdc1a841451e90b4b310' artifact={'structured_content': {'result': \"Export successful: Code for node 'NODE_TIMER'\\",
+          "start_time": 6.592,
+          "latency": 2.2988826000364497,
+          "agent_id": "code"
+        },
+        {
+          "name": "figma_export_code",
+          "args": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": "NODE_HEADER"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Export successful: Code for node 'NODE_HEADER'\\n<Header title='Vocab Memorizer' style={{ backgroundColor: '#4CAF50', color: 'white' }}/>\\n\\nParameters for NODE_HEADER:\\ntitle: Vocab Memorizer\\nbackgroundColor: #4CAF50\\ncolor: white\\n\", 'id': 'lc_a970ea2a-572f-4f9f-b96a-aecc731ec94d'}] name='figma_export_code' tool_call_id='call_ca08d3a870c64e3dafd94b6e' artifact={'structured_content': {'result': \"Export successful: Code for node 'NODE_HEADER'\\n<Header title='Vo",
+          "start_time": 13.163,
+          "latency": 3.4939511999255046,
+          "agent_id": "code"
+        },
+        {
+          "name": "figma_export_code",
+          "args": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": "NODE_CARD"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Export successful: Code for node 'NODE_CARD'\\n<WordCard word='example' definition='A representative form or pattern'/>\\n\\nParameters for NODE_CARD:\\nword: example\\ndefinition: A representative form or pattern\\ncardId: card_001\\n\", 'id': 'lc_07476c22-b62e-4904-b0f2-c9692f2f6597'}] name='figma_export_code' tool_call_id='call_b7f4ae3f8314442097985a67' artifact={'structured_content': {'result': \"Export successful: Code for node 'NODE_CARD'\\n<WordCard word='example'",
+          "start_time": 13.163,
+          "latency": 3.4147571999346837,
+          "agent_id": "code"
+        },
+        {
+          "name": "figma_export_code",
+          "args": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": ""
+          },
+          "output": "content=[{'type': 'text', 'text': \"Export successful: Full file code for 'UI123VOCABAPP'\\n<App>\\n  <Header title='Vocab Memorizer'/>\\n  <WordCard word='example' />\\n  <CountdownTimer duration='60' />\\n</App>\\n\\nNode Parameters:\\n\\nNODE_HEADER:\\n  title: Vocab Memorizer\\n  backgroundColor: #4CAF50\\n  color: white\\n\\nNODE_CARD:\\n  word: example\\n  definition: A representative form or pattern\\n  cardId: card_001\\n\\nNODE_TIMER:\\n  Ele: vocab_timer_user001\\n  StartDate: 2025-07-15T09:00:00\\n  EndDate",
+          "start_time": 26.19,
+          "latency": 2.417756700073369,
+          "agent_id": "code"
+        },
+        {
+          "name": "create_ui",
+          "args": {
+            "description": "vocabulary memorization app with header, word card, and countdown timer"
+          },
+          "output": "content=[{'type': 'text', 'text': 'UI components created successfully using shadcn/ui and Tailwind CSS.', 'id': 'lc_dd62ca56-e76e-4345-abad-06b2bdba26de'}] name='create_ui' tool_call_id='call_8ee65208e4a74770b9c3c8b7' artifact={'structured_content': {'result': 'UI components created successfully using shadcn/ui and Tailwind CSS.'}}",
+          "start_time": 37.52,
+          "latency": 2.384052800014615,
+          "agent_id": "code"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.2,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 5 total calls. Correct: ['figma_export_code']. Missing: ['CountDown_StartAndEndDate']. Extra: ['create_ui']. Duplicates: 3",
+          "comparison": {
+            "expected": [
+              "figma_export_code",
+              "CountDown_StartAndEndDate"
+            ],
+            "actual": [
+              "figma_export_code",
+              "figma_export_code",
+              "figma_export_code",
+              "figma_export_code",
+              "create_ui"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Expected one call to 'figma_export_code' with parameters fileKey='UI123VOCABAPP' (str) and nodeId='NODE_TIMER' (str). Actual calls include four calls to 'figma_export_code':\n1) fileKey='UI123VOCABAPP' (str), nodeId='NODE_TIMER' (str) - matches expected exactly.\n2) fileKey='UI123VOCABAPP' (str), nodeId='NODE_HEADER' (str) - nodeId value differs from expected ('NODE_HEADER' vs 'NODE_TIMER').\n3) fileKey='UI123VOCABAPP' (str), nodeId='NODE_CARD' (str) - nodeId value differs from expected ('NODE_CARD' vs 'NODE_TIMER').\n4) fileKey='UI123VOCABAPP' (str), nodeId='' (empty string) - nodeId value differs from expected (empty string vs 'NODE_TIMER').\n\nSince the expected tool call is only one with specific parameters, the extra calls with different nodeId values are considered incorrect. The presence of multiple calls with differing nodeId values is a major issue (wrong values). Therefore, the overall score is 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": "NODE_TIMER"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": "NODE_TIMER"
+                }
+              },
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": "NODE_HEADER"
+                }
+              },
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": "NODE_CARD"
+                }
+              },
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": ""
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.2, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.2,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -80.2% (MAS: 23991 vs SAS: 121445 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 17407,
+        "completion_tokens": 6584,
+        "total_tokens": 23991,
+        "llm_calls": 7,
+        "cost": 0.0133
+      },
+      "latency": {
+        "total": 107.644,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Please interpret the recent trends of major indices in the Chinese stock market (Shanghai Composite Index , Shenzhen Component Index, STAR Market 50, CSI 300, CSI 500), and then analyze the reasons be",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.7566,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 73.0% (MAS: 36653 vs SAS: 21185 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 31329,
+        "completion_tokens": 5324,
+        "total_tokens": 36653,
+        "llm_calls": 18,
+        "cost": 0.01826
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Today is 03/15/2024, Find a set of data (the weather of London from 03/01 to 03/15 in the past 5 years) to train a neural network in weather_prediction.py to predict the weather for the same date next",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -87.4% (MAS: 15656 vs SAS: 124494 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9213,
+        "completion_tokens": 6443,
+        "total_tokens": 15656,
+        "llm_calls": 4,
+        "cost": 0.009613
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are given a quantum computing problem to calculate the probability of a certain amplitude for a given set of qubits. Write a program using the large language model Grok-3 to define the amplitude, ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -53.0% (MAS: 33174 vs SAS: 70643 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 30083,
+        "completion_tokens": 3091,
+        "total_tokens": 33174,
+        "llm_calls": 11,
+        "cost": 0.015775
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Retrieve the trending topics and hashtags from social media platforms about charity race last month. Based on these trends, design promotional posts for the upcoming charity race and publish them on F",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9651,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 10.5% (MAS: 29068 vs SAS: 26310 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 25196,
+        "completion_tokens": 3872,
+        "total_tokens": 29068,
+        "llm_calls": 10,
+        "cost": 0.014329
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I have uploaded an image named street_scene_people.jpg extracted from a video which is about a street scene containing multiple people , first detect all the person targets in the scene, and then perf",
+      "expected_tools": [
+        {
+          "name": "detect_objects",
+          "arguments": {
+            "image_path": "street_scene_people.jpg"
+          }
+        },
+        {
+          "name": "estimate_pose",
+          "arguments": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "detect_objects",
+          "args": {
+            "image_path": "street_scene_people.jpg"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person', bbox=[220, 60, 350, 390], confidence=0.92\\n - class='person', bbox=[400, 100, 520, 420], confidence=0.88\", 'id': 'lc_8b33507b-3f84-488a-8774-a389b354848c'}] name='detect_objects' tool_call_id='call_77889bb16bb143d6b209ebdf' artifact={'structured_content': {'result': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person',",
+          "start_time": 3.413,
+          "latency": 1.7689006000291556,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "estimate_pose",
+          "args": {
+            "object_regions": [
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              }
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"pose_estimations\": [\\n    {\\n      \"region\": {\\n        \"x\": 220,\\n        \"y\": 60,\\n        \"width\": 130,\\n        \"height\": 330\\n      },\\n      \"keypoints\": [\\n        {\\n          \"part\": \"head\",\\n          \"x\": 285,\\n          \"y\": 70,\\n          \"confidence\": 0.97\\n        },\\n        {\\n          \"part\": \"left_shoulder\",\\n          \"x\": 265,\\n          \"y\": 120,\\n          \"confidence\": 0.94\\n        },\\n        {\\n          \"part\": \"right_shoulder",
+          "start_time": 22.787,
+          "latency": 2.435839399928227,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "estimate_pose",
+          "args": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              }
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"pose_estimations\": [\\n    {\\n      \"region\": {\\n        \"x\": 50,\\n        \"y\": 80,\\n        \"width\": 130,\\n        \"height\": 320\\n      },\\n      \"keypoints\": [\\n        {\\n          \"part\": \"head\",\\n          \"x\": 115,\\n          \"y\": 90,\\n          \"confidence\": 0.98\\n        },\\n        {\\n          \"part\": \"left_shoulder\",\\n          \"x\": 95,\\n          \"y\": 140,\\n          \"confidence\": 0.95\\n        },\\n        {\\n          \"part\": \"right_shoulder\",",
+          "start_time": 23.453,
+          "latency": 2.0515073999995366,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "estimate_pose",
+          "args": {
+            "object_regions": [
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"pose_estimations\": [\\n    {\\n      \"region\": {\\n        \"x\": 400,\\n        \"y\": 100,\\n        \"width\": 120,\\n        \"height\": 320\\n      },\\n      \"keypoints\": [\\n        {\\n          \"part\": \"head\",\\n          \"x\": 460,\\n          \"y\": 110,\\n          \"confidence\": 0.96\\n        },\\n        {\\n          \"part\": \"left_shoulder\",\\n          \"x\": 440,\\n          \"y\": 160,\\n          \"confidence\": 0.93\\n        },\\n        {\\n          \"part\": \"right_should",
+          "start_time": 24.505,
+          "latency": 1.7905886999797076,
+          "agent_id": "simulation"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['detect_objects', 'estimate_pose']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "detect_objects",
+              "estimate_pose"
+            ],
+            "actual": [
+              "detect_objects",
+              "estimate_pose",
+              "estimate_pose",
+              "estimate_pose"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.9,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: detect_objects - Expected parameters: image_path='street_scene_people.jpg' (str). Actual parameters match exactly with correct type and value. No issues.\n\nTool: estimate_pose - Expected parameters: object_regions with 3 regions [{x:50,y:80,w:130,h:320}, {x:220,y:60,w:130,h:330}, {x:400,y:100,w:120,h:320}] (list). Actual calls: three separate calls each with one region only, instead of one call with all three regions together. This means the actual calls split the expected list into multiple calls rather than one call with the full list.\n\nEvaluation: The parameter names and types are correct, and the values are semantically correct but split across multiple calls. The expected was a single call with all three regions in one list, actual is three calls each with one region. This is a deviation from expected usage (missing parameters in each call relative to expected single call). However, since all expected regions are covered across the three calls, and no type mismatches or extra parameters exist, this is a minor issue.\n\nNo type mismatches or extra/missing parameters within each call, but the splitting of expected single call into multiple calls is a structural difference that counts as minor issue.\n\nOverall score: 0.9 due to minor issue of splitting expected single call into multiple calls.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.9",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.9
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9368,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 18.9% (MAS: 29550 vs SAS: 24843 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 23147,
+        "completion_tokens": 6403,
+        "total_tokens": 29550,
+        "llm_calls": 11,
+        "cost": 0.01564
+      },
+      "latency": {
+        "total": 80.87,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm working on a project about product categories and their performance in the market. I want to analyze sales trends for specific categories such as Liquor and Bank in the Shanghai market. I’d like t",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -11.2% (MAS: 21945 vs SAS: 24707 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 17520,
+        "completion_tokens": 4425,
+        "total_tokens": 21945,
+        "llm_calls": 9,
+        "cost": 0.011471
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "My company is organizing a charity basketball tournament and we need to invite some NBA players. The tournament organizer wants to plan a surprise activity, so I need to choose two players whose last ",
+      "expected_tools": [
+        {
+          "name": "get_teams",
+          "arguments": {
+            "nameFilter": "NBA"
+          }
+        },
+        {
+          "name": "get_players",
+          "arguments": {
+            "target_players": [
+              "Anthony Davis",
+              "Donte DiVincenzo"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_teams",
+          "args": {
+            "nameFilter": "NBA"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Teams in NBA:\\n- Los Angeles Lakers\\n   • LeBron James (Forward)\\n   • Anthony Davis (Forward-Center)\\n   • D'Angelo Russell (Guard)\\n   • Russell Westbrook (Guard)\\n   • Thomas Bryant (Center)\\n   • Troy Brown Jr. (Forward)\\n   • Austin Reaves (Guard)\\n   • Lonnie Walker IV (Guard)\\n   • Patrick Beverley (Guard)\\n   • Wenyen Gabriel (Forward)\\n- Golden State Warriors\\n   • Stephen Curry (Guard)\\n   • Klay Thompson (Guard)\\n   • Draymond Green (Forward)\\n   • J",
+          "start_time": 4.679,
+          "latency": 1.7752705999882892,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Anthony Davis"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Player: Anthony Davis\\nTeam: Los Angeles Lakers\\nPosition: Forward-Center\\nContact: anthony.davis@nba.com\\nCareer Achievements: NBA champion (2020), 8× NBA All-Star, 4× NBA All-Defensive First Team, NBA All-Star Game MVP (2017)\\nFun Fact: Anthony Davis is known for his exceptional defensive skills and was nicknamed 'The Brow' due to his distinctive unibrow.\\n\", 'id': 'lc_57f83997-cf25-4670-9e0d-575b732c9847'}] name='get_players' tool_call_id='call_02ab93f2958a4",
+          "start_time": 37.011,
+          "latency": 1.9832189000444487,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Donte DiVincenzo"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Player: Donte DiVincenzo\\nTeam: Golden State Warriors\\nPosition: Guard\\nContact: donte.divincenzo@nba.com\\nCareer Achievements: NBA champion (2021), NCAA champion (2018), NCAA Final Four Most Outstanding Player (2018)\\nFun Fact: Donte DiVincenzo was a key player in Villanova's 2018 NCAA championship run and is known for his clutch performances.\\n\", 'id': 'lc_786aa095-8553-44e2-a552-b39cf856e7b8'}] name='get_players' tool_call_id='call_04da4b33a44945e2bd87273c' ",
+          "start_time": 37.463,
+          "latency": 1.795736400061287,
+          "agent_id": "entertainment"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_players', 'get_teams']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_teams",
+              "get_players"
+            ],
+            "actual": [
+              "get_teams",
+              "get_players",
+              "get_players"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. get_teams:\n- Expected parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Actual parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Match: Perfect match in parameter name, value, and type.\n\n2. get_players:\n- Expected parameters: {\"target_players\": [\"Anthony Davis\", \"Donte DiVincenzo\"]} (type list)\n- Actual calls split into two separate calls each with a subset of the expected list:\n  a) {\"target_players\": [\"Anthony Davis\"]} (type list)\n  b) {\"target_players\": [\"Donte DiVincenzo\"]} (type list)\n\nIssues:\n- The expected single call with both players is split into two calls each with only one player.\n- This means the actual calls do not match the expected argument exactly.\n- The parameter names and types are correct, and values are subsets but not equal to expected.\n- Splitting the list into multiple calls is a deviation from expected single call with full list.\n\nNo type mismatches or extra/missing parameters.\n\nOverall:\n- get_teams is fully correct.\n- get_players calls do not match expected single call with full list argument.\n- This is a moderate issue, not a complete failure.\n\nHence, score is 0.6 reflecting minor but notable deviation in argument completeness for get_players.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis",
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis"
+                  ]
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.6",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.6
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -8.2% (MAS: 17298 vs SAS: 18834 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 15357,
+        "completion_tokens": 1941,
+        "total_tokens": 17298,
+        "llm_calls": 9,
+        "cost": 0.008369
+      },
+      "latency": {
+        "total": 61.168,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "It's 2024, I'm a music producer looking for inspiration for my next project. Can you find the news about the top Billboard 200 albums from last year? Additionally, suggest 4 tracks on Deezer that has ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -73.9% (MAS: 36501 vs SAS: 139804 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 32246,
+        "completion_tokens": 4255,
+        "total_tokens": 36501,
+        "llm_calls": 16,
+        "cost": 0.017729
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on the survey results from 'survey_china_drones_2024.csv', the survey is in Chinese, analyze the attitudes and needs of Chinese consumers regarding the use of drones, summarize the results, and ",
+      "expected_tools": [
+        {
+          "name": "export_survey_responses",
+          "arguments": {
+            "surveyId": "survey_china_drones_2024",
+            "documentType": "csv",
+            "language": "zh"
+          }
+        },
+        {
+          "name": "generate_summary_report",
+          "arguments": {
+            "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "export_survey_responses",
+          "args": {
+            "surveyId": "survey_china_drones_2024",
+            "documentType": "csv",
+            "language": "zh"
+          },
+          "output": "content=[{'type': 'text', 'text': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf', 'id': 'lc_2ac541b9-90fa-44d5-8e41-318b6ba35c4e'}] name='export_survey_responses' tool_call_id='call_b8ee792fab2249f88aada5da' artifact={'structured_content': {'result': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf'}}",
+          "start_time": 9.027,
+          "latency": 1.7754936999408528,
+          "agent_id": "data"
+        },
+        {
+          "name": "generate_summary_report",
+          "args": {
+            "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Summary report generated successfully. Stored at: /reports/china_drones_summary_2024_zh_records.pdf', 'id': 'lc_09262162-e7f2-46f8-91ab-376fad9018e5'}] name='generate_summary_report' tool_call_id='call_7bcb7cb19296440e82a81526' artifact={'structured_content': {'result': 'Summary report generated successfully. Stored at: /reports/china_drones_summary_2024_zh_records.pdf'}}",
+          "start_time": 13.805,
+          "latency": 1.8024436000268906,
+          "agent_id": "data"
+        },
+        {
+          "name": "export_survey_responses",
+          "args": {
+            "surveyId": "survey_china_drones_2024",
+            "documentType": "csv",
+            "language": "zh"
+          },
+          "output": "content=[{'type': 'text', 'text': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf', 'id': 'lc_fb386867-c099-48b4-9d63-0407b54839c9'}] name='export_survey_responses' tool_call_id='call_91931ebe31e6422c9cb13d29' artifact={'structured_content': {'result': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf'}}",
+          "start_time": 46.88,
+          "latency": 1.7743873000144958,
+          "agent_id": "data"
+        },
+        {
+          "name": "export_survey_responses",
+          "args": {
+            "surveyId": "survey_china_drones_2024",
+            "documentType": "xlsx",
+            "language": "zh"
+          },
+          "output": "content=[{'type': 'text', 'text': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf', 'id': 'lc_8f743f75-ef3a-42a6-847b-cb75454ffbd4'}] name='export_survey_responses' tool_call_id='call_03ecef80f9b9476abc28812a' artifact={'structured_content': {'result': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf'}}",
+          "start_time": 56.509,
+          "latency": 2.2258900000015274,
+          "agent_id": "data"
+        },
+        {
+          "name": "export_survey_responses",
+          "args": {
+            "surveyId": "survey_china_drones_2024",
+            "documentType": "json",
+            "language": "zh"
+          },
+          "output": "content=[{'type': 'text', 'text': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf', 'id': 'lc_f4dff30a-e2c2-4632-8ed5-a29977b54014'}] name='export_survey_responses' tool_call_id='call_061fbc8c93bb46ab80eace7a' artifact={'structured_content': {'result': 'https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf'}}",
+          "start_time": 56.509,
+          "latency": 2.224527499987744,
+          "agent_id": "data"
+        },
+        {
+          "name": "generate_summary_report",
+          "args": {
+            "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Summary report generated successfully. Stored at: /reports/china_drones_summary_2024_zh_records.pdf', 'id': 'lc_403e3a43-10cf-4d23-8ec8-5a142ecff680'}] name='generate_summary_report' tool_call_id='call_15ea4dfa6685491598737fd0' artifact={'structured_content': {'result': 'Summary report generated successfully. Stored at: /reports/china_drones_summary_2024_zh_records.pdf'}}",
+          "start_time": 63.166,
+          "latency": 1.7764755999669433,
+          "agent_id": "data"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 6 total calls. Correct: ['export_survey_responses', 'generate_summary_report']. Duplicates: 4",
+          "comparison": {
+            "expected": [
+              "export_survey_responses",
+              "generate_summary_report"
+            ],
+            "actual": [
+              "export_survey_responses",
+              "generate_summary_report",
+              "export_survey_responses",
+              "export_survey_responses",
+              "export_survey_responses",
+              "generate_summary_report"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are 2 expected tool calls: 'export_survey_responses' and 'generate_summary_report'.\n\n1. 'export_survey_responses':\n- Expected parameters: surveyId (str), documentType (str)='csv', language (str)='zh'.\n- Actual calls: 4 instances found.\n  - First call matches exactly.\n  - Second call matches exactly.\n  - Third call has documentType='xlsx' instead of 'csv' (value mismatch).\n  - Fourth call has documentType='json' instead of 'csv' (value mismatch).\n\nThe value mismatches on documentType in two calls are major issues because the expected documentType is 'csv'.\n\n2. 'generate_summary_report':\n- Expected parameters: data_link (str) with a specific URL.\n- Actual calls: 2 instances found.\n  - Both calls match exactly in parameter name, value, and type.\n\nAdditional notes:\n- There are extra calls beyond the expected number (3 extra calls for 'export_survey_responses' and 1 extra for 'generate_summary_report'). However, the evaluation focuses on argument correctness per tool call, not on call count.\n- No type mismatches or missing/extra parameters detected.\n\nSummary:\n- 'export_survey_responses' has 2 calls with incorrect documentType values (xlsx, json) instead of expected 'csv'.\n- 'generate_summary_report' calls are correct.\n\nDue to multiple value mismatches on a required parameter in 'export_survey_responses', the score is reduced to 0.5 indicating moderate issues.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "export_survey_responses",
+                "input_parameters": {
+                  "surveyId": "survey_china_drones_2024",
+                  "documentType": "csv",
+                  "language": "zh"
+                }
+              },
+              {
+                "name": "generate_summary_report",
+                "input_parameters": {
+                  "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "export_survey_responses",
+                "input_parameters": {
+                  "surveyId": "survey_china_drones_2024",
+                  "documentType": "csv",
+                  "language": "zh"
+                }
+              },
+              {
+                "name": "generate_summary_report",
+                "input_parameters": {
+                  "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+                }
+              },
+              {
+                "name": "export_survey_responses",
+                "input_parameters": {
+                  "surveyId": "survey_china_drones_2024",
+                  "documentType": "csv",
+                  "language": "zh"
+                }
+              },
+              {
+                "name": "export_survey_responses",
+                "input_parameters": {
+                  "surveyId": "survey_china_drones_2024",
+                  "documentType": "xlsx",
+                  "language": "zh"
+                }
+              },
+              {
+                "name": "export_survey_responses",
+                "input_parameters": {
+                  "surveyId": "survey_china_drones_2024",
+                  "documentType": "json",
+                  "language": "zh"
+                }
+              },
+              {
+                "name": "generate_summary_report",
+                "input_parameters": {
+                  "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3333333333333333, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.3333333333333333,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -44.7% (MAS: 20573 vs SAS: 37221 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 16280,
+        "completion_tokens": 4293,
+        "total_tokens": 20573,
+        "llm_calls": 10,
+        "cost": 0.010817
+      },
+      "latency": {
+        "total": 117.946,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am organizing a conference and would like to invite companies similar to 'IBM'. Can you retrieve the list of 5 similar companies along with their names, revenue growth, description, logo image URL, ",
+      "expected_tools": [
+        {
+          "name": "octagon_companies_agent",
+          "arguments": {
+            "seed_company": "IBM",
+            "limit": 5
+          }
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "arguments": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "octagon_companies_agent",
+          "args": {
+            "seed_company": "IBM",
+            "limit": 5
+          },
+          "output": "content=[{'type': 'text', 'text': '[\\n  \"Microsoft\",\\n  \"Oracle\",\\n  \"Accenture\",\\n  \"Google\",\\n  \"SAP\"\\n]', 'id': 'lc_a396a812-a106-4514-a172-0a4b1e8a536f'}] name='octagon_companies_agent' tool_call_id='call_8ddb755b416849e48d95ed35' artifact={'structured_content': {'result': '[\\n  \"Microsoft\",\\n  \"Oracle\",\\n  \"Accenture\",\\n  \"Google\",\\n  \"SAP\"\\n]'}}",
+          "start_time": 2.816,
+          "latency": 1.9435332999564707,
+          "agent_id": "finance"
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "args": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"accenture\": {\\n    \"contact_info\": {\\n      \"website\": \"https://www.accenture.com\",\\n      \"phone\": \"+353-1-646-2000\",\\n      \"email\": \"info@accenture.com\",\\n      \"address\": \"1 Grand Canal Square, Grand Canal Harbour, Dublin 2, Ireland\"\\n    },\\n    \"country\": \"Ireland\",\\n    \"description\": \"Accenture provides consulting, technology, and outsourcing services worldwide.\",\\n    \"hq_location\": \"Dublin\",\\n    \"linkedin_url\": \"https://www.linkedin.com/company",
+          "start_time": 12.568,
+          "latency": 1.94567249994725,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_realtime_market_data",
+          "args": {
+            "symbols": [
+              "IBM",
+              "ACN",
+              "ORCL",
+              "MSFT",
+              "SAP",
+              "HPE"
+            ],
+            "source": "yahoo",
+            "market": "NYSE",
+            "fields": [
+              "symbol",
+              "name",
+              "last",
+              "change",
+              "change_pct",
+              "volume",
+              "market_cap",
+              "timestamp",
+              "category"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'https://yahoo.marketdata.local/NYSE_latest_snapshot.json', 'id': 'lc_3d2d0c85-629f-4cb3-b9ea-b08f199ffcf7'}] name='get_realtime_market_data' tool_call_id='call_9c64d0ee0d384a8ca9c3aa30' artifact={'structured_content': {'result': 'https://yahoo.marketdata.local/NYSE_latest_snapshot.json'}}",
+          "start_time": 15.85,
+          "latency": 2.6341949000488967,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "ticker": "IBM",
+            "max_result": 5
+          },
+          "output": "content=[{'type': 'text', 'text': \"No news articles found for ticker 'IBM'.\", 'id': 'lc_0d5c0aa4-8cec-4c92-a229-12484c0b9bc3'}] name='get_stock_news' tool_call_id='call_b0b0259c4e86423cbf7ccced' artifact={'structured_content': {'result': \"No news articles found for ticker 'IBM'.\"}}",
+          "start_time": 15.85,
+          "latency": 2.632334899972193,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "max_result": 3,
+            "ticker": "ACN"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No news articles found for ticker 'ACN'.\", 'id': 'lc_3e03c68c-5ccc-4dba-8ee2-93b0589a926d'}] name='get_stock_news' tool_call_id='call_70a2b3e835e447fe8f4542ed' artifact={'structured_content': {'result': \"No news articles found for ticker 'ACN'.\"}}",
+          "start_time": 30.301,
+          "latency": 5.133912199991755,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "max_result": 3,
+            "ticker": "ORCL"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No news articles found for ticker 'ORCL'.\", 'id': 'lc_26243efc-e33a-41f4-968f-08322885b27f'}] name='get_stock_news' tool_call_id='call_f7a2037fc6d54878bfc7f437' artifact={'structured_content': {'result': \"No news articles found for ticker 'ORCL'.\"}}",
+          "start_time": 30.301,
+          "latency": 5.191842300002463,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "max_result": 3,
+            "ticker": "MSFT"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No news articles found for ticker 'MSFT'.\", 'id': 'lc_397588f7-25ab-4d99-b550-f27a4720134a'}] name='get_stock_news' tool_call_id='call_80c1538772144ee29523733c' artifact={'structured_content': {'result': \"No news articles found for ticker 'MSFT'.\"}}",
+          "start_time": 30.301,
+          "latency": 5.1318488999968395,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "max_result": 3,
+            "ticker": "SAP"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No news articles found for ticker 'SAP'.\", 'id': 'lc_f4ab3fe7-d905-4323-b778-72ab87dc4c4f'}] name='get_stock_news' tool_call_id='call_6b4aab61790248f98ea663cd' artifact={'structured_content': {'result': \"No news articles found for ticker 'SAP'.\"}}",
+          "start_time": 30.301,
+          "latency": 5.135424299980514,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "max_result": 3,
+            "ticker": "HPE"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No news articles found for ticker 'HPE'.\", 'id': 'lc_666ce653-9c59-401e-b0fa-a3f933b479e9'}] name='get_stock_news' tool_call_id='call_5977e2af9ecb4ae8abe922f2' artifact={'structured_content': {'result': \"No news articles found for ticker 'HPE'.\"}}",
+          "start_time": 30.301,
+          "latency": 5.12968309991993,
+          "agent_id": "finance"
+        },
+        {
+          "name": "get_realtime_market_data",
+          "args": {
+            "symbols": [
+              "IBM",
+              "ACN",
+              "ORCL",
+              "MSFT",
+              "SAP",
+              "HPE"
+            ],
+            "source": "bloomberg",
+            "market": "NYSE",
+            "fields": [
+              "symbol",
+              "name",
+              "last",
+              "change",
+              "change_pct",
+              "volume",
+              "market_cap",
+              "timestamp",
+              "category"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'https://bloomberg.marketdata.local/NYSE_latest_snapshot.json', 'id': 'lc_5a99017f-d8da-449e-a9f4-91364614448f'}] name='get_realtime_market_data' tool_call_id='call_f0656b73847a4e4fa6c737c1' artifact={'structured_content': {'result': 'https://bloomberg.marketdata.local/NYSE_latest_snapshot.json'}}",
+          "start_time": 30.301,
+          "latency": 5.1899648000253364,
+          "agent_id": "finance"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.2,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 10 total calls. Correct: ['octagon_companies_agent', 'octagon_deepresearch_agent']. Extra: ['get_realtime_market_data', 'get_stock_news']. Duplicates: 6",
+          "comparison": {
+            "expected": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent"
+            ],
+            "actual": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent",
+              "get_realtime_market_data",
+              "get_stock_news",
+              "get_stock_news",
+              "get_stock_news",
+              "get_stock_news",
+              "get_stock_news",
+              "get_stock_news",
+              "get_realtime_market_data"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'octagon_companies_agent', expected parameters are 'seed_company' (str, 'IBM') and 'limit' (int, 5), which exactly match the actual parameters. For 'octagon_deepresearch_agent', expected parameters are 'companies' (list of strings) and 'fields' (list of strings), both matching exactly in values and types with the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.2",
+          "component_scores": {
+            "Tool Correctness": 0.2,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -14.3% (MAS: 23597 vs SAS: 27534 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 17887,
+        "completion_tokens": 5710,
+        "total_tokens": 23597,
+        "llm_calls": 8,
+        "cost": 0.012749
+      },
+      "latency": {
+        "total": 92.162,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are a game development expert and I want to know how to build a video game with a battle royal style using Unreal Engine 5. In this process, I need to first generate 10 3D environment assets suita",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9933,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 2.0% (MAS: 23296 vs SAS: 22836 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 17496,
+        "completion_tokens": 5800,
+        "total_tokens": 23296,
+        "llm_calls": 9,
+        "cost": 0.012657
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are required to implement and validate a model training and testing configuration for a 3D object detection system using the provided code snippet under the folder of C:/Users/user/Desktop/MyProje",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -68.2% (MAS: 25411 vs SAS: 79781 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 19492,
+        "completion_tokens": 5919,
+        "total_tokens": 25411,
+        "llm_calls": 10,
+        "cost": 0.013629
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on PubMed literature and GWAS Catalog trait associations, identify potential biomarkers that may predict the risk of GVHD in recipients after bone marrow transplantation.",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9402,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 17.9% (MAS: 55839 vs SAS: 47343 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 49807,
+        "completion_tokens": 6032,
+        "total_tokens": 55839,
+        "llm_calls": 24,
+        "cost": 0.026914
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am working on a CUDA project where a struct containing pointers needs to be computed on a device. The problem is when I allocate memory for the struct and then copy it to the device, it only copies ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -75.8% (MAS: 29074 vs SAS: 120409 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 24361,
+        "completion_tokens": 4713,
+        "total_tokens": 29074,
+        "llm_calls": 11,
+        "cost": 0.014697
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are tasked with creating a quantum circuit design for a given set of qubits and calculating the corresponding probability distribution of the quantum state, the request is give in the uploaded fil",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -35.3% (MAS: 23229 vs SAS: 35924 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 19857,
+        "completion_tokens": 3372,
+        "total_tokens": 23229,
+        "llm_calls": 13,
+        "cost": 0.011571
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_19",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm thinking about starting a halal food business in Canada and want to check recipes to make sure the ingredients and preparation methods fit halal guidelines while also looking at the nutritional in",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.8427,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 47.2% (MAS: 35516 vs SAS: 24131 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 30613,
+        "completion_tokens": 4903,
+        "total_tokens": 35516,
+        "llm_calls": 15,
+        "cost": 0.017582
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_20",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I need you to design an automated data pipeline that collects business data from Zoho Invoice and Pipedrive, cleans and integrates it through a workflow, and finally stores it in Google BigQuery for c",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9949,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 1.5% (MAS: 39899 vs SAS: 39292 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 33706,
+        "completion_tokens": 6193,
+        "total_tokens": 39899,
+        "llm_calls": 15,
+        "cost": 0.02005
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_4",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_5",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_6",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_7",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_9",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_11",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_14",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_15",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_16",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_17",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_18",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_19",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_20",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 7,
+      "mean": 0.4,
+      "median": 0.4,
+      "std": 0.1711,
+      "variance": 0.0293,
+      "ci_lower": 0.2733,
+      "ci_upper": 0.5267,
+      "min": 0.2,
+      "max": 0.6667,
+      "p25": 0.2667,
+      "p75": 0.5,
+      "iqr": 0.2333,
+      "pass_rate": 0.0,
+      "pass_ci_lower": 0.0,
+      "pass_ci_upper": 0.3543,
+      "passed": 0,
+      "total": 7
+    },
+    "Argument Correctness [Reference]": {
+      "n": 7,
+      "mean": 0.6143,
+      "median": 0.6,
+      "std": 0.3805,
+      "variance": 0.1448,
+      "ci_lower": 0.3324,
+      "ci_upper": 0.8961,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.4,
+      "p75": 0.95,
+      "iqr": 0.55,
+      "pass_rate": 0.2857,
+      "pass_ci_lower": 0.0822,
+      "pass_ci_upper": 0.6411,
+      "passed": 2,
+      "total": 7
+    },
+    "Final State (Derived)": {
+      "n": 7,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 0.0,
+      "ci_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.0,
+      "pass_ci_lower": 0.0,
+      "pass_ci_upper": 0.3543,
+      "passed": 0,
+      "total": 7
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 0.9682,
+      "median": 1.0,
+      "std": 0.0636,
+      "variance": 0.0041,
+      "ci_lower": 0.9403,
+      "ci_upper": 0.9961,
+      "min": 0.7566,
+      "max": 1.0,
+      "p25": 0.9589,
+      "p75": 1.0,
+      "iqr": 0.0411,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 23581.55,
+        "median": 21502.0,
+        "std": 9192.2614,
+        "variance": 84497669.4184,
+        "min": 9213.0,
+        "max": 49807.0,
+        "p25": 17473.75,
+        "p75": 30215.5,
+        "p95": 34511.05,
+        "p99": 46747.81,
+        "iqr": 12741.75
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 4713.55,
+        "median": 4808.0,
+        "std": 1500.1428,
+        "variance": 2250428.3658,
+        "min": 1416.0,
+        "max": 6584.0,
+        "p25": 3799.5,
+        "p75": 5947.25,
+        "p95": 6450.05,
+        "p99": 6557.21,
+        "iqr": 2147.75
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 28295.1,
+        "median": 27239.5,
+        "std": 9561.7975,
+        "variance": 91427971.4632,
+        "min": 15656.0,
+        "max": 55839.0,
+        "p25": 22908.0,
+        "p75": 33759.5,
+        "p95": 40696.0,
+        "p99": 52810.4,
+        "iqr": 10851.5
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0144,
+        "median": 0.014,
+        "std": 0.0044,
+        "variance": 0.0,
+        "min": 0.0077,
+        "max": 0.0269,
+        "p25": 0.0115,
+        "p75": 0.0162,
+        "p95": 0.0204,
+        "p99": 0.0256,
+        "iqr": 0.0047,
+        "total": 0.287176
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 0,
+      "failed": 7,
+      "errors": 13,
+      "total_tokens": 565902,
+      "tokens_per_pass": null,
+      "success_per_1k_tokens": 0.0,
+      "pass_rate": 0.0,
+      "error_rate": 0.65
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:02.224230",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

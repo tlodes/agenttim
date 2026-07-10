@@ -1,0 +1,2200 @@
+{
+  "timestamp": "2026-07-04T15:05:52.419579+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "orchestrator_fine",
+  "mode": "sturn-mt-protasks-sequential",
+  "num_tools": 80,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 14,
+    "total_test_cases": 20,
+    "error_rate": 0.7
+  },
+  "aggregate": {
+    "total_prompt_tokens": 830661,
+    "total_completion_tokens": 99282,
+    "total_tokens": 929943,
+    "total_llm_calls": 237,
+    "total_cost": 0.447713,
+    "total_latency": 2072.149,
+    "avg_latency": 103.607,
+    "pass_rate": 0.05,
+    "passed": 1,
+    "failed": 5,
+    "errors": 14
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_2_sequential_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm developing a mobile app that requires object detection functionality. Is there an API available that can take an image URL as input and return a modified image with bounding boxes around the detec",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "object detection"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": [
+              "Image Object Detection API",
+              "Vision Detect Pro API"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "object detection"
+          },
+          "output": "content=[{'type': 'text', 'text': 'object detection: Image Object Detection API', 'id': 'lc_1981686f-67d4-4204-99c5-64c8ab3e4d8a'}] name='searchApis' tool_call_id='call_336bc94cd43a4ae8aeeb119f' artifact={'structured_content': {'result': 'object detection: Image Object Detection API'}}",
+          "start_time": 4.498,
+          "latency": 1.7786241000285372,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content=[{'type': 'text', 'text': \"API Name: Image Object Detection API\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\nEndpoint: POST https://api.example.com/v1/object-detection\\nRequest Schema: {'image_url': 'string (URL to the image to process)', 'return_json': 'boolean (optional, if true returns detection metadata)'}\", 'id': 'lc_ff6e0e5a-0fa2-4130-b5d",
+          "start_time": 10.309,
+          "latency": 1.7743572999024764,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content=[{'type': 'text', 'text': \"API Name: Image Object Detection API\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\nEndpoint: POST https://api.example.com/v1/object-detection\\nRequest Schema: {'image_url': 'string (URL to the image to process)', 'return_json': 'boolean (optional, if true returns detection metadata)'}\", 'id': 'lc_429c6cd5-267e-4269-8a1",
+          "start_time": 52.755,
+          "latency": 2.236750700045377,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "make_api_request",
+          "args": {
+            "apiName": "image_object_detection_api",
+            "url": "https://api.example.com",
+            "endpoint": "/v1/object-detection"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Error: Endpoint '/v1/object-detection' not available for API 'image_object_detection_api'.\", 'id': 'lc_d3671575-6ee1-444f-bb8a-eb81efb837e1'}] name='make_api_request' tool_call_id='call_ad4a579613dd402e8816532c' artifact={'structured_content': {'result': \"Error: Endpoint '/v1/object-detection' not available for API 'image_object_detection_api'.\"}}",
+          "start_time": 52.755,
+          "latency": 2.2382399999769405,
+          "agent_id": "utilities"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['request_api_schema', 'searchApis']. Extra: ['make_api_request']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema"
+            ],
+            "actual": [
+              "searchApis",
+              "request_api_schema",
+              "request_api_schema",
+              "make_api_request"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. searchApis:\n- Expected parameters: {\"keyword\": \"object detection\"} (type str)\n- Actual parameters: {\"keyword\": \"object detection\"} (type str)\n- Match: Perfect match in parameter name, value, and type.\n\n2. request_api_schema:\n- Expected parameters: {\"ApiName\": [\"Image Object Detection API\", \"Vision Detect Pro API\"]} (type list)\n- Actual calls (two instances): each has {\"ApiName\": \"Image Object Detection API\"} (type str)\n- Issues:\n  * Parameter value type mismatch: expected a list, actual is a string.\n  * Missing one of the expected API names in the list (only one string provided instead of two).\n  * The actual calls include two separate calls with the same single string parameter instead of one call with a list.\n\n3. Extra call:\n- The second request_api_schema call is a duplicate with the same incorrect argument.\n\nSummary:\n- searchApis is fully correct.\n- request_api_schema calls have major issues: type mismatch (list vs string), missing expected list elements, and duplicated calls instead of one call.\n- No extra or missing parameters by name, but the value type and completeness are incorrect.\n\nGiven these major issues with request_api_schema, the overall score is low (0.3).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": [
+                    "Image Object Detection API",
+                    "Vision Detect Pro API"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -43.9% (MAS: 44532 vs SAS: 79400 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 41041,
+        "completion_tokens": 3491,
+        "total_tokens": 44532,
+        "llm_calls": 9,
+        "cost": 0.02089
+      },
+      "latency": {
+        "total": 83.844,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm a project manager and I need to coordinate tasks with my team across different time zones. Can you give me the current time for a specific IP address 203.0.113.25 and the current time based on my ",
+      "expected_tools": [
+        {
+          "name": "get_ip_details",
+          "arguments": {
+            "ip_address": [
+              "203.0.113.25",
+              "198.51.100.42"
+            ]
+          }
+        },
+        {
+          "name": "get_time",
+          "arguments": {
+            "timezone": [
+              "America/New_York",
+              "Europe/London"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "198.51.100.42"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'IP Address: 198.51.100.42\\nCountry: United Kingdom\\nRegion: England\\nCity: London\\nTimezone: Europe/London', 'id': 'lc_1bff4758-fc9e-4aff-a8e4-6a11db83dedd'}] name='get_ip_details' tool_call_id='call_16c3b4adb8a74fc2a647eff1' artifact={'structured_content': {'result': 'IP Address: 198.51.100.42\\nCountry: United Kingdom\\nRegion: England\\nCity: London\\nTimezone: Europe/London'}}",
+          "start_time": 4.203,
+          "latency": 2.0547245000489056,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "203.0.113.25"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'IP Address: 203.0.113.25\\nCountry: United States\\nRegion: New York\\nCity: New York City\\nTimezone: America/New_York', 'id': 'lc_eecf1aff-e57c-4a3a-9bd8-ca62f92d582c'}] name='get_ip_details' tool_call_id='call_c7d1648ee2b24c70bb166594' artifact={'structured_content': {'result': 'IP Address: 203.0.113.25\\nCountry: United States\\nRegion: New York\\nCity: New York City\\nTimezone: America/New_York'}}",
+          "start_time": 4.666,
+          "latency": 1.8857491000089794,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "America/New_York"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'The current time in America/New_York is 18:00:00.', 'id': 'lc_19c1318d-fe4d-4f4d-b837-db688159832a'}] name='get_time' tool_call_id='call_9f669f6ccc41484f93efd0a9' artifact={'structured_content': {'result': 'The current time in America/New_York is 18:00:00.'}}",
+          "start_time": 9.811,
+          "latency": 2.826666899956763,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "Europe/London"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'The current time in Europe/London is 23:00:00.', 'id': 'lc_d637add2-ad2b-4a8e-bf3d-d10e479f37e0'}] name='get_time' tool_call_id='call_4b1d97a6c26e4f32ac54b068' artifact={'structured_content': {'result': 'The current time in Europe/London is 23:00:00.'}}",
+          "start_time": 10.698,
+          "latency": 1.8779893000610173,
+          "agent_id": "utilities"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['get_ip_details', 'get_time']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "get_ip_details",
+              "get_time"
+            ],
+            "actual": [
+              "get_ip_details",
+              "get_ip_details",
+              "get_time",
+              "get_time"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "The expected calls are for two tools: get_ip_details with ip_address parameter as a list of two IPs, and get_time with timezone parameter as a list of two timezones. The actual calls split these into multiple calls, each with a single-element list for the same parameters. \n\nEvaluation per tool:\n\n1. get_ip_details:\n- Expected: ip_address parameter with list [\"203.0.113.25\", \"198.51.100.42\"]\n- Actual: Two calls, each with ip_address as a single-element list [\"198.51.100.42\"] and [\"203.0.113.25\"] respectively.\n- Parameter names match exactly.\n- Parameter values are semantically equivalent since the union of actual calls covers all expected IPs.\n- Types match (list of strings).\n- No extra or missing parameters.\n\n2. get_time:\n- Expected: timezone parameter with list [\"America/New_York\", \"Europe/London\"]\n- Actual: Two calls, each with timezone as a single-element list [\"America/New_York\"] and [\"Europe/London\"] respectively.\n- Parameter names match exactly.\n- Parameter values are semantically equivalent since the union of actual calls covers all expected timezones.\n- Types match (list of strings).\n- No extra or missing parameters.\n\nSplitting the calls into multiple calls with single-element lists instead of one call with a multi-element list is acceptable as the parameter values are semantically equivalent when combined. No type mismatches or parameter name issues found.\n\nTherefore, all tool calls have correct arguments with correct types and no missing or extra parameters.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25",
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York",
+                    "Europe/London"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/London"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -51.3% (MAS: 35272 vs SAS: 72406 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 33953,
+        "completion_tokens": 1319,
+        "total_tokens": 35272,
+        "llm_calls": 8,
+        "cost": 0.015917
+      },
+      "latency": {
+        "total": 27.552,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I already have a vocabulary memorization app design named UI123VOCABAPP. The design includes NODE_HEADER, NODE_CARD, and NODE_TIMER, which implement the title, the word card, and the countdown functio",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -74.7% (MAS: 34843 vs SAS: 137547 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 29527,
+        "completion_tokens": 5316,
+        "total_tokens": 34843,
+        "llm_calls": 10,
+        "cost": 0.017469
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Please interpret the recent trends of major indices in the Chinese stock market (Shanghai Composite Index , Shenzhen Component Index, STAR Market 50, CSI 300, CSI 500), and then analyze the reasons be",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -49.2% (MAS: 36070 vs SAS: 70993 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 31601,
+        "completion_tokens": 4469,
+        "total_tokens": 36070,
+        "llm_calls": 12,
+        "cost": 0.017634
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Today is 03/15/2024, Find a set of data (the weather of London from 03/01 to 03/15 in the past 5 years) to train a neural network in weather_prediction.py to predict the weather for the same date next",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -86.0% (MAS: 37961 vs SAS: 270102 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 31200,
+        "completion_tokens": 6761,
+        "total_tokens": 37961,
+        "llm_calls": 11,
+        "cost": 0.019454
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are given a quantum computing problem to calculate the probability of a certain amplitude for a given set of qubits. Write a program using the large language model Grok-3 to define the amplitude, ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -73.3% (MAS: 52033 vs SAS: 194667 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 47652,
+        "completion_tokens": 4381,
+        "total_tokens": 52033,
+        "llm_calls": 12,
+        "cost": 0.02454
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Retrieve the trending topics and hashtags from social media platforms about charity race last month. Based on these trends, design promotional posts for the upcoming charity race and publish them on F",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -62.7% (MAS: 43434 vs SAS: 116331 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 37487,
+        "completion_tokens": 5947,
+        "total_tokens": 43434,
+        "llm_calls": 12,
+        "cost": 0.021481
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I have uploaded an image named street_scene_people.jpg extracted from a video which is about a street scene containing multiple people , first detect all the person targets in the scene, and then perf",
+      "expected_tools": [
+        {
+          "name": "detect_objects",
+          "arguments": {
+            "image_path": "street_scene_people.jpg"
+          }
+        },
+        {
+          "name": "estimate_pose",
+          "arguments": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "detect_objects",
+          "args": {
+            "image_path": "street_scene_people.jpg"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person', bbox=[220, 60, 350, 390], confidence=0.92\\n - class='person', bbox=[400, 100, 520, 420], confidence=0.88\", 'id': 'lc_88b7efe2-a8e1-45a4-b138-7da247bf9ef5'}] name='detect_objects' tool_call_id='call_ed132074df8145f8b3e99d73' artifact={'structured_content': {'result': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person',",
+          "start_time": 2.679,
+          "latency": 2.079901099903509,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "detect_objects",
+          "args": {
+            "image_path": "street_scene_people.jpg"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person', bbox=[220, 60, 350, 390], confidence=0.92\\n - class='person', bbox=[400, 100, 520, 420], confidence=0.88\", 'id': 'lc_e23ab962-7d2c-4853-ab4e-4175b8906e63'}] name='detect_objects' tool_call_id='call_bfa3600467de4f5ab8380556' artifact={'structured_content': {'result': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person',",
+          "start_time": 20.683,
+          "latency": 1.802210499998182,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "estimate_pose",
+          "args": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"pose_estimations\": [\\n    {\\n      \"region\": {\\n        \"x\": 50,\\n        \"y\": 80,\\n        \"width\": 130,\\n        \"height\": 320\\n      },\\n      \"keypoints\": [\\n        {\\n          \"part\": \"head\",\\n          \"x\": 115,\\n          \"y\": 90,\\n          \"confidence\": 0.98\\n        },\\n        {\\n          \"part\": \"left_shoulder\",\\n          \"x\": 95,\\n          \"y\": 140,\\n          \"confidence\": 0.95\\n        },\\n        {\\n          \"part\": \"right_shoulder\",",
+          "start_time": 29.626,
+          "latency": 1.7950358000816777,
+          "agent_id": "simulation"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['detect_objects', 'estimate_pose']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "detect_objects",
+              "estimate_pose"
+            ],
+            "actual": [
+              "detect_objects",
+              "detect_objects",
+              "estimate_pose"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'detect_objects' and 'estimate_pose'.\n\n1. 'detect_objects':\n   - Expected: one call with parameter 'image_path' = 'street_scene_people.jpg' (string).\n   - Actual: two calls with the exact same parameter and value.\n   - Issue: The actual calls include an extra duplicate call of 'detect_objects' which was not expected. This is an extra call but since the evaluation focuses on argument correctness per tool call, the arguments themselves are correct and type-safe. However, the extra call is considered a minor issue.\n\n2. 'estimate_pose':\n   - Expected: one call with parameter 'object_regions' as a list of three region dicts.\n   - Actual: one call with the exact same parameter and value.\n   - No issues found.\n\nSummary:\n- All parameters match exactly in name and value.\n- No type mismatches.\n- No missing or extra parameters per call.\n- The only issue is the extra duplicate 'detect_objects' call, which is a minor issue.\n\nHence, the score is 0.8 reflecting minor issues due to the extra duplicate call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -64.8% (MAS: 27050 vs SAS: 76744 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 23206,
+        "completion_tokens": 3844,
+        "total_tokens": 27050,
+        "llm_calls": 8,
+        "cost": 0.013439
+      },
+      "latency": {
+        "total": 89.45,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm working on a project about product categories and their performance in the market. I want to analyze sales trends for specific categories such as Liquor and Bank in the Shanghai market. I’d like t",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -41.1% (MAS: 44167 vs SAS: 75026 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 38210,
+        "completion_tokens": 5957,
+        "total_tokens": 44167,
+        "llm_calls": 11,
+        "cost": 0.021804
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "My company is organizing a charity basketball tournament and we need to invite some NBA players. The tournament organizer wants to plan a surprise activity, so I need to choose two players whose last ",
+      "expected_tools": [
+        {
+          "name": "get_teams",
+          "arguments": {
+            "nameFilter": "NBA"
+          }
+        },
+        {
+          "name": "get_players",
+          "arguments": {
+            "target_players": [
+              "Anthony Davis",
+              "Donte DiVincenzo"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_teams",
+          "args": {
+            "nameFilter": "NBA"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Teams in NBA:\\n- Los Angeles Lakers\\n   • LeBron James (Forward)\\n   • Anthony Davis (Forward-Center)\\n   • D'Angelo Russell (Guard)\\n   • Russell Westbrook (Guard)\\n   • Thomas Bryant (Center)\\n   • Troy Brown Jr. (Forward)\\n   • Austin Reaves (Guard)\\n   • Lonnie Walker IV (Guard)\\n   • Patrick Beverley (Guard)\\n   • Wenyen Gabriel (Forward)\\n- Golden State Warriors\\n   • Stephen Curry (Guard)\\n   • Klay Thompson (Guard)\\n   • Draymond Green (Forward)\\n   • J",
+          "start_time": 2.726,
+          "latency": 1.9916447999421507,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Donte DiVincenzo"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Player: Donte DiVincenzo\\nTeam: Golden State Warriors\\nPosition: Guard\\nContact: donte.divincenzo@nba.com\\nCareer Achievements: NBA champion (2021), NCAA champion (2018), NCAA Final Four Most Outstanding Player (2018)\\nFun Fact: Donte DiVincenzo was a key player in Villanova's 2018 NCAA championship run and is known for his clutch performances.\\n\", 'id': 'lc_09378173-c87a-433b-92ed-027c4960c96e'}] name='get_players' tool_call_id='call_adf0c5cd50af49dfbe805117' ",
+          "start_time": 20.332,
+          "latency": 2.3430294999852777,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Anthony Davis"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Player: Anthony Davis\\nTeam: Los Angeles Lakers\\nPosition: Forward-Center\\nContact: anthony.davis@nba.com\\nCareer Achievements: NBA champion (2020), 8× NBA All-Star, 4× NBA All-Defensive First Team, NBA All-Star Game MVP (2017)\\nFun Fact: Anthony Davis is known for his exceptional defensive skills and was nicknamed 'The Brow' due to his distinctive unibrow.\\n\", 'id': 'lc_666c9e56-f705-4a95-bd0c-e53805ae43c3'}] name='get_players' tool_call_id='call_4239fafab46a4",
+          "start_time": 20.818,
+          "latency": 1.8556369000580162,
+          "agent_id": "entertainment"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_players', 'get_teams']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_teams",
+              "get_players"
+            ],
+            "actual": [
+              "get_teams",
+              "get_players",
+              "get_players"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. get_teams:\n- Expected parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Actual parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Match: Perfect match in parameter name, value, and type.\n\n2. get_players:\n- Expected parameters: {\"target_players\": [\"Anthony Davis\", \"Donte DiVincenzo\"]} (type list)\n- Actual calls: Two separate calls with parameters:\n  a) {\"target_players\": [\"Donte DiVincenzo\"]} (type list)\n  b) {\"target_players\": [\"Anthony Davis\"]} (type list)\n- Issue: Instead of one call with both players, actual calls split the list into two separate calls each with a subset of the expected list.\n- This means the actual calls do not match the expected argument value exactly (missing one player per call).\n- No type mismatches or extra/missing parameters per call, but the combined actual calls do not semantically match the expected single call.\n\nOverall:\n- get_teams is fully correct.\n- get_players has a major semantic mismatch in argument values (split lists vs full list expected).\n\nScore rationale:\n- One tool fully correct.\n- One tool with major issue (missing expected values per call).\n- No type mismatches or extra parameters.\n\nHence, score is 0.5 indicating a significant issue but not a complete failure.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis",
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Donte DiVincenzo"
+                  ]
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -75.5% (MAS: 22700 vs SAS: 92601 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 20850,
+        "completion_tokens": 1850,
+        "total_tokens": 22700,
+        "llm_calls": 9,
+        "cost": 0.010679
+      },
+      "latency": {
+        "total": 47.085,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "It's 2024, I'm a music producer looking for inspiration for my next project. Can you find the news about the top Billboard 200 albums from last year? Additionally, suggest 4 tracks on Deezer that has ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -26.7% (MAS: 61225 vs SAS: 83510 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 55873,
+        "completion_tokens": 5352,
+        "total_tokens": 61225,
+        "llm_calls": 18,
+        "cost": 0.028961
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on the survey results from 'survey_china_drones_2024.csv', the survey is in Chinese, analyze the attitudes and needs of Chinese consumers regarding the use of drones, summarize the results, and ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -73.6% (MAS: 67495 vs SAS: 256016 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 61714,
+        "completion_tokens": 5781,
+        "total_tokens": 67495,
+        "llm_calls": 17,
+        "cost": 0.031875
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am organizing a conference and would like to invite companies similar to 'IBM'. Can you retrieve the list of 5 similar companies along with their names, revenue growth, description, logo image URL, ",
+      "expected_tools": [
+        {
+          "name": "octagon_companies_agent",
+          "arguments": {
+            "seed_company": "IBM",
+            "limit": 5
+          }
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "arguments": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "octagon_companies_agent",
+          "args": {
+            "seed_company": "IBM",
+            "limit": 5
+          },
+          "output": "content=[{'type': 'text', 'text': '[\\n  \"Microsoft\",\\n  \"Oracle\",\\n  \"Accenture\",\\n  \"Google\",\\n  \"SAP\"\\n]', 'id': 'lc_e757d72c-0ef4-4c13-b138-8e999a185efe'}] name='octagon_companies_agent' tool_call_id='call_c1978c817b574abba3d92392' artifact={'structured_content': {'result': '[\\n  \"Microsoft\",\\n  \"Oracle\",\\n  \"Accenture\",\\n  \"Google\",\\n  \"SAP\"\\n]'}}",
+          "start_time": 3.912,
+          "latency": 2.0480805000988767,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "args": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "domain",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth",
+              "strategic_focus"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"accenture\": {\\n    \"contact_info\": {\\n      \"website\": \"https://www.accenture.com\",\\n      \"phone\": \"+353-1-646-2000\",\\n      \"email\": \"info@accenture.com\",\\n      \"address\": \"1 Grand Canal Square, Grand Canal Harbour, Dublin 2, Ireland\"\\n    },\\n    \"country\": \"Ireland\",\\n    \"description\": \"Accenture provides consulting, technology, and outsourcing services worldwide.\",\\n    \"domain\": \"accenture.com\",\\n    \"hq_location\": \"Dublin\",\\n    \"linkedin_url\": \"",
+          "start_time": 11.442,
+          "latency": 1.9600306000793353,
+          "agent_id": "utilities"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent"
+            ],
+            "actual": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: octagon_companies_agent - Expected parameters: seed_company (str='IBM'), limit (int=5); Actual parameters: seed_company (str='IBM'), limit (int=5). No issues found, perfect match.\n\nTool: octagon_deepresearch_agent - Expected parameters: companies (list of 5 strings), fields (list of 8 strings). Actual parameters: companies (list of 5 strings), fields (list of 10 strings). Issues: Actual 'fields' parameter contains two extra entries ('domain' and 'strategic_focus') not present in expected. This is an extra parameter value in a list, which counts as a mismatch in argument values. No type mismatches or missing parameters, but extra values in a list parameter cause a semantic mismatch.\n\nOverall, one tool perfectly matches, the other has extra values in a list parameter causing a minor but clear argument mismatch. Hence, score is 0.6 reflecting a moderate issue.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "domain",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth",
+                    "strategic_focus"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.6",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.6
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -71.8% (MAS: 22828 vs SAS: 81049 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 20023,
+        "completion_tokens": 2805,
+        "total_tokens": 22828,
+        "llm_calls": 5,
+        "cost": 0.01115
+      },
+      "latency": {
+        "total": 54.717,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are a game development expert and I want to know how to build a video game with a battle royal style using Unreal Engine 5. In this process, I need to first generate 10 3D environment assets suita",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -67.2% (MAS: 18800 vs SAS: 57259 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13704,
+        "completion_tokens": 5096,
+        "total_tokens": 18800,
+        "llm_calls": 4,
+        "cost": 0.010395
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are required to implement and validate a model training and testing configuration for a 3D object detection system using the provided code snippet under the folder of C:/Users/user/Desktop/MyProje",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -80.9% (MAS: 47356 vs SAS: 247862 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 42846,
+        "completion_tokens": 4510,
+        "total_tokens": 47356,
+        "llm_calls": 13,
+        "cost": 0.022562
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on PubMed literature and GWAS Catalog trait associations, identify potential biomarkers that may predict the risk of GVHD in recipients after bone marrow transplantation.",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -9.3% (MAS: 91862 vs SAS: 101320 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 84005,
+        "completion_tokens": 7857,
+        "total_tokens": 91862,
+        "llm_calls": 20,
+        "cost": 0.043378
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am working on a CUDA project where a struct containing pointers needs to be computed on a device. The problem is when I allocate memory for the struct and then copy it to the device, it only copies ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -90.8% (MAS: 24702 vs SAS: 269672 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 19651,
+        "completion_tokens": 5051,
+        "total_tokens": 24702,
+        "llm_calls": 7,
+        "cost": 0.012943
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are tasked with creating a quantum circuit design for a given set of qubits and calculating the corresponding probability distribution of the quantum state, the request is give in the uploaded fil",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -76.3% (MAS: 50027 vs SAS: 211438 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 45380,
+        "completion_tokens": 4647,
+        "total_tokens": 50027,
+        "llm_calls": 12,
+        "cost": 0.023783
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_19",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm thinking about starting a halal food business in Canada and want to check recipes to make sure the ingredients and preparation methods fit halal guidelines while also looking at the nutritional in",
+      "expected_tools": [
+        {
+          "name": "search_recipes",
+          "arguments": {
+            "name": "halal recipes"
+          }
+        },
+        {
+          "name": "check_nutrition",
+          "arguments": {
+            "ingredient_list": [
+              "Basmati rice",
+              "Cucumber",
+              "Fresh coriander",
+              "Garlic sauce",
+              "Ginger-garlic paste",
+              "Halal beef",
+              "Halal chicken",
+              "Lettuce",
+              "Onions",
+              "Pita bread",
+              "Spices",
+              "Tomatoes",
+              "Yogurt"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "halal recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Name: Halal Chicken Biryani\\nIngredients: Basmati rice, Halal chicken, Onions, Tomatoes, Yogurt, Ginger-garlic paste, Spices, Fresh coriander\\nInstruction: Marinate chicken with yogurt and spices, cook with onions and tomatoes, layer with partially cooked rice, steam until done.\\nPrep Time: 20 minutes\\nCook Time: 40 minutes\\n--------------------------------------------------\\nName: Halal Beef Shawarma\\nIngredients: Halal beef, Pita bread, Garlic sauce, Lettuce,",
+          "start_time": 3.083,
+          "latency": 1.9404908999567851,
+          "agent_id": "health"
+        },
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Beef",
+              "Chicken",
+              "Chickpeas",
+              "Cumin",
+              "Garlic",
+              "Lamb",
+              "Lentils",
+              "Olive oil",
+              "Onion",
+              "Rice",
+              "Tomato",
+              "Turmeric",
+              "Yogurt"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Available Ingredients with Nutritional Information (per 100g):\\n\\nChicken:\\n  Calories: 165 cal\\n  Protein: 31.0g\\n  Carbohydrates: 0.0g\\n  Sugar: 0.0g\\n  Fat: 3.6g\\n  Fiber: 0.0g\\n\\nRice:\\n  Calories: 350 cal\\n  Protein: 7.0g\\n  Carbohydrates: 78.0g\\n  Sugar: 0.1g\\n  Fat: 0.6g\\n  Fiber: 1.0g\\n\\nYogurt:\\n  Calories: 59 cal\\n  Protein: 10.0g\\n  Carbohydrates: 3.6g\\n  Sugar: 3.6g\\n  Fat: 0.4g\\n  Fiber: 0.0g\\n', 'id': 'lc_e4039a4e-fada-44f2-b8e6-24dc1c9e4784'}] na",
+          "start_time": 5.21,
+          "latency": 1.7876130000222474,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "halal side recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'halal side' in the title. Please try a different search.\", 'id': 'lc_5fff7800-bf9c-4a0d-b39a-bc724fd0d74b'}] name='search_recipes' tool_call_id='call_b9ce47d5dd5f4f69a2a127c2' artifact={'structured_content': {'result': \"No recipes found with 'halal side' in the title. Please try a different search.\"}}",
+          "start_time": 10.202,
+          "latency": 3.7561667999252677,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "halal snack recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'halal snack' in the title. Please try a different search.\", 'id': 'lc_d7d47bc8-2dc8-444c-9176-c32c52cfa000'}] name='search_recipes' tool_call_id='call_2f6ff827a4ae4e79b8ab6866' artifact={'structured_content': {'result': \"No recipes found with 'halal snack' in the title. Please try a different search.\"}}",
+          "start_time": 10.202,
+          "latency": 3.758608700009063,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "halal kebab recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'halal kebab' in the title. Please try a different search.\", 'id': 'lc_71e97be5-4719-4733-80c5-00cd8e0e330f'}] name='search_recipes' tool_call_id='call_ca9563edd1f0447e8187516b' artifact={'structured_content': {'result': \"No recipes found with 'halal kebab' in the title. Please try a different search.\"}}",
+          "start_time": 10.202,
+          "latency": 3.7574309000046924,
+          "agent_id": "health"
+        },
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Beef",
+              "Chickpea",
+              "Cumin",
+              "Garlic",
+              "Lamb",
+              "Lentil",
+              "Olive oil",
+              "Onion",
+              "Tomato",
+              "Turmeric"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'No ingredients from your list are available in the database.', 'id': 'lc_1ad7f34f-b7cd-4ee0-9b89-f79188e2cc08'}] name='check_nutrition' tool_call_id='call_bccb6ec2723e4e9bae2d4462' artifact={'structured_content': {'result': 'No ingredients from your list are available in the database.'}}",
+          "start_time": 12.253,
+          "latency": 2.199438700103201,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "chicken recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Name: Halal Chicken Biryani\\nIngredients: Basmati rice, Halal chicken, Onions, Tomatoes, Yogurt, Ginger-garlic paste, Spices, Fresh coriander\\nInstruction: Marinate chicken with yogurt and spices, cook with onions and tomatoes, layer with partially cooked rice, steam until done.\\nPrep Time: 20 minutes\\nCook Time: 40 minutes\\n--------------------------------------------------', 'id': 'lc_a6213a6d-18d8-4834-9db1-8e7ffc09b7f1'}] name='search_recipes' tool_call_id=",
+          "start_time": 18.776,
+          "latency": 4.498206899967045,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "beef recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Name: Halal Beef Shawarma\\nIngredients: Halal beef, Pita bread, Garlic sauce, Lettuce, Tomatoes, Cucumber, Spices\\nInstruction: Marinate beef with spices, grill until tender, serve in pita bread with vegetables and garlic sauce.\\nPrep Time: 15 minutes\\nCook Time: 20 minutes\\n--------------------------------------------------', 'id': 'lc_9ebd8f44-81c6-482a-8654-d73764af23db'}] name='search_recipes' tool_call_id='call_dfdf79efe4da47558fff66ed' artifact={'structur",
+          "start_time": 18.776,
+          "latency": 4.530011199996807,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "lamb recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'lamb' in the title. Please try a different search.\", 'id': 'lc_d500f209-0615-4178-a9d9-8c89273d4c60'}] name='search_recipes' tool_call_id='call_f491c9b3a5464d6aaccfa1e2' artifact={'structured_content': {'result': \"No recipes found with 'lamb' in the title. Please try a different search.\"}}",
+          "start_time": 18.776,
+          "latency": 4.475406299927272,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "vegetarian recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'vegetarian' in the title. Please try a different search.\", 'id': 'lc_2bc29073-5331-4fe7-96d7-8ff4f8faa59e'}] name='search_recipes' tool_call_id='call_e5b3c0fbe85446dfb4f96d65' artifact={'structured_content': {'result': \"No recipes found with 'vegetarian' in the title. Please try a different search.\"}}",
+          "start_time": 18.776,
+          "latency": 4.475732499966398,
+          "agent_id": "health"
+        },
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Halal beef",
+              "Halal chicken",
+              "Halal lamb",
+              "chickpea",
+              "lentil",
+              "olive",
+              "onion",
+              "tomato",
+              "turmeric",
+              "garlic"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Available Ingredients with Nutritional Information (per 100g):\\n\\nHalal beef:\\n  Calories: 250 cal\\n  Protein: 26.0g\\n  Carbohydrates: 0.0g\\n  Sugar: 0.0g\\n  Fat: 15.0g\\n  Fiber: 0.0g\\n', 'id': 'lc_6a38e925-2650-432b-9202-962cc3441b14'}] name='check_nutrition' tool_call_id='call_841d527f18254f748c01845f' artifact={'structured_content': {'result': 'Available Ingredients with Nutritional Information (per 100g):\\n\\nHalal beef:\\n  Calories: 250 cal\\n  Protein: 26.0",
+          "start_time": 21.259,
+          "latency": 2.24965140002314,
+          "agent_id": "health"
+        },
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Halal chicken",
+              "Halal lamb",
+              "chickpeas",
+              "brown rice",
+              "white rice",
+              "plain yogurt",
+              "olive oil",
+              "onions",
+              "tomatoes",
+              "garlic clove"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Available Ingredients with Nutritional Information (per 100g):\\n\\nOnions:\\n  Calories: 40 cal\\n  Protein: 1.1g\\n  Carbohydrates: 9.3g\\n  Sugar: 4.2g\\n  Fat: 0.1g\\n  Fiber: 1.7g\\n\\nTomatoes:\\n  Calories: 18 cal\\n  Protein: 0.9g\\n  Carbohydrates: 3.9g\\n  Sugar: 2.6g\\n  Fat: 0.2g\\n  Fiber: 1.2g\\n', 'id': 'lc_e07108a8-894d-4fb0-8820-59a71daa71c2'}] name='check_nutrition' tool_call_id='call_6d0dffe3a7c44688b1cdd501' artifact={'structured_content': {'result': 'Availa",
+          "start_time": 27.896,
+          "latency": 4.512034700019285,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "curry recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'curry' in the title. Please try a different search.\", 'id': 'lc_738f8977-135e-4f0e-99c4-a35bf5dbc901'}] name='search_recipes' tool_call_id='call_3e20f5c1919e4795a9c70f25' artifact={'structured_content': {'result': \"No recipes found with 'curry' in the title. Please try a different search.\"}}",
+          "start_time": 28.416,
+          "latency": 4.289205299923196,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "grill recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'grill' in the title. Please try a different search.\", 'id': 'lc_d83be222-479a-4e8f-aaaf-f221c08164e9'}] name='search_recipes' tool_call_id='call_60405c496a4d4f208e6588a0' artifact={'structured_content': {'result': \"No recipes found with 'grill' in the title. Please try a different search.\"}}",
+          "start_time": 28.416,
+          "latency": 4.322767400066368,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "soup recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'soup' in the title. Please try a different search.\", 'id': 'lc_f3bd44b8-6a92-4820-950e-505d7be5a301'}] name='search_recipes' tool_call_id='call_0c83d27804ce4705bd6faf98' artifact={'structured_content': {'result': \"No recipes found with 'soup' in the title. Please try a different search.\"}}",
+          "start_time": 28.416,
+          "latency": 4.321214399999008,
+          "agent_id": "health"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "rice recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No recipes found with 'rice' in the title. Please try a different search.\", 'id': 'lc_9e2d5c6c-ab53-4acb-8b1c-b54d247b97bd'}] name='search_recipes' tool_call_id='call_9522d05cfae74441b633eba8' artifact={'structured_content': {'result': \"No recipes found with 'rice' in the title. Please try a different search.\"}}",
+          "start_time": 28.416,
+          "latency": 4.25895089993719,
+          "agent_id": "health"
+        },
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Halal chicken breast",
+              "Halal lamb leg",
+              "chickpea",
+              "brown lentil",
+              "extra virgin olive oil",
+              "garlic",
+              "turmeric powder",
+              "cumin seed",
+              "basmati rice"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'No ingredients from your list are available in the database.', 'id': 'lc_63982fc1-8e23-4c32-9e19-71dea249f116'}] name='check_nutrition' tool_call_id='call_f569c36284504c98ab352e7f' artifact={'structured_content': {'result': 'No ingredients from your list are available in the database.'}}",
+          "start_time": 35.98,
+          "latency": 2.234379299916327,
+          "agent_id": "health"
+        },
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "Chicken breast",
+              "Lamb leg",
+              "Chickpea",
+              "Lentil",
+              "Olive",
+              "Garlic",
+              "Turmeric",
+              "Cumin",
+              "Basmati"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'No ingredients from your list are available in the database.', 'id': 'lc_c3f56b10-ad60-41ca-a3c4-b0b5b09f9597'}] name='check_nutrition' tool_call_id='call_cc59fb3d66a94972a053f4cc' artifact={'structured_content': {'result': 'No ingredients from your list are available in the database.'}}",
+          "start_time": 43.201,
+          "latency": 1.7925739000784233,
+          "agent_id": "health"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.1111111111111111,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 18 total calls. Correct: ['check_nutrition', 'search_recipes']. Duplicates: 16",
+          "comparison": {
+            "expected": [
+              "search_recipes",
+              "check_nutrition"
+            ],
+            "actual": [
+              "search_recipes",
+              "check_nutrition",
+              "search_recipes",
+              "search_recipes",
+              "search_recipes",
+              "check_nutrition",
+              "search_recipes",
+              "search_recipes",
+              "search_recipes",
+              "search_recipes",
+              "check_nutrition",
+              "check_nutrition",
+              "search_recipes",
+              "search_recipes",
+              "search_recipes",
+              "search_recipes",
+              "check_nutrition",
+              "check_nutrition"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tools: 'search_recipes' and 'check_nutrition'.\n\n1. 'search_recipes':\n- Expected parameters: {name: 'halal recipes'} (string)\n- Actual calls: multiple calls with parameter 'name' as string but with different values such as 'halal recipes', 'halal side recipes', 'halal snack recipes', 'halal kebab recipes', 'chicken recipes', 'beef recipes', 'lamb recipes', 'vegetarian recipes', 'curry recipes', 'grill recipes', 'soup recipes', 'rice recipes'.\n- Evaluation: Parameter name matches exactly and type is string as expected. However, the expected value is specifically 'halal recipes' but actual calls include many different values. According to the rules, parameter values must be semantically equivalent. The actual calls include the expected value once ('halal recipes'), but also many others that are not expected. Since the expected tool call is only one with 'halal recipes', the extra calls with different values are considered extra calls, but the evaluation is per tool call, so the extra calls do not cause a penalty for argument correctness for the expected call itself. The actual call with 'halal recipes' matches perfectly.\n\n2. 'check_nutrition':\n- Expected parameters: {ingredient_list: [13 specific ingredients]} (list)\n- Actual calls: multiple calls with parameter 'ingredient_list' as list but with different ingredient lists, none matching exactly the expected list.\n- Evaluation: Parameter name matches exactly and type is list as expected. However, the values differ significantly from the expected list. The expected list includes 'Basmati rice', 'Cucumber', 'Fresh coriander', 'Garlic sauce', 'Ginger-garlic paste', 'Halal beef', 'Halal chicken', 'Lettuce', 'Onions', 'Pita bread', 'Spices', 'Tomatoes', 'Yogurt'. The actual lists contain different ingredients such as 'Beef', 'Chicken', 'Chickpeas', 'Cumin', 'Garlic', 'Lamb', 'Lentils', 'Olive oil', 'Onion', 'Rice', 'Tomato', 'Turmeric', 'Yogurt' and variations thereof, but do not match the expected list semantically (e.g., 'Basmati rice' vs 'Rice', 'Onions' vs 'Onion', 'Garlic sauce' missing, 'Fresh coriander' missing, 'Pita bread' missing, 'Spices' missing). This is a major mismatch in parameter values.\n\nSummary:\n- 'search_recipes' call with 'halal recipes' matches perfectly.\n- 'check_nutrition' calls do not match expected ingredient list values.\n- No type mismatches or parameter name mismatches.\n- No extra or missing parameters.\n\nBecause the major issue is the mismatch in the 'ingredient_list' values for 'check_nutrition', the overall score is low, around 0.3, reflecting major issues in argument correctness for one of the two expected tools.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "halal recipes"
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Basmati rice",
+                    "Cucumber",
+                    "Fresh coriander",
+                    "Garlic sauce",
+                    "Ginger-garlic paste",
+                    "Halal beef",
+                    "Halal chicken",
+                    "Lettuce",
+                    "Onions",
+                    "Pita bread",
+                    "Spices",
+                    "Tomatoes",
+                    "Yogurt"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "halal recipes"
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Beef",
+                    "Chicken",
+                    "Chickpeas",
+                    "Cumin",
+                    "Garlic",
+                    "Lamb",
+                    "Lentils",
+                    "Olive oil",
+                    "Onion",
+                    "Rice",
+                    "Tomato",
+                    "Turmeric",
+                    "Yogurt"
+                  ]
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "halal side recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "halal snack recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "halal kebab recipes"
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Beef",
+                    "Chickpea",
+                    "Cumin",
+                    "Garlic",
+                    "Lamb",
+                    "Lentil",
+                    "Olive oil",
+                    "Onion",
+                    "Tomato",
+                    "Turmeric"
+                  ]
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "chicken recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "beef recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "lamb recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "vegetarian recipes"
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Halal beef",
+                    "Halal chicken",
+                    "Halal lamb",
+                    "chickpea",
+                    "lentil",
+                    "olive",
+                    "onion",
+                    "tomato",
+                    "turmeric",
+                    "garlic"
+                  ]
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Halal chicken",
+                    "Halal lamb",
+                    "chickpeas",
+                    "brown rice",
+                    "white rice",
+                    "plain yogurt",
+                    "olive oil",
+                    "onions",
+                    "tomatoes",
+                    "garlic clove"
+                  ]
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "curry recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "grill recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "soup recipes"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "rice recipes"
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Halal chicken breast",
+                    "Halal lamb leg",
+                    "chickpea",
+                    "brown lentil",
+                    "extra virgin olive oil",
+                    "garlic",
+                    "turmeric powder",
+                    "cumin seed",
+                    "basmati rice"
+                  ]
+                }
+              },
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Chicken breast",
+                    "Lamb leg",
+                    "Chickpea",
+                    "Lentil",
+                    "Olive",
+                    "Garlic",
+                    "Turmeric",
+                    "Cumin",
+                    "Basmati"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.1111111111111111, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.1111111111111111,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -44.3% (MAS: 42326 vs SAS: 76041 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 37276,
+        "completion_tokens": 5050,
+        "total_tokens": 42326,
+        "llm_calls": 14,
+        "cost": 0.020609
+      },
+      "latency": {
+        "total": 89.502,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_20",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I need you to design an automated data pipeline that collects business data from Zoho Invoice and Pipedrive, cleans and integrates it through a workflow, and finally stores it in Google BigQuery for c",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.7912,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 62.6% (MAS: 125260 vs SAS: 77012 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 115462,
+        "completion_tokens": 9798,
+        "total_tokens": 125260,
+        "llm_calls": 25,
+        "cost": 0.05875
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_3",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_4",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_5",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_6",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_7",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_9",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_11",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_12",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_14",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_15",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_16",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_17",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_18",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_20",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 6,
+      "mean": 0.5741,
+      "median": 0.5833,
+      "std": 0.2912,
+      "variance": 0.0848,
+      "ci_lower": 0.3411,
+      "ci_upper": 0.807,
+      "min": 0.1111,
+      "max": 1.0,
+      "p25": 0.5,
+      "p75": 0.6667,
+      "iqr": 0.1667,
+      "pass_rate": 0.1667,
+      "pass_ci_lower": 0.0301,
+      "pass_ci_upper": 0.5635,
+      "passed": 1,
+      "total": 6
+    },
+    "Argument Correctness [Reference]": {
+      "n": 6,
+      "mean": 0.5833,
+      "median": 0.55,
+      "std": 0.2787,
+      "variance": 0.0777,
+      "ci_lower": 0.3603,
+      "ci_upper": 0.8063,
+      "min": 0.3,
+      "max": 1.0,
+      "p25": 0.35,
+      "p75": 0.75,
+      "iqr": 0.4,
+      "pass_rate": 0.1667,
+      "pass_ci_lower": 0.0301,
+      "pass_ci_upper": 0.5635,
+      "passed": 1,
+      "total": 6
+    },
+    "Final State (Derived)": {
+      "n": 6,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 0.0,
+      "ci_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.0,
+      "pass_ci_lower": 0.0,
+      "pass_ci_upper": 0.3903,
+      "passed": 0,
+      "total": 6
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 0.9896,
+      "median": 1.0,
+      "std": 0.0467,
+      "variance": 0.0022,
+      "ci_lower": 0.9691,
+      "ci_upper": 1.0,
+      "min": 0.7912,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 41533.05,
+        "median": 37381.5,
+        "std": 23917.2421,
+        "variance": 572034469.2079,
+        "min": 13704.0,
+        "max": 115462.0,
+        "p25": 27946.75,
+        "p75": 45948.0,
+        "p95": 85577.85,
+        "p99": 109485.17,
+        "iqr": 18001.25
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 4964.1,
+        "median": 5050.5,
+        "std": 1917.4109,
+        "variance": 3676464.6211,
+        "min": 1319.0,
+        "max": 9798.0,
+        "p25": 4246.75,
+        "p75": 5822.5,
+        "p95": 7954.05,
+        "p99": 9429.21,
+        "iqr": 1575.75
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 46497.15,
+        "median": 42880.0,
+        "std": 25328.984,
+        "variance": 641557430.1342,
+        "min": 18800.0,
+        "max": 125260.0,
+        "p25": 32894.75,
+        "p75": 50528.5,
+        "p95": 93531.9,
+        "p99": 118914.38,
+        "iqr": 17633.75
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0224,
+        "median": 0.0207,
+        "std": 0.0117,
+        "variance": 0.0001,
+        "min": 0.0104,
+        "max": 0.0587,
+        "p25": 0.0153,
+        "p75": 0.024,
+        "p95": 0.0441,
+        "p99": 0.0558,
+        "iqr": 0.0087,
+        "total": 0.447713
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 1,
+      "failed": 5,
+      "errors": 14,
+      "total_tokens": 929943,
+      "tokens_per_pass": 929943.0,
+      "success_per_1k_tokens": 0.0011,
+      "pass_rate": 0.05,
+      "error_rate": 0.7
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:03.318707",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

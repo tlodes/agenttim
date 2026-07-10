@@ -1,0 +1,1702 @@
+{
+  "timestamp": "2026-07-03T11:00:24.918066+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "orchestrator_fine",
+  "mode": "sturn-mt-protasks-sequential",
+  "num_tools": 40,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 15,
+    "total_test_cases": 20,
+    "error_rate": 0.75
+  },
+  "aggregate": {
+    "total_prompt_tokens": 576870,
+    "total_completion_tokens": 90862,
+    "total_tokens": 667732,
+    "total_llm_calls": 235,
+    "total_cost": 0.329988,
+    "total_latency": 2122.398,
+    "avg_latency": 106.12,
+    "pass_rate": 0.0,
+    "passed": 0,
+    "failed": 5,
+    "errors": 15
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_2_sequential_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm developing a mobile app that requires object detection functionality. Is there an API available that can take an image URL as input and return a modified image with bounding boxes around the detec",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "object detection"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": [
+              "Image Object Detection API",
+              "Vision Detect Pro API"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "object detection"
+          },
+          "output": "content=[{'type': 'text', 'text': 'object detection: Image Object Detection API', 'id': 'lc_767016e1-6e56-4386-97ca-ed1a42aab07e'}] name='searchApis' tool_call_id='call_00_2iANaH3fiOmIUElfQ8tm1834' artifact={'structured_content': {'result': 'object detection: Image Object Detection API'}}",
+          "start_time": 17.786,
+          "latency": 2.6836456999881193,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "image recognition"
+          },
+          "output": "content=[{'type': 'text', 'text': 'image recognition: Image Object Detection API, Vision Detect Pro API, OCR Text Extract API', 'id': 'lc_98055650-8195-4a72-a209-7be21560fc67'}] name='searchApis' tool_call_id='call_01_I83OFWI1vY7jiwQmZH7V9012' artifact={'structured_content': {'result': 'image recognition: Image Object Detection API, Vision Detect Pro API, OCR Text Extract API'}}",
+          "start_time": 17.786,
+          "latency": 2.6818674999522045,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": [
+              "Image Object Detection API",
+              "Vision Detect Pro API"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Found 1 API schema(s):\\n\\n--- Schema 1 ---\\nAPI Name: Image Object Detection API\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\nEndpoint: POST https://api.example.com/v1/object-detection\\nRequest Schema: {'image_url': 'string (URL to the image to process)', 'return_json': 'boolean (optional, if true returns detection me",
+          "start_time": 24.838,
+          "latency": 1.9601336000487208,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content=[{'type': 'text', 'text': \"API Name: Image Object Detection API\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\nEndpoint: POST https://api.example.com/v1/object-detection\\nRequest Schema: {'image_url': 'string (URL to the image to process)', 'return_json': 'boolean (optional, if true returns detection metadata)'}\", 'id': 'lc_3a465c3c-10d7-46fa-a2c",
+          "start_time": 47.579,
+          "latency": 1.9244926000246778,
+          "agent_id": "simulation"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['request_api_schema', 'searchApis']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema"
+            ],
+            "actual": [
+              "searchApis",
+              "searchApis",
+              "request_api_schema",
+              "request_api_schema"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. searchApis:\n- Expected: one call with parameter keyword='object detection' (str).\n- Actual: two calls:\n  a) keyword='object detection' (str) - matches perfectly.\n  b) keyword='image recognition' (str) - parameter name and type correct, but value differs from expected.\n\nSince the expected only specifies one call with 'object detection', the extra call with 'image recognition' is an unexpected extra call with a different argument value. This is a minor issue (wrong value in extra call).\n\n2. request_api_schema:\n- Expected: one call with ApiName as a list of two strings.\n- Actual: two calls:\n  a) ApiName as the expected list - matches perfectly.\n  b) ApiName as a single string - type mismatch (expected list, got str).\n\nThe extra call with a single string instead of a list is a type mismatch and an extra call.\n\nSummary:\n- All expected calls are present with correct parameters and types in at least one actual call.\n- However, there are extra calls with incorrect or differing argument values and types.\n- No missing parameters or parameter name mismatches.\n\nGiven these issues (extra calls with wrong values and a type mismatch), the score is moderate, around 0.5.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": [
+                    "Image Object Detection API",
+                    "Vision Detect Pro API"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "image recognition"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": [
+                    "Image Object Detection API",
+                    "Vision Detect Pro API"
+                  ]
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -25.3% (MAS: 31932 vs SAS: 42767 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 28012,
+        "completion_tokens": 3920,
+        "total_tokens": 31932,
+        "llm_calls": 10,
+        "cost": 0.015596
+      },
+      "latency": {
+        "total": 87.203,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm a project manager and I need to coordinate tasks with my team across different time zones. Can you give me the current time for a specific IP address 203.0.113.25 and the current time based on my ",
+      "expected_tools": [
+        {
+          "name": "get_ip_details",
+          "arguments": {
+            "ip_address": [
+              "203.0.113.25",
+              "198.51.100.42"
+            ]
+          }
+        },
+        {
+          "name": "get_time",
+          "arguments": {
+            "timezone": [
+              "America/New_York",
+              "Europe/London"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "198.51.100.42"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'IP Address: 198.51.100.42\\nCountry: United Kingdom\\nRegion: England\\nCity: London\\nTimezone: Europe/London', 'id': 'lc_b3677a04-9c73-4622-a78c-5a544da1ef5b'}] name='get_ip_details' tool_call_id='call_cc095e1380d44e719d69a6e2' artifact={'structured_content': {'result': 'IP Address: 198.51.100.42\\nCountry: United Kingdom\\nRegion: England\\nCity: London\\nTimezone: Europe/London'}}",
+          "start_time": 3.628,
+          "latency": 2.556448800023645,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "203.0.113.25"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'IP Address: 203.0.113.25\\nCountry: United States\\nRegion: New York\\nCity: New York City\\nTimezone: America/New_York', 'id': 'lc_47502ada-6264-43df-9b6b-3463dbfdb0f0'}] name='get_ip_details' tool_call_id='call_064a3bc219134bf89feb6beb' artifact={'structured_content': {'result': 'IP Address: 203.0.113.25\\nCountry: United States\\nRegion: New York\\nCity: New York City\\nTimezone: America/New_York'}}",
+          "start_time": 4.256,
+          "latency": 1.9306917000794783,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "Europe/London"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'The current time in Europe/London is 23:00:00.', 'id': 'lc_8a3cede5-d264-4a23-acec-89be42fbf0dc'}] name='get_time' tool_call_id='call_2a1023e10f6d45459c43b850' artifact={'structured_content': {'result': 'The current time in Europe/London is 23:00:00.'}}",
+          "start_time": 10.583,
+          "latency": 2.549898400087841,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "America/New_York"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'The current time in America/New_York is 18:00:00.', 'id': 'lc_1bdc8d46-4fb1-4ca9-a55f-533d562962ef'}] name='get_time' tool_call_id='call_0e5684dc79b24c0f85861593' artifact={'structured_content': {'result': 'The current time in America/New_York is 18:00:00.'}}",
+          "start_time": 11.403,
+          "latency": 2.0208937999559566,
+          "agent_id": "utilities"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['get_ip_details', 'get_time']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "get_ip_details",
+              "get_time"
+            ],
+            "actual": [
+              "get_ip_details",
+              "get_ip_details",
+              "get_time",
+              "get_time"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both expected tools are called with correct parameters and types, though split into multiple calls. For 'get_ip_details', expected ip_address is a list of two IPs [\"203.0.113.25\", \"198.51.100.42\"]. Actual calls split these into two separate calls each with a single IP in a list, which is semantically equivalent since the parameter is a list of strings in both cases. Parameter names match exactly, and types are correct (list of strings). For 'get_time', expected timezone is a list of two timezones [\"America/New_York\", \"Europe/London\"]. Actual calls split these into two calls each with a single timezone in a list, again semantically equivalent. Parameter names and types match exactly. There are no extra or missing parameters, no type mismatches, and no hallucinated arguments. Splitting the calls does not violate any rules since each call individually matches the expected parameter type and name. Therefore, the score is 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25",
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York",
+                    "Europe/London"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/London"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -33.1% (MAS: 27046 vs SAS: 40423 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 25959,
+        "completion_tokens": 1087,
+        "total_tokens": 27046,
+        "llm_calls": 8,
+        "cost": 0.012238
+      },
+      "latency": {
+        "total": 31.402,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I already have a vocabulary memorization app design named UI123VOCABAPP. The design includes NODE_HEADER, NODE_CARD, and NODE_TIMER, which implement the title, the word card, and the countdown functio",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -33.3% (MAS: 28683 vs SAS: 43014 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 23805,
+        "completion_tokens": 4878,
+        "total_tokens": 28683,
+        "llm_calls": 13,
+        "cost": 0.014599
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Please interpret the recent trends of major indices in the Chinese stock market (Shanghai Composite Index , Shenzhen Component Index, STAR Market 50, CSI 300, CSI 500), and then analyze the reasons be",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9214,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 23.6% (MAS: 47896 vs SAS: 38754 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 41498,
+        "completion_tokens": 6398,
+        "total_tokens": 47896,
+        "llm_calls": 19,
+        "cost": 0.023618
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Today is 03/15/2024, Find a set of data (the weather of London from 03/01 to 03/15 in the past 5 years) to train a neural network in weather_prediction.py to predict the weather for the same date next",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -75.6% (MAS: 44626 vs SAS: 182785 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 36720,
+        "completion_tokens": 7906,
+        "total_tokens": 44626,
+        "llm_calls": 20,
+        "cost": 0.022851
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are given a quantum computing problem to calculate the probability of a certain amplitude for a given set of qubits. Write a program using the large language model Grok-3 to define the amplitude, ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -67.3% (MAS: 43310 vs SAS: 132386 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 39637,
+        "completion_tokens": 3673,
+        "total_tokens": 43310,
+        "llm_calls": 12,
+        "cost": 0.020438
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Retrieve the trending topics and hashtags from social media platforms about charity race last month. Based on these trends, design promotional posts for the upcoming charity race and publish them on F",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -70.7% (MAS: 24689 vs SAS: 84304 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 20174,
+        "completion_tokens": 4515,
+        "total_tokens": 24689,
+        "llm_calls": 10,
+        "cost": 0.012704
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I have uploaded an image named street_scene_people.jpg extracted from a video which is about a street scene containing multiple people , first detect all the person targets in the scene, and then perf",
+      "expected_tools": [
+        {
+          "name": "detect_objects",
+          "arguments": {
+            "image_path": "street_scene_people.jpg"
+          }
+        },
+        {
+          "name": "estimate_pose",
+          "arguments": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "detect_objects",
+          "args": {
+            "image_path": "street_scene_people.jpg"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person', bbox=[220, 60, 350, 390], confidence=0.92\\n - class='person', bbox=[400, 100, 520, 420], confidence=0.88\", 'id': 'lc_ed3c8e23-940f-463b-8734-c20634308da5'}] name='detect_objects' tool_call_id='call_f942c1eb3496403897ba4f4a' artifact={'structured_content': {'result': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person',",
+          "start_time": 4.356,
+          "latency": 1.947524799965322,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "detect_objects",
+          "args": {
+            "image_path": "street_scene_people.jpg"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person', bbox=[220, 60, 350, 390], confidence=0.92\\n - class='person', bbox=[400, 100, 520, 420], confidence=0.88\", 'id': 'lc_9a9da04f-8126-455b-a0d2-919357816cd0'}] name='detect_objects' tool_call_id='call_0ea40bf45ac142589d9c01f6' artifact={'structured_content': {'result': \"Detected objects:\\n - class='person', bbox=[50, 80, 180, 400], confidence=0.95\\n - class='person',",
+          "start_time": 29.008,
+          "latency": 2.718914100085385,
+          "agent_id": "simulation"
+        },
+        {
+          "name": "estimate_pose",
+          "args": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"pose_estimations\": [\\n    {\\n      \"region\": {\\n        \"x\": 50,\\n        \"y\": 80,\\n        \"width\": 130,\\n        \"height\": 320\\n      },\\n      \"keypoints\": [\\n        {\\n          \"part\": \"head\",\\n          \"x\": 115,\\n          \"y\": 90,\\n          \"confidence\": 0.98\\n        },\\n        {\\n          \"part\": \"left_shoulder\",\\n          \"x\": 95,\\n          \"y\": 140,\\n          \"confidence\": 0.95\\n        },\\n        {\\n          \"part\": \"right_shoulder\",",
+          "start_time": 29.008,
+          "latency": 2.7187222000211477,
+          "agent_id": "simulation"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['detect_objects', 'estimate_pose']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "detect_objects",
+              "estimate_pose"
+            ],
+            "actual": [
+              "detect_objects",
+              "detect_objects",
+              "estimate_pose"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'detect_objects' and 'estimate_pose'.\n\n1. 'detect_objects':\n   - Expected: one call with parameter 'image_path' = 'street_scene_people.jpg' (string).\n   - Actual: two calls with the same parameter and value.\n   - Issue: Extra call of 'detect_objects' is present in actual but not expected. This is an extra invocation, which is not penalized by the rules since the evaluation is per tool call argument correctness, but it indicates redundancy.\n   - Arguments and types match perfectly for both calls.\n\n2. 'estimate_pose':\n   - Expected: one call with parameter 'object_regions' as a list of three region dicts.\n   - Actual: one call with the exact same parameter and value.\n   - Arguments and types match perfectly.\n\nNo parameter name mismatches, no type mismatches, no missing or extra parameters within the calls.\n\nHowever, the presence of an extra 'detect_objects' call is a minor issue (extra call, not extra parameters), which is not explicitly penalized by the rules but suggests some redundancy.\n\nOverall, all tool calls have correct arguments and types. The extra call is a minor issue but does not affect argument correctness scoring.\n\nHence, score is 0.8 reflecting minor issue of extra call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -57.4% (MAS: 19235 vs SAS: 45138 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 16060,
+        "completion_tokens": 3175,
+        "total_tokens": 19235,
+        "llm_calls": 7,
+        "cost": 0.009748
+      },
+      "latency": {
+        "total": 77.331,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm working on a project about product categories and their performance in the market. I want to analyze sales trends for specific categories such as Liquor and Bank in the Shanghai market. I’d like t",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -17.0% (MAS: 29145 vs SAS: 35107 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 25040,
+        "completion_tokens": 4105,
+        "total_tokens": 29145,
+        "llm_calls": 9,
+        "cost": 0.014464
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "My company is organizing a charity basketball tournament and we need to invite some NBA players. The tournament organizer wants to plan a surprise activity, so I need to choose two players whose last ",
+      "expected_tools": [
+        {
+          "name": "get_teams",
+          "arguments": {
+            "nameFilter": "NBA"
+          }
+        },
+        {
+          "name": "get_players",
+          "arguments": {
+            "target_players": [
+              "Anthony Davis",
+              "Donte DiVincenzo"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_teams",
+          "args": {
+            "nameFilter": "NBA"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Teams in NBA:\\n- Los Angeles Lakers\\n   • LeBron James (Forward)\\n   • Anthony Davis (Forward-Center)\\n   • D'Angelo Russell (Guard)\\n   • Russell Westbrook (Guard)\\n   • Thomas Bryant (Center)\\n   • Troy Brown Jr. (Forward)\\n   • Austin Reaves (Guard)\\n   • Lonnie Walker IV (Guard)\\n   • Patrick Beverley (Guard)\\n   • Wenyen Gabriel (Forward)\\n- Golden State Warriors\\n   • Stephen Curry (Guard)\\n   • Klay Thompson (Guard)\\n   • Draymond Green (Forward)\\n   • J",
+          "start_time": 2.897,
+          "latency": 1.7776110999984667,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Anthony Davis"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Player: Anthony Davis\\nTeam: Los Angeles Lakers\\nPosition: Forward-Center\\nContact: anthony.davis@nba.com\\nCareer Achievements: NBA champion (2020), 8× NBA All-Star, 4× NBA All-Defensive First Team, NBA All-Star Game MVP (2017)\\nFun Fact: Anthony Davis is known for his exceptional defensive skills and was nicknamed 'The Brow' due to his distinctive unibrow.\\n\", 'id': 'lc_835f973b-841b-49ad-a416-3200feaf8cbe'}] name='get_players' tool_call_id='call_3a7f742055bb4",
+          "start_time": 34.996,
+          "latency": 2.0668893000110984,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Donte DiVincenzo"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"Player: Donte DiVincenzo\\nTeam: Golden State Warriors\\nPosition: Guard\\nContact: donte.divincenzo@nba.com\\nCareer Achievements: NBA champion (2021), NCAA champion (2018), NCAA Final Four Most Outstanding Player (2018)\\nFun Fact: Donte DiVincenzo was a key player in Villanova's 2018 NCAA championship run and is known for his clutch performances.\\n\", 'id': 'lc_73dc50a7-4594-4a58-bb2f-d366c321bda6'}] name='get_players' tool_call_id='call_1fffaee51999493f844c576d' ",
+          "start_time": 35.476,
+          "latency": 1.8516577000264078,
+          "agent_id": "entertainment"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_players', 'get_teams']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_teams",
+              "get_players"
+            ],
+            "actual": [
+              "get_teams",
+              "get_players",
+              "get_players"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. get_teams:\n- Expected parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Actual parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Match: Perfect match in parameter name, value, and type.\n\n2. get_players:\n- Expected parameters: {\"target_players\": [\"Anthony Davis\", \"Donte DiVincenzo\"]} (type list)\n- Actual calls split into two separate calls each with one player:\n  a) {\"target_players\": [\"Anthony Davis\"]} (type list)\n  b) {\"target_players\": [\"Donte DiVincenzo\"]} (type list)\n- Issue: The expected call expects a single call with both players in the list, but actual calls split them into two separate calls each with a subset of the list.\n- According to the rules, the arguments must match exactly. Splitting the list into two calls is not equivalent to one call with the full list.\n- This is considered a missing parameter issue (missing one player in each call) and also a semantic mismatch in how the argument is passed.\n\nNo type mismatches or extra parameters were found.\n\nSummary:\n- get_teams: perfect (score 1.0)\n- get_players: major issue due to splitting list into two calls instead of one call with full list (score ~0.2)\n\nOverall score is averaged or weighted by tool calls. Since get_players is a major issue, overall score is around 0.6 reflecting one perfect and one major issue.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis",
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis"
+                  ]
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.6",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.6
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -41.7% (MAS: 20119 vs SAS: 34532 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 18325,
+        "completion_tokens": 1794,
+        "total_tokens": 20119,
+        "llm_calls": 9,
+        "cost": 0.009532
+      },
+      "latency": {
+        "total": 58.013,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "It's 2024, I'm a music producer looking for inspiration for my next project. Can you find the news about the top Billboard 200 albums from last year? Additionally, suggest 4 tracks on Deezer that has ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9895,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 3.1% (MAS: 40185 vs SAS: 38956 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 33712,
+        "completion_tokens": 6473,
+        "total_tokens": 40185,
+        "llm_calls": 13,
+        "cost": 0.020296
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on the survey results from 'survey_china_drones_2024.csv', the survey is in Chinese, analyze the attitudes and needs of Chinese consumers regarding the use of drones, summarize the results, and ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -75.9% (MAS: 21859 vs SAS: 90819 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 18220,
+        "completion_tokens": 3639,
+        "total_tokens": 21859,
+        "llm_calls": 7,
+        "cost": 0.011092
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am organizing a conference and would like to invite companies similar to 'IBM'. Can you retrieve the list of 5 similar companies along with their names, revenue growth, description, logo image URL, ",
+      "expected_tools": [
+        {
+          "name": "octagon_companies_agent",
+          "arguments": {
+            "seed_company": "IBM",
+            "limit": 5
+          }
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "arguments": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "octagon_companies_agent",
+          "args": {
+            "seed_company": "IBM",
+            "limit": 5
+          },
+          "output": "content=[{'type': 'text', 'text': '[\\n  \"Microsoft\",\\n  \"Oracle\",\\n  \"Accenture\",\\n  \"Google\",\\n  \"SAP\"\\n]', 'id': 'lc_8c2eff94-c559-4162-8cbd-7d96b2ebdcac'}] name='octagon_companies_agent' tool_call_id='call_829457d2274048b18cd25a01' artifact={'structured_content': {'result': '[\\n  \"Microsoft\",\\n  \"Oracle\",\\n  \"Accenture\",\\n  \"Google\",\\n  \"SAP\"\\n]'}}",
+          "start_time": 5.644,
+          "latency": 2.2790091999340802,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "WebSearchConfig",
+          "args": {
+            "name": "Default Web Search",
+            "description": "Search for company information including revenue growth, logo, HQ, LinkedIn, and contact details",
+            "search_engine": "Google",
+            "max_results": "10",
+            "extract_content": "true"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Web search configuration 'Default Web Search' successfully created with Google engine and max 10 results (extract_content=true) and the deployed url is https://google.com/defaultsearch.\", 'id': 'lc_54076fa1-58bd-4ed1-9d56-d4d1cdacb119'}] name='WebSearchConfig' tool_call_id='call_4a403551d1ea42cbbe1d2239' artifact={'structured_content': {'result': \"Web search configuration 'Default Web Search' successfully created with Google engine and max 10 results (extract_c",
+          "start_time": 5.644,
+          "latency": 2.2776786000467837,
+          "agent_id": "utilities"
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "args": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth",
+              "strategic_focus"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': '{\\n  \"accenture\": {\\n    \"contact_info\": {\\n      \"website\": \"https://www.accenture.com\",\\n      \"phone\": \"+353-1-646-2000\",\\n      \"email\": \"info@accenture.com\",\\n      \"address\": \"1 Grand Canal Square, Grand Canal Harbour, Dublin 2, Ireland\"\\n    },\\n    \"country\": \"Ireland\",\\n    \"description\": \"Accenture provides consulting, technology, and outsourcing services worldwide.\",\\n    \"hq_location\": \"Dublin\",\\n    \"linkedin_url\": \"https://www.linkedin.com/company",
+          "start_time": 14.163,
+          "latency": 1.7837170000420883,
+          "agent_id": "utilities"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['octagon_companies_agent', 'octagon_deepresearch_agent']. Extra: ['WebSearchConfig']",
+          "comparison": {
+            "expected": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent"
+            ],
+            "actual": [
+              "octagon_companies_agent",
+              "WebSearchConfig",
+              "octagon_deepresearch_agent"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: octagon_companies_agent - Expected parameters: seed_company (str='IBM'), limit (int=5). Actual parameters match exactly with correct types and values. No issues found.\n\nTool: octagon_deepresearch_agent - Expected parameters: companies (list of 5 companies), fields (list of 8 fields). Actual parameters: companies match exactly with correct type and values. However, fields parameter contains an extra item 'strategic_focus' not present in expected. This is an extra parameter value within the fields list, which counts as a minor issue (extra parameter in a list). No type mismatches or missing parameters.\n\nOverall, one minor issue due to extra field value in the fields list of octagon_deepresearch_agent, resulting in a score of 0.8.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth",
+                    "strategic_focus"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -58.2% (MAS: 20194 vs SAS: 48309 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 17220,
+        "completion_tokens": 2974,
+        "total_tokens": 20194,
+        "llm_calls": 5,
+        "cost": 0.010078
+      },
+      "latency": {
+        "total": 68.45,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are a game development expert and I want to know how to build a video game with a battle royal style using Unreal Engine 5. In this process, I need to first generate 10 3D environment assets suita",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -83.9% (MAS: 14795 vs SAS: 92047 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10289,
+        "completion_tokens": 4506,
+        "total_tokens": 14795,
+        "llm_calls": 5,
+        "cost": 0.008396
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are required to implement and validate a model training and testing configuration for a 3D object detection system using the provided code snippet under the folder of C:/Users/user/Desktop/MyProje",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -76.8% (MAS: 30451 vs SAS: 131337 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 26840,
+        "completion_tokens": 3611,
+        "total_tokens": 30451,
+        "llm_calls": 10,
+        "cost": 0.014817
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on PubMed literature and GWAS Catalog trait associations, identify potential biomarkers that may predict the risk of GVHD in recipients after bone marrow transplantation.",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -35.4% (MAS: 43635 vs SAS: 67510 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 35850,
+        "completion_tokens": 7785,
+        "total_tokens": 43635,
+        "llm_calls": 15,
+        "cost": 0.022368
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am working on a CUDA project where a struct containing pointers needs to be computed on a device. The problem is when I allocate memory for the struct and then copy it to the device, it only copies ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -77.0% (MAS: 24458 vs SAS: 106480 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 20215,
+        "completion_tokens": 4243,
+        "total_tokens": 24458,
+        "llm_calls": 8,
+        "cost": 0.012485
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are tasked with creating a quantum circuit design for a given set of qubits and calculating the corresponding probability distribution of the quantum state, the request is give in the uploaded fil",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -47.6% (MAS: 41843 vs SAS: 79922 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 37222,
+        "completion_tokens": 4621,
+        "total_tokens": 41843,
+        "llm_calls": 16,
+        "cost": 0.020212
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_19",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm thinking about starting a halal food business in Canada and want to check recipes to make sure the ingredients and preparation methods fit halal guidelines while also looking at the nutritional in",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.9158,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 25.3% (MAS: 47506 vs SAS: 37922 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 42896,
+        "completion_tokens": 4610,
+        "total_tokens": 47506,
+        "llm_calls": 21,
+        "cost": 0.02267
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_20",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I need you to design an automated data pipeline that collects business data from Zoho Invoice and Pipedrive, cleans and integrates it through a workflow, and finally stores it in Google BigQuery for c",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -21.2% (MAS: 66125 vs SAS: 83891 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 59176,
+        "completion_tokens": 6949,
+        "total_tokens": 66125,
+        "llm_calls": 18,
+        "cost": 0.031787
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_3",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_4",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_5",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_6",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_7",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_9",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_11",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_12",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_14",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_15",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_16",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_17",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_18",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_19",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_2_sequential_tools_20",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 5,
+      "mean": 0.6,
+      "median": 0.6667,
+      "std": 0.0913,
+      "variance": 0.0083,
+      "ci_lower": 0.52,
+      "ci_upper": 0.68,
+      "min": 0.5,
+      "max": 0.6667,
+      "p25": 0.5,
+      "p75": 0.6667,
+      "iqr": 0.1667,
+      "pass_rate": 0.0,
+      "pass_ci_lower": 0.0,
+      "pass_ci_upper": 0.4345,
+      "passed": 0,
+      "total": 5
+    },
+    "Argument Correctness [Reference]": {
+      "n": 5,
+      "mean": 0.74,
+      "median": 0.8,
+      "std": 0.1949,
+      "variance": 0.038,
+      "ci_lower": 0.5691,
+      "ci_upper": 0.9109,
+      "min": 0.5,
+      "max": 1.0,
+      "p25": 0.6,
+      "p75": 0.8,
+      "iqr": 0.2,
+      "pass_rate": 0.2,
+      "pass_ci_lower": 0.0362,
+      "pass_ci_upper": 0.6245,
+      "passed": 1,
+      "total": 5
+    },
+    "Final State (Derived)": {
+      "n": 5,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 0.0,
+      "ci_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.0,
+      "pass_ci_lower": 0.0,
+      "pass_ci_upper": 0.4345,
+      "passed": 0,
+      "total": 5
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 0.9913,
+      "median": 1.0,
+      "std": 0.025,
+      "variance": 0.0006,
+      "ci_lower": 0.9804,
+      "ci_upper": 1.0,
+      "min": 0.9158,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 28843.5,
+        "median": 26399.5,
+        "std": 11849.8988,
+        "variance": 140420102.3684,
+        "min": 10289.0,
+        "max": 59176.0,
+        "p25": 19711.75,
+        "p75": 36845.5,
+        "p95": 43710.0,
+        "p99": 56082.8,
+        "iqr": 17133.75
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 4543.1,
+        "median": 4374.5,
+        "std": 1804.1893,
+        "variance": 3255098.9368,
+        "min": 1087.0,
+        "max": 7906.0,
+        "p25": 3632.0,
+        "p75": 5258.0,
+        "p95": 7791.05,
+        "p99": 7883.01,
+        "iqr": 1626.0
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 33386.6,
+        "median": 29798.0,
+        "std": 12986.9052,
+        "variance": 168659706.7789,
+        "min": 14795.0,
+        "max": 66125.0,
+        "p25": 23808.25,
+        "p75": 43391.25,
+        "p95": 48807.45,
+        "p99": 62661.49,
+        "iqr": 19583.0
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0165,
+        "median": 0.0147,
+        "std": 0.0062,
+        "variance": 0.0,
+        "min": 0.0084,
+        "max": 0.0318,
+        "p25": 0.012,
+        "p75": 0.0209,
+        "p95": 0.024,
+        "p99": 0.0302,
+        "iqr": 0.009,
+        "total": 0.329989
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 0,
+      "failed": 5,
+      "errors": 15,
+      "total_tokens": 667732,
+      "tokens_per_pass": null,
+      "success_per_1k_tokens": 0.0,
+      "pass_rate": 0.0,
+      "error_rate": 0.75
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:02.904524",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

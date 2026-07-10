@@ -1,0 +1,5335 @@
+{
+  "timestamp": "2026-07-07T09:45:04.927338+00:00",
+  "model": "june-gpt-5-4-datazone",
+  "benchmark": "mcpagentbench",
+  "agent_type": "swarm",
+  "mode": "sturn-mt-protasks-sequential",
+  "num_tools": 40,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 0,
+    "total_test_cases": 20,
+    "error_rate": 0.0
+  },
+  "aggregate": {
+    "total_prompt_tokens": 748857,
+    "total_completion_tokens": 43119,
+    "total_tokens": 791976,
+    "total_cached_tokens": 236544,
+    "total_reasoning_tokens": 0,
+    "total_llm_calls": 112,
+    "total_tool_call_llm_calls": 32,
+    "total_cost": 2.518927,
+    "total_latency": 653.326,
+    "avg_latency": 32.666,
+    "pass_rate": 0.35,
+    "passed": 7,
+    "failed": 13,
+    "errors": 0
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_2_sequential_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm developing a mobile app that requires object detection functionality. Is there an API available that can take an image URL as input and return a modified image with bounding boxes around the detec",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "object detection"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": [
+              "Image Object Detection API",
+              "Vision Detect Pro API"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "object detection"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"object detection: Image Object Detection API\", \"id\": \"lc_07fa7b27-0508-44f8-984f-25abdf05c424\"}], {\"structured_content\": {\"result\": \"object detection: Image Object Detection API\"}}]' name='searchApis' tool_call_id='call_vLMqTuY6ZerHOe9GjOCJRI6w'",
+          "start_time": 0.0,
+          "latency": 2.6201399999990826,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "image recognition"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"image recognition: Image Object Detection API, Vision Detect Pro API, OCR Text Extract API\", \"id\": \"lc_0e62294b-5dc1-43f0-a3b5-4818f3535bc7\"}], {\"structured_content\": {\"result\": \"image recognition: Image Object Detection API, Vision Detect Pro API, OCR Text Extract API\"}}]' name='searchApis' tool_call_id='call_8794zuyNg6qicVUWS52Zo24b'",
+          "start_time": 0.0,
+          "latency": 2.625438999995822,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: Image Object Detection API\\\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\\\nEndpoint: POST https://api.example.com/v1/object-detection\\\\nRequest Schema: {\\'image_url\\': \\'string (URL to the image to process)\\', \\'return_json\\': \\'boolean (optional, if true returns detection metadata)\\'}\", \"id\": \"lc_518113de-",
+          "start_time": 4.828,
+          "latency": 2.6277743999962695,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Vision Detect Pro API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: No schema found for \\'Vision Detect Pro API\\'\", \"id\": \"lc_b0a67405-47ac-4058-bccf-5bb27b34fa61\"}], {\"structured_content\": {\"result\": \"Error: No schema found for \\'Vision Detect Pro API\\'\"}}]' name='request_api_schema' tool_call_id='call_AFkJ8CPCNKKBKAjg2ufvZtVP'",
+          "start_time": 4.828,
+          "latency": 2.622330399986822,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['request_api_schema', 'searchApis']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema"
+            ],
+            "actual": [
+              "searchApis",
+              "searchApis",
+              "request_api_schema",
+              "request_api_schema"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. searchApis:\n- Expected: one call with parameter {keyword: 'object detection'} (type str).\n- Actual: two calls:\n  a) {keyword: 'object detection'} (type str) - matches expected exactly.\n  b) {keyword: 'image recognition'} (type str) - extra call with different value, not expected.\n\nIssue: The extra call with 'image recognition' is not expected, which is an error (extra call with different argument).\n\n2. request_api_schema:\n- Expected: one call with parameter ApiName as a list of two strings [\"Image Object Detection API\", \"Vision Detect Pro API\"] (type list).\n- Actual: two separate calls each with ApiName as a single string:\n  a) {ApiName: \"Image Object Detection API\"} (type str)\n  b) {ApiName: \"Vision Detect Pro API\"} (type str)\n\nIssues:\n- Parameter type mismatch: expected a list, actual calls use string.\n- Splitting one expected call into two actual calls is a deviation from expected usage.\n\nSummary:\n- searchApis: one correct call, one unexpected call with different argument.\n- request_api_schema: parameter type mismatch (list vs string), and calls split into two instead of one.\n\nThese are major issues: extra unexpected call, and type mismatches on a required parameter.\n\nHence, the score is low at 0.3.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": [
+                    "Image Object Detection API",
+                    "Vision Detect Pro API"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "object detection"
+                }
+              },
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "image recognition"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Vision Detect Pro API"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7372,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 78.8% (MAS: 37916 vs SAS: 21200 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 36521,
+        "completion_tokens": 1395,
+        "total_tokens": 37916,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.112227,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 17929,
+            "completion_tokens": 257,
+            "total_tokens": 18186,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 18592,
+            "completion_tokens": 1138,
+            "total_tokens": 19730,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 430,
+            "completion_tokens": 229,
+            "total_tokens": 659,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.32,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 430,
+              "completion_tokens": 229,
+              "total_tokens": 659,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 950,
+            "completion_tokens": 443,
+            "total_tokens": 1393,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.668,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 950,
+              "completion_tokens": 443,
+              "total_tokens": 1393,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 27486,
+            "completion_tokens": 639,
+            "total_tokens": 28125,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 9.927,
+            "tool_call_steps": {
+              "prompt_tokens": 17929,
+              "completion_tokens": 257,
+              "total_tokens": 18186,
+              "cached_tokens": 0,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 9557,
+              "completion_tokens": 382,
+              "total_tokens": 9939,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 7655,
+            "completion_tokens": 84,
+            "total_tokens": 7739,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.563,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 7655,
+              "completion_tokens": 84,
+              "total_tokens": 7739,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 25.816,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm a project manager and I need to coordinate tasks with my team across different time zones. Can you give me the current time for a specific IP address 203.0.113.25 and the current time based on my ",
+      "expected_tools": [
+        {
+          "name": "get_ip_details",
+          "arguments": {
+            "ip_address": [
+              "203.0.113.25",
+              "198.51.100.42"
+            ]
+          }
+        },
+        {
+          "name": "get_time",
+          "arguments": {
+            "timezone": [
+              "America/New_York",
+              "Europe/London"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_ip_details",
+          "args": {
+            "ip_address": [
+              "203.0.113.25",
+              "198.51.100.42"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"IP Address: 203.0.113.25\\\\nCountry: United States\\\\nRegion: New York\\\\nCity: New York City\\\\nTimezone: America/New_York\\\\n\\\\nIP Address: 198.51.100.42\\\\nCountry: United Kingdom\\\\nRegion: England\\\\nCity: London\\\\nTimezone: Europe/London\", \"id\": \"lc_13350e48-ee6f-493d-b675-d347973d4e24\"}], {\"structured_content\": {\"result\": \"IP Address: 203.0.113.25\\\\nCountry: United States\\\\nRegion: New York\\\\nCity: New York City\\\\nTimezone: America/New_York\\\\n\\\\nIP Address: 19",
+          "start_time": 0.0,
+          "latency": 1.9489286000025459,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "America/New_York",
+              "Europe/London"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The current time in America/New_York is 18:00:00.\\\\n\\\\nThe current time in Europe/London is 23:00:00.\", \"id\": \"lc_48840b3f-1fe5-492c-94d6-9cab708ca604\"}], {\"structured_content\": {\"result\": \"The current time in America/New_York is 18:00:00.\\\\n\\\\nThe current time in Europe/London is 23:00:00.\"}}]' name='get_time' tool_call_id='call_WgFPsvVGNvF39lLpBJikt9vW'",
+          "start_time": 3.784,
+          "latency": 1.9400710000045365,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_ip_details",
+              "get_time"
+            ],
+            "actual": [
+              "get_ip_details",
+              "get_time"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have matching parameter names and values with correct types. For 'get_ip_details', the expected and actual 'ip_address' parameter is a list with the same IP addresses and type 'list'. For 'get_time', the expected and actual 'timezone' parameter is a list with the same timezones and type 'list'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls are correct.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25",
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York",
+                    "Europe/London"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_ip_details",
+                "input_parameters": {
+                  "ip_address": [
+                    "203.0.113.25",
+                    "198.51.100.42"
+                  ]
+                }
+              },
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "America/New_York",
+                    "Europe/London"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9312,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 20.6% (MAS: 37491 vs SAS: 31080 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 36815,
+        "completion_tokens": 676,
+        "total_tokens": 37491,
+        "cached_tokens": 8832,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.102177,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 18040,
+            "completion_tokens": 167,
+            "total_tokens": 18207,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 18775,
+            "completion_tokens": 509,
+            "total_tokens": 19284,
+            "cached_tokens": 8832,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 421,
+            "completion_tokens": 141,
+            "total_tokens": 562,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.152,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 421,
+              "completion_tokens": 141,
+              "total_tokens": 562,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 939,
+            "completion_tokens": 114,
+            "total_tokens": 1053,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.291,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 939,
+              "completion_tokens": 114,
+              "total_tokens": 1053,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 27404,
+            "completion_tokens": 249,
+            "total_tokens": 27653,
+            "cached_tokens": 8832,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 5.43,
+            "tool_call_steps": {
+              "prompt_tokens": 18040,
+              "completion_tokens": 167,
+              "total_tokens": 18207,
+              "cached_tokens": 0,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 9364,
+              "completion_tokens": 82,
+              "total_tokens": 9446,
+              "cached_tokens": 8832,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8051,
+            "completion_tokens": 172,
+            "total_tokens": 8223,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.703,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8051,
+              "completion_tokens": 172,
+              "total_tokens": 8223,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 16.516,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I already have a vocabulary memorization app design named UI123VOCABAPP. The design includes NODE_HEADER, NODE_CARD, and NODE_TIMER, which implement the title, the word card, and the countdown functio",
+      "expected_tools": [
+        {
+          "name": "figma_export_code",
+          "arguments": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": "NODE_TIMER"
+          }
+        },
+        {
+          "name": "CountDown_StartAndEndDate",
+          "arguments": {
+            "Ele": "vocab_timer_user001",
+            "StartDate": "2025-07-15T09:00:00",
+            "EndDate": "2025-08-15T09:30:00"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "figma_export_code",
+          "args": {
+            "fileKey": "UI123VOCABAPP",
+            "nodeId": "NODE_TIMER"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Export successful: Code for node \\'NODE_TIMER\\'\\\\n<CountdownTimer start={Date.now()} duration={60000} onComplete={alert(\\'Time up!\\')}/>\\\\n\\\\nParameters for NODE_TIMER:\\\\nEle: vocab_timer_user001\\\\nStartDate: 2025-07-15T09:00:00\\\\nEndDate: 20245-08-15T09:30:00\\\\n\", \"id\": \"lc_f9963975-4825-4892-8d5f-b23ec27a6029\"}], {\"structured_content\": {\"result\": \"Export successful: Code for node \\'NODE_TIMER\\'\\\\n<CountdownTimer start={Date.now()} duration={60000} onComplet",
+          "start_time": 0.0,
+          "latency": 2.0154631000041263,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['figma_export_code']. Missing: ['CountDown_StartAndEndDate']",
+          "comparison": {
+            "expected": [
+              "figma_export_code",
+              "CountDown_StartAndEndDate"
+            ],
+            "actual": [
+              "figma_export_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'figma_export_code': Expected parameters are fileKey='UI123VOCABAPP' (str) and nodeId='NODE_TIMER' (str). Actual parameters match exactly in names, values, and types. No extra or missing parameters. No type mismatches. Therefore, full match with no issues.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": "NODE_TIMER"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "figma_export_code",
+                "input_parameters": {
+                  "fileKey": "UI123VOCABAPP",
+                  "nodeId": "NODE_TIMER"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9087,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 27.4% (MAS: 28600 vs SAS: 22450 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 26295,
+        "completion_tokens": 2305,
+        "total_tokens": 28600,
+        "cached_tokens": 8448,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.100312,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 8487,
+            "completion_tokens": 103,
+            "total_tokens": 8590,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 17808,
+            "completion_tokens": 2202,
+            "total_tokens": 20010,
+            "cached_tokens": 8448,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 439,
+            "completion_tokens": 313,
+            "total_tokens": 752,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.94,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 439,
+              "completion_tokens": 313,
+              "total_tokens": 752,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1196,
+            "completion_tokens": 181,
+            "total_tokens": 1377,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.619,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1196,
+              "completion_tokens": 181,
+              "total_tokens": 1377,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 17308,
+            "completion_tokens": 1572,
+            "total_tokens": 18880,
+            "cached_tokens": 8448,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 14.815,
+            "tool_call_steps": {
+              "prompt_tokens": 8487,
+              "completion_tokens": 103,
+              "total_tokens": 8590,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 8821,
+              "completion_tokens": 1469,
+              "total_tokens": 10290,
+              "cached_tokens": 8448,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 7352,
+            "completion_tokens": 239,
+            "total_tokens": 7591,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.815,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 7352,
+              "completion_tokens": 239,
+              "total_tokens": 7591,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 27.279,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Please interpret the recent trends of major indices in the Chinese stock market (Shanghai Composite Index , Shenzhen Component Index, STAR Market 50, CSI 300, CSI 500), and then analyze the reasons be",
+      "expected_tools": [
+        {
+          "name": "get_market_index",
+          "arguments": {
+            "indices": [
+              "SHCOMP",
+              "SZCOMP",
+              "STAR50",
+              "CSI300",
+              "CSI500"
+            ]
+          }
+        },
+        {
+          "name": "get_stock_news",
+          "arguments": {
+            "ticker": "STAR50",
+            "max_result": 2
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_market_index",
+          "args": {
+            "indices": [
+              "SHCOMP",
+              "SZCOMP",
+              "STAR50",
+              "CSI300",
+              "CSI500"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Shanghai Composite Index (SHCOMP) - Latest Close: 3225.14, Change: -0.42 (-1.30%), Trend: slight downward in recent sessions due to profit-taking after a short rally (as of 2024-06-10)\\\\nShenzhen Component Index (SZCOMP) - Latest Close: 10875.56, Change: 0.78 (0.72%), Trend: mild upward momentum led by technology and consumer sectors (as of 2024-06-10)\\\\nSTAR Market 50 Index (STAR50) - Latest Close: 1025.78, Change: -2.14 (-2.05%), Trend: declining due to hig",
+          "start_time": 0.0,
+          "latency": 1.8664603999932297,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_stock_news",
+          "args": {
+            "ticker": "SZCOMP",
+            "max_result": 2
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Latest news for SZCOMP:\\\\n1. Shenzhen Component Climbs on Manufacturing Data (South China Morning Post, 2024-06-03)\\\\n   Summary: Latest PMI data showed expansion in China\\'s manufacturing sector, driving investor optimism.\\\\n2. New Energy Stocks Power Shenzhen Index (China Daily, 2024-06-01)\\\\n   Summary: The surge in electric vehicle and battery firms boosted the overall index performance.\", \"id\": \"lc_f012b879-493b-4ea4-bbe4-84be7326613d\"}], {\"structured_co",
+          "start_time": 4.055,
+          "latency": 1.992148500008625,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_market_index",
+              "get_stock_news"
+            ],
+            "actual": [
+              "get_market_index",
+              "get_stock_news"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: get_market_index - Arguments match exactly with correct parameter names, values, and types. No issues found.\nTool: get_stock_news - Parameter names and types match, but the value of 'ticker' differs: expected 'STAR50', actual 'SZCOMP'. This is a major semantic mismatch as the identifier value is different, which affects correctness. No type mismatches or extra/missing parameters.\nOverall, one tool is fully correct, the other has a major value mismatch, resulting in a low score.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_market_index",
+                "input_parameters": {
+                  "indices": [
+                    "SHCOMP",
+                    "SZCOMP",
+                    "STAR50",
+                    "CSI300",
+                    "CSI500"
+                  ]
+                }
+              },
+              {
+                "name": "get_stock_news",
+                "input_parameters": {
+                  "ticker": "STAR50",
+                  "max_result": 2
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_market_index",
+                "input_parameters": {
+                  "indices": [
+                    "SHCOMP",
+                    "SZCOMP",
+                    "STAR50",
+                    "CSI300",
+                    "CSI500"
+                  ]
+                }
+              },
+              {
+                "name": "get_stock_news",
+                "input_parameters": {
+                  "ticker": "SZCOMP",
+                  "max_result": 2
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.4",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.4
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8249,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 52.5% (MAS: 42328 vs SAS: 27749 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 39994,
+        "completion_tokens": 2334,
+        "total_tokens": 42328,
+        "cached_tokens": 10240,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.134995,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 19681,
+            "completion_tokens": 225,
+            "total_tokens": 19906,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 20313,
+            "completion_tokens": 2109,
+            "total_tokens": 22422,
+            "cached_tokens": 10240,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 426,
+            "completion_tokens": 210,
+            "total_tokens": 636,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.673,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 426,
+              "completion_tokens": 210,
+              "total_tokens": 636,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1382,
+            "completion_tokens": 288,
+            "total_tokens": 1670,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.631,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1382,
+              "completion_tokens": 288,
+              "total_tokens": 1670,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 30223,
+            "completion_tokens": 1283,
+            "total_tokens": 31506,
+            "cached_tokens": 10240,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 19.512,
+            "tool_call_steps": {
+              "prompt_tokens": 19681,
+              "completion_tokens": 225,
+              "total_tokens": 19906,
+              "cached_tokens": 0,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 10542,
+              "completion_tokens": 1058,
+              "total_tokens": 11600,
+              "cached_tokens": 10240,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 7963,
+            "completion_tokens": 553,
+            "total_tokens": 8516,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 8.976,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 7963,
+              "completion_tokens": 553,
+              "total_tokens": 8516,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 38.745,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Today is 03/15/2024, Find a set of data (the weather of London from 03/01 to 03/15 in the past 5 years) to train a neural network in weather_prediction.py to predict the weather for the same date next",
+      "expected_tools": [
+        {
+          "name": "weather_data_retriever",
+          "arguments": {
+            "start_date": "03/01",
+            "end_date": "03/15",
+            "range": "2019-2023",
+            "location": "London"
+          }
+        },
+        {
+          "name": "execute_python_code",
+          "arguments": {
+            "code_dir": "weather_prediction.py"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_data_retriever",
+          "args": {
+            "start_date": "03/01",
+            "end_date": "03/15",
+            "range": "2020-2024",
+            "location": "London"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Year: 2020, Date: 03/01, Temperature: 9.3°C, Precipitation: 5mm\\\\nYear: 2020, Date: 03/02, Temperature: 9.8°C, Precipitation: 3mm\\\\nYear: 2020, Date: 03/03, Temperature: 10.3°C, Precipitation: 4mm\\\\nYear: 2020, Date: 03/04, Temperature: 10.5°C, Precipitation: 0mm\\\\nYear: 2020, Date: 03/05, Temperature: 11.2°C, Precipitation: 2mm\\\\nYear: 2020, Date: 03/06, Temperature: 11.7°C, Precipitation: 1mm\\\\nYear: 2020, Date: 03/07, Temperature: 12.1°C, Precipitation: 5m",
+          "start_time": 0.0,
+          "latency": 2.1302434999961406,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "execute_python_code",
+          "args": {
+            "code_dir": "./weather_prediction.py"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Python code successfully executed in directory: ./weather_prediction.py\", \"id\": \"lc_a7118bb0-7dee-4ba4-a372-227e35c0592b\"}], {\"structured_content\": {\"result\": \"Python code successfully executed in directory: ./weather_prediction.py\"}}]' name='execute_python_code' tool_call_id='call_iXg8YzWZtg8jSFoEXnm7PJs9'",
+          "start_time": 3.06,
+          "latency": 2.1440622999944026,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "weather_data_retriever",
+              "execute_python_code"
+            ],
+            "actual": [
+              "weather_data_retriever",
+              "execute_python_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: weather_data_retriever\n- Expected parameters: start_date='03/01' (str), end_date='03/15' (str), range='2019-2023' (str), location='London' (str)\n- Actual parameters: start_date='03/01' (str), end_date='03/15' (str), range='2020-2024' (str), location='London' (str)\n- Issues: Parameter 'range' value differs ('2019-2023' vs '2020-2024'). Types match, but value mismatch is a major issue.\n\nTool: execute_python_code\n- Expected parameters: code_dir='weather_prediction.py' (str)\n- Actual parameters: code_dir='./weather_prediction.py' (str)\n- Issues: Parameter 'code_dir' value differs ('weather_prediction.py' vs './weather_prediction.py'). Types match, but value mismatch is a minor issue.\n\nSummary: Both tools have correct parameter names and types, but both have value mismatches in parameters. The 'range' parameter value mismatch is a major issue, and the 'code_dir' value difference is a minor issue. Overall, this results in a moderate penalty, scoring 0.5.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "weather_data_retriever",
+                "input_parameters": {
+                  "start_date": "03/01",
+                  "end_date": "03/15",
+                  "range": "2019-2023",
+                  "location": "London"
+                }
+              },
+              {
+                "name": "execute_python_code",
+                "input_parameters": {
+                  "code_dir": "weather_prediction.py"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_data_retriever",
+                "input_parameters": {
+                  "start_date": "03/01",
+                  "end_date": "03/15",
+                  "range": "2020-2024",
+                  "location": "London"
+                }
+              },
+              {
+                "name": "execute_python_code",
+                "input_parameters": {
+                  "code_dir": "./weather_prediction.py"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -18.7% (MAS: 48472 vs SAS: 59611 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 46520,
+        "completion_tokens": 1952,
+        "total_tokens": 48472,
+        "cached_tokens": 23168,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.14558,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 23229,
+            "completion_tokens": 139,
+            "total_tokens": 23368,
+            "cached_tokens": 9856,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 23291,
+            "completion_tokens": 1813,
+            "total_tokens": 25104,
+            "cached_tokens": 13312,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 432,
+            "completion_tokens": 283,
+            "total_tokens": 715,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.269,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 432,
+              "completion_tokens": 283,
+              "total_tokens": 715,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1112,
+            "completion_tokens": 525,
+            "total_tokens": 1637,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 6.69,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1112,
+              "completion_tokens": 525,
+              "total_tokens": 1637,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 36759,
+            "completion_tokens": 948,
+            "total_tokens": 37707,
+            "cached_tokens": 23168,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 11.274,
+            "tool_call_steps": {
+              "prompt_tokens": 23229,
+              "completion_tokens": 139,
+              "total_tokens": 23368,
+              "cached_tokens": 9856,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 13530,
+              "completion_tokens": 809,
+              "total_tokens": 14339,
+              "cached_tokens": 13312,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8217,
+            "completion_tokens": 196,
+            "total_tokens": 8413,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.296,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8217,
+              "completion_tokens": 196,
+              "total_tokens": 8413,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 28.902,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are given a quantum computing problem to calculate the probability of a certain amplitude for a given set of qubits. Write a program using the large language model Grok-3 to define the amplitude, ",
+      "expected_tools": [
+        {
+          "name": "generate_code",
+          "arguments": {
+            "prompt": "quantum computing problem to calculate amplitude, probability, optimize with simulated annealing, and visualize results",
+            "language": "python",
+            "model": "grok-3",
+            "output_name": "quantum_computing.py"
+          }
+        },
+        {
+          "name": "execute_python_code",
+          "arguments": {
+            "code_dir": "quantum_computing.py"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['execute_python_code', 'generate_code']",
+          "comparison": {
+            "expected": [
+              "generate_code",
+              "execute_python_code"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9687,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 9.4% (MAS: 19637 vs SAS: 17952 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 18679,
+        "completion_tokens": 958,
+        "total_tokens": 19637,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 4,
+        "tool_call_llm_calls": 0,
+        "cost": 0.061068,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "cached_tokens": 0,
+            "count": 0
+          },
+          "response_steps": {
+            "prompt_tokens": 18679,
+            "completion_tokens": 958,
+            "total_tokens": 19637,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 446,
+            "completion_tokens": 321,
+            "total_tokens": 767,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.688,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 446,
+              "completion_tokens": 321,
+              "total_tokens": 767,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1231,
+            "completion_tokens": 178,
+            "total_tokens": 1409,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.749,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1231,
+              "completion_tokens": 178,
+              "total_tokens": 1409,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 9066,
+            "completion_tokens": 204,
+            "total_tokens": 9270,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.279,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 9066,
+              "completion_tokens": 204,
+              "total_tokens": 9270,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 7936,
+            "completion_tokens": 255,
+            "total_tokens": 8191,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.162,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 7936,
+              "completion_tokens": 255,
+              "total_tokens": 8191,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 14.949,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Retrieve the trending topics and hashtags from social media platforms about charity race last month. Based on these trends, design promotional posts for the upcoming charity race and publish them on F",
+      "expected_tools": [
+        {
+          "name": "analyze_trends",
+          "arguments": {
+            "topic": "charity race",
+            "timeframe": "last_month"
+          }
+        },
+        {
+          "name": "create_post_cross_media",
+          "arguments": {
+            "instruction_dir": "content/posts/charity_race",
+            "platforms": [
+              "facebook",
+              "twitter",
+              "instagram"
+            ],
+            "postImmediately": true
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "content/posts/charity_race"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_d40f8fa0-d08b-47ed-bded-37dd5cc83af4\"}], {\"structured_content\": {\"result\": \"The topic of these files is about MOE, subject is large language model\"}}]' name='search_and_read_files' tool_call_id='call_utwxljQ3digG0YKtDpakc5x2'",
+          "start_time": 0.0,
+          "latency": 2.8509818999882555,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "analyze_trends",
+          "args": {
+            "topic": "charity race",
+            "timeframe": "last_month",
+            "region": "global",
+            "platform": "default"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No trend data available for platform \\'default\\' or \\'default\\' in the given context.\", \"id\": \"lc_c9ac42ef-eb16-442b-b3d2-d0ee9b6d42fa\"}], {\"structured_content\": {\"result\": \"No trend data available for platform \\'default\\' or \\'default\\' in the given context.\"}}]' name='analyze_trends' tool_call_id='call_24S5tIspFhIz7ryumoolSnNl'",
+          "start_time": 0.0,
+          "latency": 2.8553474999935133,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "create_post_cross_media",
+          "args": {
+            "instruction_dir": "content/posts/charity_race",
+            "platforms": [
+              "facebook",
+              "twitter/x",
+              "instagram"
+            ],
+            "postImmediately": true
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: Unsupported platforms requested: twitter/x\", \"id\": \"lc_1520225b-83d9-4dda-bf91-28c9e8239da7\"}], {\"structured_content\": {\"result\": \"Error: Unsupported platforms requested: twitter/x\"}}]' name='create_post_cross_media' tool_call_id='call_XvIBU61PsB3XtkIofipWHBlw'",
+          "start_time": 5.028,
+          "latency": 2.027127199995448,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "create_post_cross_media",
+          "args": {
+            "instruction_dir": "content/posts/charity_race",
+            "platforms": [
+              "facebook",
+              "twitter",
+              "instagram"
+            ],
+            "postImmediately": true
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Post created and published immediately on: facebook, twitter, instagram. Content prepared from directory requirements as requested.\", \"id\": \"lc_55379bef-85f7-4510-87c9-851aba2a51cf\"}], {\"structured_content\": {\"result\": \"Post created and published immediately on: facebook, twitter, instagram. Content prepared from directory requirements as requested.\"}}]' name='create_post_cross_media' tool_call_id='call_uU6tiQaE7iOAIb0fwKuiS7PM'",
+          "start_time": 9.576,
+          "latency": 2.0882345999998506,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['analyze_trends', 'create_post_cross_media']. Extra: ['search_and_read_files']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "analyze_trends",
+              "create_post_cross_media"
+            ],
+            "actual": [
+              "search_and_read_files",
+              "analyze_trends",
+              "create_post_cross_media",
+              "create_post_cross_media"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. analyze_trends:\n- Expected parameters: topic (str), timeframe (str)\n- Actual parameters: topic (str), timeframe (str), region (str), platform (str)\n- Issues: Extra parameters 'region' and 'platform' present in actual but not expected (penalize for extra parameters).\n- Parameter values and types match for expected parameters.\n\n2. create_post_cross_media (two calls present, but only one expected):\n- Expected parameters: instruction_dir (str), platforms (list), postImmediately (bool)\n\n- First actual call:\n  - platforms list differs: expected ['facebook', 'twitter', 'instagram'], actual ['facebook', 'twitter/x', 'instagram']\n  - 'twitter/x' vs 'twitter' is a value mismatch (not semantically equivalent).\n  - Other parameters match in name and type.\n\n- Second actual call:\n  - Matches expected parameters exactly in names, types, and values.\n\n- Since there are two actual calls for one expected, we consider the best match (the second call) as correct.\n\nSummary:\n- analyze_trends: penalized for extra parameters.\n- create_post_cross_media: one call has value mismatch, the other call matches perfectly.\n\nOverall, minor issues due to extra parameters in analyze_trends and one incorrect create_post_cross_media call, but one correct create_post_cross_media call exists.\n\nScore rationale:\n- analyze_trends: minor penalty for extra parameters.\n- create_post_cross_media: one call perfect, one call incorrect.\n- Combined score around 0.6 reflecting these issues.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "analyze_trends",
+                "input_parameters": {
+                  "topic": "charity race",
+                  "timeframe": "last_month"
+                }
+              },
+              {
+                "name": "create_post_cross_media",
+                "input_parameters": {
+                  "instruction_dir": "content/posts/charity_race",
+                  "platforms": [
+                    "facebook",
+                    "twitter",
+                    "instagram"
+                  ],
+                  "postImmediately": true
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "analyze_trends",
+                "input_parameters": {
+                  "topic": "charity race",
+                  "timeframe": "last_month",
+                  "region": "global",
+                  "platform": "default"
+                }
+              },
+              {
+                "name": "create_post_cross_media",
+                "input_parameters": {
+                  "instruction_dir": "content/posts/charity_race",
+                  "platforms": [
+                    "facebook",
+                    "twitter/x",
+                    "instagram"
+                  ],
+                  "postImmediately": true
+                }
+              },
+              {
+                "name": "create_post_cross_media",
+                "input_parameters": {
+                  "instruction_dir": "content/posts/charity_race",
+                  "platforms": [
+                    "facebook",
+                    "twitter",
+                    "instagram"
+                  ],
+                  "postImmediately": true
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.6",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.6
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9237,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 22.9% (MAS: 51029 vs SAS: 41524 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 49472,
+        "completion_tokens": 1557,
+        "total_tokens": 51029,
+        "cached_tokens": 29312,
+        "reasoning_tokens": 0,
+        "llm_calls": 7,
+        "tool_call_llm_calls": 3,
+        "cost": 0.147035,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 29260,
+            "completion_tokens": 344,
+            "total_tokens": 29604,
+            "cached_tokens": 19328,
+            "count": 3
+          },
+          "response_steps": {
+            "prompt_tokens": 20212,
+            "completion_tokens": 1213,
+            "total_tokens": 21425,
+            "cached_tokens": 9984,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 433,
+            "completion_tokens": 434,
+            "total_tokens": 867,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.455,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 433,
+              "completion_tokens": 434,
+              "total_tokens": 867,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1399,
+            "completion_tokens": 220,
+            "total_tokens": 1619,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.682,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1399,
+              "completion_tokens": 220,
+              "total_tokens": 1619,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 39444,
+            "completion_tokens": 558,
+            "total_tokens": 40002,
+            "cached_tokens": 29312,
+            "reasoning_tokens": 0,
+            "llm_calls": 4,
+            "tool_call_llm_calls": 3,
+            "total_latency": 10.175,
+            "tool_call_steps": {
+              "prompt_tokens": 29260,
+              "completion_tokens": 344,
+              "total_tokens": 29604,
+              "cached_tokens": 19328,
+              "count": 3
+            },
+            "response_steps": {
+              "prompt_tokens": 10184,
+              "completion_tokens": 214,
+              "total_tokens": 10398,
+              "cached_tokens": 9984,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8196,
+            "completion_tokens": 345,
+            "total_tokens": 8541,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.881,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8196,
+              "completion_tokens": 345,
+              "total_tokens": 8541,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 30.215,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I have uploaded an image named street_scene_people.jpg extracted from a video which is about a street scene containing multiple people , first detect all the person targets in the scene, and then perf",
+      "expected_tools": [
+        {
+          "name": "detect_objects",
+          "arguments": {
+            "image_path": "street_scene_people.jpg"
+          }
+        },
+        {
+          "name": "estimate_pose",
+          "arguments": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "detect_objects",
+          "args": {
+            "image_path": "street_scene_people.jpg"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Detected objects:\\\\n - class=\\'person\\', bbox=[50, 80, 180, 400], confidence=0.95\\\\n - class=\\'person\\', bbox=[220, 60, 350, 390], confidence=0.92\\\\n - class=\\'person\\', bbox=[400, 100, 520, 420], confidence=0.88\", \"id\": \"lc_0535419c-5462-459c-b3f5-1c9925e6a90d\"}], {\"structured_content\": {\"result\": \"Detected objects:\\\\n - class=\\'person\\', bbox=[50, 80, 180, 400], confidence=0.95\\\\n - class=\\'person\\', bbox=[220, 60, 350, 390], confidence=0.92\\\\n - class=\\'pe",
+          "start_time": 0.0,
+          "latency": 2.0814635999995517,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "estimate_pose",
+          "args": {
+            "object_regions": [
+              {
+                "x": 50,
+                "y": 80,
+                "width": 130,
+                "height": 320
+              },
+              {
+                "x": 220,
+                "y": 60,
+                "width": 130,
+                "height": 330
+              },
+              {
+                "x": 400,
+                "y": 100,
+                "width": 120,
+                "height": 320
+              }
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\n  \\\\\"pose_estimations\\\\\": [\\\\n    {\\\\n      \\\\\"region\\\\\": {\\\\n        \\\\\"x\\\\\": 50,\\\\n        \\\\\"y\\\\\": 80,\\\\n        \\\\\"width\\\\\": 130,\\\\n        \\\\\"height\\\\\": 320\\\\n      },\\\\n      \\\\\"keypoints\\\\\": [\\\\n        {\\\\n          \\\\\"part\\\\\": \\\\\"head\\\\\",\\\\n          \\\\\"x\\\\\": 115,\\\\n          \\\\\"y\\\\\": 90,\\\\n          \\\\\"confidence\\\\\": 0.98\\\\n        },\\\\n        {\\\\n          \\\\\"part\\\\\": \\\\\"left_shoulder\\\\\",\\\\n          \\\\\"x\\\\\": 95,\\\\n          \\\\\"y\\\\\": 140,\\\\n  ",
+          "start_time": 4.098,
+          "latency": 2.1300235000089742,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "detect_objects",
+              "estimate_pose"
+            ],
+            "actual": [
+              "detect_objects",
+              "estimate_pose"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have matching parameter names and values with correct types. For 'detect_objects', the expected and actual parameter 'image_path' is 'street_scene_people.jpg' of type string, matching exactly. For 'estimate_pose', the expected and actual parameter 'object_regions' is a list of three region dictionaries with identical numeric values for 'x', 'y', 'width', and 'height', and the type is correctly a list in both cases. There are no extra or missing parameters, and no type mismatches found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "detect_objects",
+                "input_parameters": {
+                  "image_path": "street_scene_people.jpg"
+                }
+              },
+              {
+                "name": "estimate_pose",
+                "input_parameters": {
+                  "object_regions": [
+                    {
+                      "x": 50,
+                      "y": 80,
+                      "width": 130,
+                      "height": 320
+                    },
+                    {
+                      "x": 220,
+                      "y": 60,
+                      "width": 130,
+                      "height": 330
+                    },
+                    {
+                      "x": 400,
+                      "y": 100,
+                      "width": 120,
+                      "height": 320
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8614,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 41.6% (MAS: 44878 vs SAS: 31696 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 43278,
+        "completion_tokens": 1600,
+        "total_tokens": 44878,
+        "cached_tokens": 19584,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.132195,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 19410,
+            "completion_tokens": 261,
+            "total_tokens": 19671,
+            "cached_tokens": 9600,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 23868,
+            "completion_tokens": 1339,
+            "total_tokens": 25207,
+            "cached_tokens": 9984,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 417,
+            "completion_tokens": 191,
+            "total_tokens": 608,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.571,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 417,
+              "completion_tokens": 191,
+              "total_tokens": 608,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1077,
+            "completion_tokens": 155,
+            "total_tokens": 1232,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.251,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1077,
+              "completion_tokens": 155,
+              "total_tokens": 1232,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 33157,
+            "completion_tokens": 990,
+            "total_tokens": 34147,
+            "cached_tokens": 19584,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 11.981,
+            "tool_call_steps": {
+              "prompt_tokens": 19410,
+              "completion_tokens": 261,
+              "total_tokens": 19671,
+              "cached_tokens": 9600,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 13747,
+              "completion_tokens": 729,
+              "total_tokens": 14476,
+              "cached_tokens": 9984,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8627,
+            "completion_tokens": 264,
+            "total_tokens": 8891,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.785,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8627,
+              "completion_tokens": 264,
+              "total_tokens": 8891,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 24.86,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm working on a project about product categories and their performance in the market. I want to analyze sales trends for specific categories such as Liquor and Bank in the Shanghai market. I’d like t",
+      "expected_tools": [
+        {
+          "name": "get_realtime_market_data",
+          "arguments": {
+            "symbols": [
+              "LIQUOR",
+              "BANK"
+            ],
+            "source": "xueqiu",
+            "fields": [
+              "symbol",
+              "name",
+              "last",
+              "change",
+              "change_pct",
+              "volume",
+              "turnover",
+              "market_cap",
+              "timestamp"
+            ],
+            "market": "SSE"
+          }
+        },
+        {
+          "name": "analyze_sales",
+          "arguments": {
+            "input_data_link": "https://xueqiu.marketdata.local/SSE_latest_snapshot.json"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_stock_byname",
+          "args": {
+            "name": "Liquor"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No stocks found matching name \\'Liquor\\'.\", \"id\": \"lc_ca710e88-c81a-4ce7-bede-55603d438595\"}], {\"structured_content\": {\"result\": \"No stocks found matching name \\'Liquor\\'.\"}}]' name='search_stock_byname' tool_call_id='call_Cd4YTv8x5uxVL5m6TioWSD0p'",
+          "start_time": 0.0,
+          "latency": 2.9369172000006074,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_stock_byname",
+          "args": {
+            "name": "Bank"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No stocks found matching name \\'Bank\\'.\", \"id\": \"lc_b47c941a-91e9-460d-8b74-d954efdfcf75\"}], {\"structured_content\": {\"result\": \"No stocks found matching name \\'Bank\\'.\"}}]' name='search_stock_byname' tool_call_id='call_no6ebowfASRIfRuYYWdJcxv7'",
+          "start_time": 0.0,
+          "latency": 2.9305014999990817,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "0/2 expected tools found, 2 total calls. Missing: ['analyze_sales', 'get_realtime_market_data']. Extra: ['search_stock_byname']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_realtime_market_data",
+              "analyze_sales"
+            ],
+            "actual": [
+              "search_stock_byname",
+              "search_stock_byname"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -4.3% (MAS: 33882 vs SAS: 35417 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 31913,
+        "completion_tokens": 1969,
+        "total_tokens": 33882,
+        "cached_tokens": 10624,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.109317,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 10502,
+            "completion_tokens": 162,
+            "total_tokens": 10664,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 21411,
+            "completion_tokens": 1807,
+            "total_tokens": 23218,
+            "cached_tokens": 10624,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 442,
+            "completion_tokens": 338,
+            "total_tokens": 780,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.062,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 442,
+              "completion_tokens": 338,
+              "total_tokens": 780,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1498,
+            "completion_tokens": 710,
+            "total_tokens": 2208,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 9.409,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1498,
+              "completion_tokens": 710,
+              "total_tokens": 2208,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 21314,
+            "completion_tokens": 411,
+            "total_tokens": 21725,
+            "cached_tokens": 10624,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 7.064,
+            "tool_call_steps": {
+              "prompt_tokens": 10502,
+              "completion_tokens": 162,
+              "total_tokens": 10664,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 10812,
+              "completion_tokens": 249,
+              "total_tokens": 11061,
+              "cached_tokens": 10624,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8659,
+            "completion_tokens": 510,
+            "total_tokens": 9169,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 8.597,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8659,
+              "completion_tokens": 510,
+              "total_tokens": 9169,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 33.108,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "My company is organizing a charity basketball tournament and we need to invite some NBA players. The tournament organizer wants to plan a surprise activity, so I need to choose two players whose last ",
+      "expected_tools": [
+        {
+          "name": "get_teams",
+          "arguments": {
+            "nameFilter": "NBA"
+          }
+        },
+        {
+          "name": "get_players",
+          "arguments": {
+            "target_players": [
+              "Anthony Davis",
+              "Donte DiVincenzo"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_teams",
+          "args": {
+            "nameFilter": "NBA"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Teams in NBA:\\\\n- Los Angeles Lakers\\\\n   • LeBron James (Forward)\\\\n   • Anthony Davis (Forward-Center)\\\\n   • D\\'Angelo Russell (Guard)\\\\n   • Russell Westbrook (Guard)\\\\n   • Thomas Bryant (Center)\\\\n   • Troy Brown Jr. (Forward)\\\\n   • Austin Reaves (Guard)\\\\n   • Lonnie Walker IV (Guard)\\\\n   • Patrick Beverley (Guard)\\\\n   • Wenyen Gabriel (Forward)\\\\n- Golden State Warriors\\\\n   • Stephen Curry (Guard)\\\\n   • Klay Thompson (Guard)\\\\n   • Draymond Green",
+          "start_time": 0.0,
+          "latency": 1.9361894000030588,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Anthony Davis"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Player: Anthony Davis\\\\nTeam: Los Angeles Lakers\\\\nPosition: Forward-Center\\\\nContact: anthony.davis@nba.com\\\\nCareer Achievements: NBA champion (2020), 8× NBA All-Star, 4× NBA All-Defensive First Team, NBA All-Star Game MVP (2017)\\\\nFun Fact: Anthony Davis is known for his exceptional defensive skills and was nicknamed \\'The Brow\\' due to his distinctive unibrow.\\\\n\", \"id\": \"lc_19e4bd4c-0223-4a22-8b59-20adb34fafbf\"}], {\"structured_content\": {\"result\": \"Playe",
+          "start_time": 3.742,
+          "latency": 2.9960380000120495,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "Donte DiVincenzo"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Player: Donte DiVincenzo\\\\nTeam: Golden State Warriors\\\\nPosition: Guard\\\\nContact: donte.divincenzo@nba.com\\\\nCareer Achievements: NBA champion (2021), NCAA champion (2018), NCAA Final Four Most Outstanding Player (2018)\\\\nFun Fact: Donte DiVincenzo was a key player in Villanova\\'s 2018 NCAA championship run and is known for his clutch performances.\\\\n\", \"id\": \"lc_82a9b30b-4468-40db-8365-1ca4eae7a33f\"}], {\"structured_content\": {\"result\": \"Player: Donte DiVin",
+          "start_time": 3.742,
+          "latency": 2.994508899995708,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_players', 'get_teams']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_teams",
+              "get_players"
+            ],
+            "actual": [
+              "get_teams",
+              "get_players",
+              "get_players"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. get_teams:\n- Expected parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Actual parameters: {\"nameFilter\": \"NBA\"} (type str)\n- Match: Perfect match in parameter name, value, and type.\n\n2. get_players:\n- Expected parameters: {\"target_players\": [\"Anthony Davis\", \"Donte DiVincenzo\"]} (type list)\n- Actual calls split into two separate calls each with one player:\n  a) {\"target_players\": [\"Anthony Davis\"]} (type list)\n  b) {\"target_players\": [\"Donte DiVincenzo\"]} (type list)\n- Issue: The expected single call with both players is split into two calls each with a subset of the list.\n- According to the rules, the arguments must match exactly. Splitting the list into two calls is not equivalent to one call with the full list.\n- This is a major issue (missing elements in each call compared to expected).\n\nNo type mismatches or extra/missing parameters in individual calls, but the splitting causes semantic mismatch.\n\nOverall:\n- get_teams is fully correct.\n- get_players calls do not match expected argument structure (expected one call with two players, actual two calls each with one player).\n\nScore rationale:\n- One tool fully correct.\n- One tool with major semantic mismatch (splitting list into multiple calls).\n- No type mismatches or extra parameters.\n\nHence, score is around 0.7 reflecting a significant but not total failure.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis",
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Anthony Davis"
+                  ]
+                }
+              },
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "Donte DiVincenzo"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.99,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 3.0% (MAS: 40370 vs SAS: 39197 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 39223,
+        "completion_tokens": 1147,
+        "total_tokens": 40370,
+        "cached_tokens": 9344,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.115263,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 19213,
+            "completion_tokens": 203,
+            "total_tokens": 19416,
+            "cached_tokens": 9344,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 20010,
+            "completion_tokens": 944,
+            "total_tokens": 20954,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 441,
+            "completion_tokens": 247,
+            "total_tokens": 688,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.71,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 441,
+              "completion_tokens": 247,
+              "total_tokens": 688,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 971,
+            "completion_tokens": 347,
+            "total_tokens": 1318,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.18,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 971,
+              "completion_tokens": 347,
+              "total_tokens": 1318,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 29699,
+            "completion_tokens": 471,
+            "total_tokens": 30170,
+            "cached_tokens": 9344,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 9.132,
+            "tool_call_steps": {
+              "prompt_tokens": 19213,
+              "completion_tokens": 203,
+              "total_tokens": 19416,
+              "cached_tokens": 9344,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 10486,
+              "completion_tokens": 268,
+              "total_tokens": 10754,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8112,
+            "completion_tokens": 82,
+            "total_tokens": 8194,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 1.835,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8112,
+              "completion_tokens": 82,
+              "total_tokens": 8194,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 23.833,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "It's 2024, I'm a music producer looking for inspiration for my next project. Can you find the news about the top Billboard 200 albums from last year? Additionally, suggest 4 tracks on Deezer that has ",
+      "expected_tools": [
+        {
+          "name": "search_news",
+          "arguments": {
+            "query": "Billboard 200 top albums 2023",
+            "start_date": "2023-01-01",
+            "end_date": "2023-12-31"
+          }
+        },
+        {
+          "name": "recommend_musictracks",
+          "arguments": {
+            "music_name": [
+              "Guts"
+            ],
+            "result_num": 4
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_news",
+          "args": {
+            "query": "Billboard 200 top albums 2023 year-end No. 1 album news Billboard",
+            "start_date": "2023-01-01",
+            "end_date": "2024-12-31",
+            "max_result": 5
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Headline: Billboard 200: Top Albums of 2023 Announced\\\\nSource: Billboard\\\\nDate: 2023-12-31\\\\nSummary: The Billboard 200 for 2023 highlights chart-topping albums from artists like Taylor Swift, Morgan Wallen, and SZA. The Best Album of the Year is \\'Guts\\' by Olivia Rodrigo.\\\\nLink: https://www.billboard.com/top-albums-2023\\\\n\\\\nHeadline: Year-End Music Charts 2023: Trends and Highlights\\\\nSource: Rolling Stone\\\\nDate: 2023-12-29\\\\nSummary: An in-depth look ",
+          "start_time": 0.0,
+          "latency": 2.0459461999998894,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "Guts"
+            ],
+            "result_num": 4
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"[{\\'title\\': \\'vampire\\', \\'artist\\': \\'Olivia Rodrigo\\', \\'album\\': \\'GUTS\\', \\'genre\\': \\'Pop Rock\\', \\'release_date\\': \\'2023-06-30\\', \\'preview_url\\': \\'https://mockstreaming.com/preview/olivia_rodrigo_vampire\\'}, {\\'title\\': \\'bad idea right?\\', \\'artist\\': \\'Olivia Rodrigo\\', \\'album\\': \\'GUTS\\', \\'genre\\': \\'Pop Punk\\', \\'release_date\\': \\'2023-08-11\\', \\'preview_url\\': \\'https://mockstreaming.com/preview/olivia_rodrigo_bad_idea_right\\'}, {\\'title\\': \\",
+          "start_time": 4.378,
+          "latency": 2.0701681000064127,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_news",
+              "recommend_musictracks"
+            ],
+            "actual": [
+              "search_news",
+              "recommend_musictracks"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: search_news\n- Expected parameters: query (str), start_date (str), end_date (str)\n- Actual parameters: query (str), start_date (str), end_date (str), max_result (int)\n- Issues:\n  * query value differs (expected: 'Billboard 200 top albums 2023', actual: 'Billboard 200 top albums 2023 year-end No. 1 album news Billboard') — value mismatch\n  * end_date value differs (expected: '2023-12-31', actual: '2024-12-31') — value mismatch\n  * Extra parameter 'max_result' present in actual but not expected — penalize\n\nTool: recommend_musictracks\n- Expected parameters: music_name (list), result_num (int)\n- Actual parameters: music_name (list), result_num (int)\n- No issues found, parameters and types match exactly.\n\nSummary:\n- search_news has multiple issues: parameter value mismatches and an extra parameter.\n- recommend_musictracks matches perfectly.\n- Due to major issues in search_news, score is 0.5 indicating significant problems but not complete failure.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "Billboard 200 top albums 2023",
+                  "start_date": "2023-01-01",
+                  "end_date": "2023-12-31"
+                }
+              },
+              {
+                "name": "recommend_musictracks",
+                "input_parameters": {
+                  "music_name": [
+                    "Guts"
+                  ],
+                  "result_num": 4
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "Billboard 200 top albums 2023 year-end No. 1 album news Billboard",
+                  "start_date": "2023-01-01",
+                  "end_date": "2024-12-31",
+                  "max_result": 5
+                }
+              },
+              {
+                "name": "recommend_musictracks",
+                "input_parameters": {
+                  "music_name": [
+                    "Guts"
+                  ],
+                  "result_num": 4
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8974,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 30.8% (MAS: 41758 vs SAS: 31929 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 40556,
+        "completion_tokens": 1202,
+        "total_tokens": 41758,
+        "cached_tokens": 19712,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.11942,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 19707,
+            "completion_tokens": 221,
+            "total_tokens": 19928,
+            "cached_tokens": 9344,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 20849,
+            "completion_tokens": 981,
+            "total_tokens": 21830,
+            "cached_tokens": 10368,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 417,
+            "completion_tokens": 233,
+            "total_tokens": 650,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.737,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 417,
+              "completion_tokens": 233,
+              "total_tokens": 650,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 968,
+            "completion_tokens": 198,
+            "total_tokens": 1166,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.457,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 968,
+              "completion_tokens": 198,
+              "total_tokens": 1166,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 30804,
+            "completion_tokens": 641,
+            "total_tokens": 31445,
+            "cached_tokens": 19712,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 10.846,
+            "tool_call_steps": {
+              "prompt_tokens": 19707,
+              "completion_tokens": 221,
+              "total_tokens": 19928,
+              "cached_tokens": 9344,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 11097,
+              "completion_tokens": 420,
+              "total_tokens": 11517,
+              "cached_tokens": 10368,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8367,
+            "completion_tokens": 130,
+            "total_tokens": 8497,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.625,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8367,
+              "completion_tokens": 130,
+              "total_tokens": 8497,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 23.819,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on the survey results from 'survey_china_drones_2024.csv', the survey is in Chinese, analyze the attitudes and needs of Chinese consumers regarding the use of drones, summarize the results, and ",
+      "expected_tools": [
+        {
+          "name": "export_survey_responses",
+          "arguments": {
+            "surveyId": "survey_china_drones_2024",
+            "documentType": "csv",
+            "language": "zh"
+          }
+        },
+        {
+          "name": "generate_summary_report",
+          "arguments": {
+            "data_link": "https://data.example.com/exports/survey_china_drones_2024_zh_records.pdf"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "survey_china_drones_2024.csv"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_7ba3f7bb-fdf9-4674-87bf-308ec2dd54d9\"}], {\"structured_content\": {\"result\": \"The topic of these files is about MOE, subject is large language model\"}}]' name='search_and_read_files' tool_call_id='call_vLqyjCgXErZk2mfJ6dtPA3X1'",
+          "start_time": 0.0,
+          "latency": 2.0182373999996344,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_comprehensive_analysis",
+          "args": {
+            "file_path": "survey_china_drones_2024.csv"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Comprehensive Analysis for file: survey_china_drones_2024.csv\\\\nFile Path: survey_china_drones_2024.csv\\\\n\\\\nContent Statistics:\\\\n  - Word Count: 1,247\\\\n  - Character Count: 7,892\\\\n  - Line Count: 156\\\\n\\\\nKey Findings:\\\\n  - File contains 1,247 words across 156 lines\\\\n  - Average words per line: 8.0\\\\n  - File size: 7,892 characters\\\\n  - Content appears to be well-structured with consistent formatting\\\\n  - Multiple sections identified with clear topic ",
+          "start_time": 3.101,
+          "latency": 2.0074659999954747,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "0/2 expected tools found, 2 total calls. Missing: ['export_survey_responses', 'generate_summary_report']. Extra: ['get_comprehensive_analysis', 'search_and_read_files']",
+          "comparison": {
+            "expected": [
+              "export_survey_responses",
+              "generate_summary_report"
+            ],
+            "actual": [
+              "search_and_read_files",
+              "get_comprehensive_analysis"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8873,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 33.8% (MAS: 36376 vs SAS: 27183 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 34968,
+        "completion_tokens": 1408,
+        "total_tokens": 36376,
+        "cached_tokens": 17024,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.10854,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 17073,
+            "completion_tokens": 133,
+            "total_tokens": 17206,
+            "cached_tokens": 8448,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 17895,
+            "completion_tokens": 1275,
+            "total_tokens": 19170,
+            "cached_tokens": 8576,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 411,
+            "completion_tokens": 308,
+            "total_tokens": 719,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.029,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 411,
+              "completion_tokens": 308,
+              "total_tokens": 719,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1149,
+            "completion_tokens": 423,
+            "total_tokens": 1572,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.897,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1149,
+              "completion_tokens": 423,
+              "total_tokens": 1572,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 26185,
+            "completion_tokens": 452,
+            "total_tokens": 26637,
+            "cached_tokens": 17024,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 7.228,
+            "tool_call_steps": {
+              "prompt_tokens": 17073,
+              "completion_tokens": 133,
+              "total_tokens": 17206,
+              "cached_tokens": 8448,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 9112,
+              "completion_tokens": 319,
+              "total_tokens": 9431,
+              "cached_tokens": 8576,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 7223,
+            "completion_tokens": 225,
+            "total_tokens": 7448,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.612,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 7223,
+              "completion_tokens": 225,
+              "total_tokens": 7448,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 23.822,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am organizing a conference and would like to invite companies similar to 'IBM'. Can you retrieve the list of 5 similar companies along with their names, revenue growth, description, logo image URL, ",
+      "expected_tools": [
+        {
+          "name": "octagon_companies_agent",
+          "arguments": {
+            "seed_company": "IBM",
+            "limit": 5
+          }
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "arguments": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "octagon_companies_agent",
+          "args": {
+            "seed_company": "IBM",
+            "limit": 5
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"[\\\\n  \\\\\"Microsoft\\\\\",\\\\n  \\\\\"Oracle\\\\\",\\\\n  \\\\\"Accenture\\\\\",\\\\n  \\\\\"Google\\\\\",\\\\n  \\\\\"SAP\\\\\"\\\\n]\", \"id\": \"lc_8542b76f-4519-4be4-9f6c-ba72d92a66a5\"}], {\"structured_content\": {\"result\": \"[\\\\n  \\\\\"Microsoft\\\\\",\\\\n  \\\\\"Oracle\\\\\",\\\\n  \\\\\"Accenture\\\\\",\\\\n  \\\\\"Google\\\\\",\\\\n  \\\\\"SAP\\\\\"\\\\n]\"}}]' name='octagon_companies_agent' tool_call_id='call_uc10mjtDOIiqEDcKIbShYIMX'",
+          "start_time": 0.0,
+          "latency": 2.0442418000020552,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "octagon_deepresearch_agent",
+          "args": {
+            "companies": [
+              "accenture",
+              "google",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "contact_info",
+              "country",
+              "description",
+              "hq_location",
+              "linkedin_url",
+              "logo_url",
+              "name",
+              "revenue_growth"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\n  \\\\\"accenture\\\\\": {\\\\n    \\\\\"contact_info\\\\\": {\\\\n      \\\\\"website\\\\\": \\\\\"https://www.accenture.com\\\\\",\\\\n      \\\\\"phone\\\\\": \\\\\"+353-1-646-2000\\\\\",\\\\n      \\\\\"email\\\\\": \\\\\"info@accenture.com\\\\\",\\\\n      \\\\\"address\\\\\": \\\\\"1 Grand Canal Square, Grand Canal Harbour, Dublin 2, Ireland\\\\\"\\\\n    },\\\\n    \\\\\"country\\\\\": \\\\\"Ireland\\\\\",\\\\n    \\\\\"description\\\\\": \\\\\"Accenture provides consulting, technology, and outsourcing services worldwide.\\\\\",\\\\n    \\\\\"hq_locat",
+          "start_time": 4.19,
+          "latency": 2.2058044000004884,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent"
+            ],
+            "actual": [
+              "octagon_companies_agent",
+              "octagon_deepresearch_agent"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'octagon_companies_agent', expected parameters are 'seed_company' (str) with value 'IBM' and 'limit' (int) with value 5; actual matches exactly with no extra or missing parameters and correct types. For 'octagon_deepresearch_agent', expected parameters are 'companies' (list) and 'fields' (list) with identical values; actual matches exactly with no extra or missing parameters and correct types. No type mismatches or parameter discrepancies found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "octagon_companies_agent",
+                "input_parameters": {
+                  "seed_company": "IBM",
+                  "limit": 5
+                }
+              },
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "contact_info",
+                    "country",
+                    "description",
+                    "hq_location",
+                    "linkedin_url",
+                    "logo_url",
+                    "name",
+                    "revenue_growth"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9013,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 29.6% (MAS: 42760 vs SAS: 32989 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 41092,
+        "completion_tokens": 1668,
+        "total_tokens": 42760,
+        "cached_tokens": 19200,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.12775,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 19284,
+            "completion_tokens": 195,
+            "total_tokens": 19479,
+            "cached_tokens": 9472,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 21808,
+            "completion_tokens": 1473,
+            "total_tokens": 23281,
+            "cached_tokens": 9728,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 436,
+            "completion_tokens": 395,
+            "total_tokens": 831,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.143,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 436,
+              "completion_tokens": 395,
+              "total_tokens": 831,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1265,
+            "completion_tokens": 205,
+            "total_tokens": 1470,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.673,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1265,
+              "completion_tokens": 205,
+              "total_tokens": 1470,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 30998,
+            "completion_tokens": 846,
+            "total_tokens": 31844,
+            "cached_tokens": 19200,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 10.835,
+            "tool_call_steps": {
+              "prompt_tokens": 19284,
+              "completion_tokens": 195,
+              "total_tokens": 19479,
+              "cached_tokens": 9472,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 11714,
+              "completion_tokens": 651,
+              "total_tokens": 12365,
+              "cached_tokens": 9728,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8393,
+            "completion_tokens": 222,
+            "total_tokens": 8615,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.471,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8393,
+              "completion_tokens": 222,
+              "total_tokens": 8615,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 26.432,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are a game development expert and I want to know how to build a video game with a battle royal style using Unreal Engine 5. In this process, I need to first generate 10 3D environment assets suita",
+      "expected_tools": [
+        {
+          "name": "generate_3d_assets",
+          "arguments": {
+            "player_bio": "battle royal style",
+            "num_assets": "10"
+          }
+        },
+        {
+          "name": "strategy_guide",
+          "arguments": {
+            "situation": "combine the 3D environment assets to conduct strategic analysis and design of battle mechanisms and gameplay"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "generate_3d_assets",
+          "args": {
+            "player_bio": "realistic tactical battle royale style",
+            "num_assets": "10"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"player_bio\\\\\": \\\\\"realistic tactical battle royale style\\\\\", \\\\\"requested_assets\\\\\": 10, \\\\\"generated_assets\\\\\": [{\\\\\"prompt\\\\\": \\\\\"Generate a generic open field battleground for realistic tactical battle royale style\\\\\", \\\\\"glb_data\\\\\": \\\\\"<GLB_FILE_DATA_GENERIC_FIELD_BASE64>\\\\\"}, {\\\\\"prompt\\\\\": \\\\\"Create a small urban combat zone adapted to realistic tactical battle royale style style\\\\\", \\\\\"glb_data\\\\\": \\\\\"<GLB_FILE_DATA_GENERIC_URBAN_BASE64>\\\\\"}, {\\\\\"",
+          "start_time": 0.0,
+          "latency": 2.0566740999929607,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "strategy_guide",
+          "args": {
+            "situation": "Design a battle royale-style game in Unreal Engine 5 using a realistic tactical environment kit. Start from 10 generated 3D environment assets suitable for battle scenes, represented by repeated open field battlegrounds and small urban combat zones, and expand them into a practical combat-space set including: modular ruined warehouse, watchtower/radio tower, small rural house set, concrete road checkpoint, rock cliff formation, forest tree cluster with fallen logs, river crossing bridge, abandoned gas station, shipping container yard, and hilltop communications bunker. Analyze how to assemble these into a large playable map, how they affect player flow, sightlines, cover density, verticality, chokepoints, traversal, loot risk-reward, shrinking safe zone behavior, endgame variety, squad tactics, and technical optimization in UE5. Provide recommendations for battle mechanics and gameplay loops informed by these environments."
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Strategic Analysis for \\'Design a battle royale-style game in Unreal Engine 5 using a realistic tactical environment kit. Start from 10 generated 3D environment assets suitable for battle scenes, represented by repeated open field battlegrounds and small urban combat zones, and expand them into a practical combat-space set including: modular ruined warehouse, watchtower/radio tower, small rural house set, concrete road checkpoint, rock cliff formation, forest",
+          "start_time": 5.294,
+          "latency": 2.096799999999348,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "generate_3d_assets",
+              "strategy_guide"
+            ],
+            "actual": [
+              "generate_3d_assets",
+              "strategy_guide"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: generate_3d_assets - Expected parameters: player_bio='battle royal style' (str), num_assets='10' (str). Actual parameters: player_bio='realistic tactical battle royale style' (str), num_assets='10' (str). Issue: player_bio value differs semantically (expected a simpler phrase, actual is more detailed and different). No type mismatch or parameter name issues. Tool: strategy_guide - Expected parameter: situation='combine the 3D environment assets to conduct strategic analysis and design of battle mechanisms and gameplay' (str). Actual parameter: situation='Design a battle royale-style game in Unreal Engine 5 using a realistic tactical environment kit. Start from 10 generated 3D environment assets suitable for battle scenes, represented by repeated open field battlegrounds and small urban combat zones, and expand them into a practical combat-space set including: modular ruined warehouse, watchtower/radio tower, small rural house set, concrete road checkpoint, rock cliff formation, forest tree cluster with fallen logs, river crossing bridge, abandoned gas station, shipping container yard, and hilltop communications bunker. Analyze how to assemble these into a large playable map, how they affect player flow, sightlines, cover density, verticality, chokepoints, traversal, loot risk-reward, shrinking safe zone behavior, endgame variety, squad tactics, and technical optimization in UE5. Provide recommendations for battle mechanics and gameplay loops informed by these environments.' (str). Issue: situation parameter value differs significantly in content though both are strings and parameter names match. No type mismatches or missing/extra parameters. Summary: Both tools have correct parameter names and types, but both have significant semantic differences in parameter values from expected. According to rules, value differences are major issues, so score is reduced to 0.7.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "generate_3d_assets",
+                "input_parameters": {
+                  "player_bio": "battle royal style",
+                  "num_assets": "10"
+                }
+              },
+              {
+                "name": "strategy_guide",
+                "input_parameters": {
+                  "situation": "combine the 3D environment assets to conduct strategic analysis and design of battle mechanisms and gameplay"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "generate_3d_assets",
+                "input_parameters": {
+                  "player_bio": "realistic tactical battle royale style",
+                  "num_assets": "10"
+                }
+              },
+              {
+                "name": "strategy_guide",
+                "input_parameters": {
+                  "situation": "Design a battle royale-style game in Unreal Engine 5 using a realistic tactical environment kit. Start from 10 generated 3D environment assets suitable for battle scenes, represented by repeated open field battlegrounds and small urban combat zones, and expand them into a practical combat-space set including: modular ruined warehouse, watchtower/radio tower, small rural house set, concrete road checkpoint, rock cliff formation, forest tree cluster with fallen logs, river crossing bridge, abandoned gas station, shipping container yard, and hilltop communications bunker. Analyze how to assemble these into a large playable map, how they affect player flow, sightlines, cover density, verticality, chokepoints, traversal, loot risk-reward, shrinking safe zone behavior, endgame variety, squad tactics, and technical optimization in UE5. Provide recommendations for battle mechanics and gameplay loops informed by these environments."
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7211,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 83.7% (MAS: 57159 vs SAS: 31119 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 49974,
+        "completion_tokens": 7185,
+        "total_tokens": 57159,
+        "cached_tokens": 12800,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.23271,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 24343,
+            "completion_tokens": 305,
+            "total_tokens": 24648,
+            "cached_tokens": 0,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 25631,
+            "completion_tokens": 6880,
+            "total_tokens": 32511,
+            "cached_tokens": 12800,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 437,
+            "completion_tokens": 443,
+            "total_tokens": 880,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 6.586,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 437,
+              "completion_tokens": 443,
+              "total_tokens": 880,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 3467,
+            "completion_tokens": 291,
+            "total_tokens": 3758,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.699,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 3467,
+              "completion_tokens": 291,
+              "total_tokens": 3758,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 37756,
+            "completion_tokens": 4061,
+            "total_tokens": 41817,
+            "cached_tokens": 12800,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 49.98,
+            "tool_call_steps": {
+              "prompt_tokens": 24343,
+              "completion_tokens": 305,
+              "total_tokens": 24648,
+              "cached_tokens": 0,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 13413,
+              "completion_tokens": 3756,
+              "total_tokens": 17169,
+              "cached_tokens": 12800,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8314,
+            "completion_tokens": 2390,
+            "total_tokens": 10704,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 31.503,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8314,
+              "completion_tokens": 2390,
+              "total_tokens": 10704,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 96.955,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are required to implement and validate a model training and testing configuration for a 3D object detection system using the provided code snippet under the folder of C:/Users/user/Desktop/MyProje",
+      "expected_tools": [
+        {
+          "name": "patch_file",
+          "arguments": {
+            "path": "C:/Users/user/Desktop/MyProject/configs/kitti_config.py",
+            "changes_path": "C:/Users/user/Desktop/MyProject/configs/changes.txt"
+          }
+        },
+        {
+          "name": "execute_python_code",
+          "arguments": {
+            "code_dir": "C:/Users/user/Desktop/MyProject/configs/kitti_config.py"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "C:/Users/user/Desktop/MyProject/configs"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The topic of these files is about MOE, subject is large language model\", \"id\": \"lc_c7436f0b-1145-4797-9187-ffffc279f8d9\"}], {\"structured_content\": {\"result\": \"The topic of these files is about MOE, subject is large language model\"}}]' name='search_and_read_files' tool_call_id='call_v5hsxaZOOmW8NOLcoENXCm2f'",
+          "start_time": 0.0,
+          "latency": 2.0389372000063304,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "generate_code",
+          "args": {
+            "prompt": "Create a plain text file containing configuration changes for a KITTI 3D object detection setup, intended to be saved as changes.txt. The content should be concise and structured as editable config snippets for an MMDetection3D-style config, covering exactly these sections: optimizer, optimizer_config, lr_config, runner, checkpoint_config, evaluation, log_config, dist_params, log_level, work_dir, load_from, resume_from, workflow. Also include a validation checklist at the end confirming dataset_type='KittiDataset', class_names=['Pedestrian','Cyclist','Car'], and input_modality=dict(use_lidar=True, use_camera=False). Use Python-config syntax snippets, not prose paragraphs. Make it suitable for a generic KITTI training/testing config update.",
+            "language": "text",
+            "output_name": "C:/Users/user/Desktop/MyProject/configs/changes.txt",
+            "model": "gemini-pro",
+            "temperature": 0.2,
+            "max_tokens": 1200
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to C:/Users/user/Desktop/MyProject/configs/changes.txt\", \"id\": \"lc_86aabeff-ac31-4310-8fa2-918f510d5f1d\"}], {\"structured_content\": {\"result\": \"Code has been generated successfully and saved to C:/Users/user/Desktop/MyProject/configs/changes.txt\"}}]' name='generate_code' tool_call_id='call_Ec3r26zF2xE5zCHDAwqZjRVh'",
+          "start_time": 6.767,
+          "latency": 2.190248699989752,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "execute_python_code",
+          "args": {
+            "code_dir": "C:/Users/user/Desktop/MyProject/configs/kitti_config.py"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Python code successfully executed in directory: C:/Users/user/Desktop/MyProject/configs/kitti_config.py\", \"id\": \"lc_d1142fb2-9320-42bf-a8d5-29de5f004fdb\"}], {\"structured_content\": {\"result\": \"Python code successfully executed in directory: C:/Users/user/Desktop/MyProject/configs/kitti_config.py\"}}]' name='execute_python_code' tool_call_id='call_DZJX0OYZ9DUShF4PVoc5jHqI'",
+          "start_time": 11.07,
+          "latency": 2.0899752999976045,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 3 total calls. Correct: ['execute_python_code']. Missing: ['patch_file']. Extra: ['generate_code', 'search_and_read_files']",
+          "comparison": {
+            "expected": [
+              "patch_file",
+              "execute_python_code"
+            ],
+            "actual": [
+              "search_and_read_files",
+              "generate_code",
+              "execute_python_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool: execute_python_code - Expected parameters: {code_dir: 'C:/Users/user/Desktop/MyProject/configs/kitti_config.py' (str)}; Actual parameters: {code_dir: 'C:/Users/user/Desktop/MyProject/configs/kitti_config.py' (str)}. Parameter names match exactly, values are identical, and types match (str). No extra or missing parameters. No type mismatches or other issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "execute_python_code",
+                "input_parameters": {
+                  "code_dir": "C:/Users/user/Desktop/MyProject/configs/kitti_config.py"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "execute_python_code",
+                "input_parameters": {
+                  "code_dir": "C:/Users/user/Desktop/MyProject/configs/kitti_config.py"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3333333333333333",
+          "component_scores": {
+            "Tool Correctness": 0.3333333333333333,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9079,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 27.6% (MAS: 54828 vs SAS: 42957 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 52489,
+        "completion_tokens": 2339,
+        "total_tokens": 54828,
+        "cached_tokens": 10112,
+        "reasoning_tokens": 0,
+        "llm_calls": 7,
+        "tool_call_llm_calls": 3,
+        "cost": 0.166307,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 31128,
+            "completion_tokens": 426,
+            "total_tokens": 31554,
+            "cached_tokens": 0,
+            "count": 3
+          },
+          "response_steps": {
+            "prompt_tokens": 21361,
+            "completion_tokens": 1913,
+            "total_tokens": 23274,
+            "cached_tokens": 10112,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 489,
+            "completion_tokens": 466,
+            "total_tokens": 955,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 6.044,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 489,
+              "completion_tokens": 466,
+              "total_tokens": 955,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1596,
+            "completion_tokens": 609,
+            "total_tokens": 2205,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 7.107,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1596,
+              "completion_tokens": 609,
+              "total_tokens": 2205,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 41986,
+            "completion_tokens": 821,
+            "total_tokens": 42807,
+            "cached_tokens": 10112,
+            "reasoning_tokens": 0,
+            "llm_calls": 4,
+            "tool_call_llm_calls": 3,
+            "total_latency": 13.31,
+            "tool_call_steps": {
+              "prompt_tokens": 31128,
+              "completion_tokens": 426,
+              "total_tokens": 31554,
+              "cached_tokens": 0,
+              "count": 3
+            },
+            "response_steps": {
+              "prompt_tokens": 10858,
+              "completion_tokens": 395,
+              "total_tokens": 11253,
+              "cached_tokens": 10112,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8418,
+            "completion_tokens": 443,
+            "total_tokens": 8861,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.589,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8418,
+              "completion_tokens": 443,
+              "total_tokens": 8861,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 38.405,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Based on PubMed literature and GWAS Catalog trait associations, identify potential biomarkers that may predict the risk of GVHD in recipients after bone marrow transplantation.",
+      "expected_tools": [
+        {
+          "name": "search_pubmed",
+          "arguments": {
+            "query": "GVHD biomarkers bone marrow transplantation GWAS"
+          }
+        },
+        {
+          "name": "get_trait_associations",
+          "arguments": {
+            "efoId": "EFO_0000305"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_pubmed",
+          "args": {
+            "query": "(graft-versus-host disease OR GVHD) AND (bone marrow transplantation OR hematopoietic stem cell transplantation OR allogeneic stem cell transplantation) AND (biomarker OR predictor OR predictive OR risk)",
+            "maxResults": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\\\nAuthors: Smith J, Khan A, Rodriguez M\\\\nJournal: Journal of Hematology Research (2021)\\\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\\\nRelated EFO Traits: EFO_0000305\\\\n\\\\nTitle: GWAS-Identified Genetic Variants Associated ",
+          "start_time": 0.0,
+          "latency": 4.556344700002228,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_pubmed",
+          "args": {
+            "query": "(acute graft-versus-host disease OR aGVHD) AND (allogeneic hematopoietic stem cell transplantation OR bone marrow transplantation) AND (biomarker OR predictor OR risk)",
+            "maxResults": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\\\nAuthors: Smith J, Khan A, Rodriguez M\\\\nJournal: Journal of Hematology Research (2021)\\\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\\\nRelated EFO Traits: EFO_0000305\\\\n\\\\nTitle: GWAS-Identified Genetic Variants Associated ",
+          "start_time": 0.0,
+          "latency": 4.666294099995866,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_pubmed",
+          "args": {
+            "query": "(chronic graft-versus-host disease OR cGVHD) AND (allogeneic hematopoietic stem cell transplantation OR bone marrow transplantation) AND (biomarker OR predictor OR risk)",
+            "maxResults": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\\\nAuthors: Smith J, Khan A, Rodriguez M\\\\nJournal: Journal of Hematology Research (2021)\\\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\\\nRelated EFO Traits: EFO_0000305\\\\n\\\\nTitle: GWAS-Identified Genetic Variants Associated ",
+          "start_time": 0.0,
+          "latency": 4.65807639999548,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_pubmed",
+          "args": {
+            "query": "(graft-versus-host disease OR GVHD) AND (allogeneic hematopoietic stem cell transplantation OR bone marrow transplantation) AND (genetic variant OR polymorphism OR SNP OR GWAS OR genomics) AND (risk OR predictor)",
+            "maxResults": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\\\nAuthors: Smith J, Khan A, Rodriguez M\\\\nJournal: Journal of Hematology Research (2021)\\\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\\\nRelated EFO Traits: EFO_0000305\\\\n\\\\nTitle: GWAS-Identified Genetic Variants Associated ",
+          "start_time": 0.0,
+          "latency": 4.6526730000041425,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_pubmed",
+          "args": {
+            "query": "(graft-versus-host disease OR GVHD) AND (allogeneic hematopoietic stem cell transplantation) AND (cytokine OR chemokine OR plasma biomarker OR soluble biomarker OR ST2 OR REG3A OR TNFR1 OR IL2Ralpha) AND (predict* OR risk)",
+            "maxResults": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\\\nAuthors: Smith J, Khan A, Rodriguez M\\\\nJournal: Journal of Hematology Research (2021)\\\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\\\nRelated EFO Traits: EFO_0000305\\\\n\\\\nTitle: GWAS-Identified Genetic Variants Associated ",
+          "start_time": 0.0,
+          "latency": 4.6471612000023015,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_trait_associations",
+          "args": {
+            "efoId": "EFO_0000305"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"GWAS Associations for trait \\'Graft-versus-host disease\\' (EFO ID: EFO_0000305):\\\\n- Variant: rs123456 | Gene: IL10 | Effect: {\\'odds_ratio\\': 1.85, \\'ci_95\\': [1.5, 2.2]} | p-value: 4.20e-08 | Study: Genome-wide association study of GVHD in bone marrow transplant recipients | Ancestry: European | Publication: PMID 31234567 (Blood, 2020)\\\\n- Variant: rs987654 | Gene: TNF | Effect: {\\'odds_ratio\\': 1.42, \\'ci_95\\': [1.2, 1.65]} | p-value: 2.10e-07 | Study: Gen",
+          "start_time": 7.358,
+          "latency": 2.0738875000097323,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 6 total calls. Correct: ['get_trait_associations', 'search_pubmed']. Duplicates: 4",
+          "comparison": {
+            "expected": [
+              "search_pubmed",
+              "get_trait_associations"
+            ],
+            "actual": [
+              "search_pubmed",
+              "search_pubmed",
+              "search_pubmed",
+              "search_pubmed",
+              "search_pubmed",
+              "get_trait_associations"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. Tool: search_pubmed\n- Expected parameters: {\"query\": \"GVHD biomarkers bone marrow transplantation GWAS\"} (1 parameter)\n- Actual parameters: multiple calls (5 calls), each with parameters {\"query\": <different query string>, \"maxResults\": 10} (2 parameters)\n- Issues:\n  * Parameter 'maxResults' is extra and not expected (penalize).\n  * Parameter 'query' values differ significantly from expected query string (penalize for wrong value).\n  * Multiple calls instead of one expected call (not explicitly penalized by rules, but indicates deviation).\n- Result: Major issues due to extra parameter and different query values.\n\n2. Tool: get_trait_associations\n- Expected parameters: {\"efoId\": \"EFO_0000305\"}\n- Actual parameters: {\"efoId\": \"EFO_0000305\"}\n- Parameter names and values match exactly with correct types.\n- Result: Correct.\n\nSummary:\n- The get_trait_associations call is correct and scores 1.0.\n- The search_pubmed calls have major issues: extra parameter 'maxResults' not expected, and query values differ from expected.\n- According to scoring rules, major issues in one tool and correct in another lead to an overall score around 0.5.\n\nFinal score: 0.5",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_pubmed",
+                "input_parameters": {
+                  "query": "GVHD biomarkers bone marrow transplantation GWAS"
+                }
+              },
+              {
+                "name": "get_trait_associations",
+                "input_parameters": {
+                  "efoId": "EFO_0000305"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_pubmed",
+                "input_parameters": {
+                  "query": "(graft-versus-host disease OR GVHD) AND (bone marrow transplantation OR hematopoietic stem cell transplantation OR allogeneic stem cell transplantation) AND (biomarker OR predictor OR predictive OR risk)",
+                  "maxResults": 10
+                }
+              },
+              {
+                "name": "search_pubmed",
+                "input_parameters": {
+                  "query": "(acute graft-versus-host disease OR aGVHD) AND (allogeneic hematopoietic stem cell transplantation OR bone marrow transplantation) AND (biomarker OR predictor OR risk)",
+                  "maxResults": 10
+                }
+              },
+              {
+                "name": "search_pubmed",
+                "input_parameters": {
+                  "query": "(chronic graft-versus-host disease OR cGVHD) AND (allogeneic hematopoietic stem cell transplantation OR bone marrow transplantation) AND (biomarker OR predictor OR risk)",
+                  "maxResults": 10
+                }
+              },
+              {
+                "name": "search_pubmed",
+                "input_parameters": {
+                  "query": "(graft-versus-host disease OR GVHD) AND (allogeneic hematopoietic stem cell transplantation OR bone marrow transplantation) AND (genetic variant OR polymorphism OR SNP OR GWAS OR genomics) AND (risk OR predictor)",
+                  "maxResults": 10
+                }
+              },
+              {
+                "name": "search_pubmed",
+                "input_parameters": {
+                  "query": "(graft-versus-host disease OR GVHD) AND (allogeneic hematopoietic stem cell transplantation) AND (cytokine OR chemokine OR plasma biomarker OR soluble biomarker OR ST2 OR REG3A OR TNFR1 OR IL2Ralpha) AND (predict* OR risk)",
+                  "maxResults": 10
+                }
+              },
+              {
+                "name": "get_trait_associations",
+                "input_parameters": {
+                  "efoId": "EFO_0000305"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3333333333333333, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.3333333333333333,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.6285,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 111.5% (MAS: 61484 vs SAS: 29077 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 57566,
+        "completion_tokens": 3918,
+        "total_tokens": 61484,
+        "cached_tokens": 28928,
+        "reasoning_tokens": 0,
+        "llm_calls": 6,
+        "tool_call_llm_calls": 2,
+        "cost": 0.202685,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 28584,
+            "completion_tokens": 545,
+            "total_tokens": 29129,
+            "cached_tokens": 10496,
+            "count": 2
+          },
+          "response_steps": {
+            "prompt_tokens": 28982,
+            "completion_tokens": 3373,
+            "total_tokens": 32355,
+            "cached_tokens": 18432,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 395,
+            "completion_tokens": 460,
+            "total_tokens": 855,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.855,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 395,
+              "completion_tokens": 460,
+              "total_tokens": 855,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1722,
+            "completion_tokens": 1162,
+            "total_tokens": 2884,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 12.343,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1722,
+              "completion_tokens": 1162,
+              "total_tokens": 2884,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 47687,
+            "completion_tokens": 1629,
+            "total_tokens": 49316,
+            "cached_tokens": 28928,
+            "reasoning_tokens": 0,
+            "llm_calls": 3,
+            "tool_call_llm_calls": 2,
+            "total_latency": 21.003,
+            "tool_call_steps": {
+              "prompt_tokens": 28584,
+              "completion_tokens": 545,
+              "total_tokens": 29129,
+              "cached_tokens": 10496,
+              "count": 2
+            },
+            "response_steps": {
+              "prompt_tokens": 19103,
+              "completion_tokens": 1084,
+              "total_tokens": 20187,
+              "cached_tokens": 18432,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 7762,
+            "completion_tokens": 667,
+            "total_tokens": 8429,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 7.278,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 7762,
+              "completion_tokens": 667,
+              "total_tokens": 8429,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 53.45,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am working on a CUDA project where a struct containing pointers needs to be computed on a device. The problem is when I allocate memory for the struct and then copy it to the device, it only copies ",
+      "expected_tools": [
+        {
+          "name": "analyze_code",
+          "arguments": {
+            "language": "cuda",
+            "path": "C:/Users/user/Desktop/MyProject/src/device_struct.cu"
+          }
+        },
+        {
+          "name": "patch_file",
+          "arguments": {
+            "path": "C:/Users/user/Desktop/MyProject/src/device_struct.cu",
+            "changes_path": "C:/Users/user/Desktop/MyProject/src/device_struct_analysis_report.txt"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "analyze_code",
+          "args": {
+            "path": "C:/Users/user/Desktop/MyProject/src/device_struct.cu",
+            "language": "auto"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Analysis complete. File analyzed: C:\\\\\\\\Users\\\\\\\\user\\\\\\\\Desktop\\\\\\\\MyProject\\\\\\\\src\\\\\\\\device_struct.cu. Issues and code modification suggestions would be saved to: C:\\\\\\\\Users\\\\\\\\user\\\\\\\\Desktop\\\\\\\\MyProject\\\\\\\\src\\\\\\\\device_struct_analysis_report.txt\", \"id\": \"lc_98af6367-2870-419e-8988-37facf4cba94\"}], {\"structured_content\": {\"result\": \"Analysis complete. File analyzed: C:\\\\\\\\Users\\\\\\\\user\\\\\\\\Desktop\\\\\\\\MyProject\\\\\\\\src\\\\\\\\device_struct.cu. Issues and code",
+          "start_time": 0.0,
+          "latency": 2.0266457999969134,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['analyze_code']. Missing: ['patch_file']",
+          "comparison": {
+            "expected": [
+              "analyze_code",
+              "patch_file"
+            ],
+            "actual": [
+              "analyze_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: analyze_code\n- Expected parameters: language='cuda' (str), path='C:/Users/user/Desktop/MyProject/src/device_struct.cu' (str)\n- Actual parameters: language='auto' (str), path='C:/Users/user/Desktop/MyProject/src/device_struct.cu' (str)\n- Parameter names match exactly, no missing or extra parameters.\n- Parameter types match (both strings).\n- Parameter values differ for 'language': expected 'cuda', actual 'auto' (semantic mismatch).\n- 'path' parameter matches exactly.\nOverall, the only issue is the semantic mismatch in the 'language' parameter value, which is a significant deviation but no type or parameter name errors. Hence, score is 0.5 reflecting a major issue in argument correctness.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "analyze_code",
+                "input_parameters": {
+                  "language": "cuda",
+                  "path": "C:/Users/user/Desktop/MyProject/src/device_struct.cu"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "analyze_code",
+                "input_parameters": {
+                  "path": "C:/Users/user/Desktop/MyProject/src/device_struct.cu",
+                  "language": "auto"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -0.1% (MAS: 39582 vs SAS: 39636 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 35492,
+        "completion_tokens": 4090,
+        "total_tokens": 39582,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.15008,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 10932,
+            "completion_tokens": 105,
+            "total_tokens": 11037,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 24560,
+            "completion_tokens": 3985,
+            "total_tokens": 28545,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 510,
+            "completion_tokens": 2264,
+            "total_tokens": 2774,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 24.333,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 510,
+              "completion_tokens": 2264,
+              "total_tokens": 2774,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 3116,
+            "completion_tokens": 258,
+            "total_tokens": 3374,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.02,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 3116,
+              "completion_tokens": 258,
+              "total_tokens": 3374,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 22135,
+            "completion_tokens": 1431,
+            "total_tokens": 23566,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 15.948,
+            "tool_call_steps": {
+              "prompt_tokens": 10932,
+              "completion_tokens": 105,
+              "total_tokens": 11037,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 11203,
+              "completion_tokens": 1326,
+              "total_tokens": 12529,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 9731,
+            "completion_tokens": 137,
+            "total_tokens": 9868,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.05,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 9731,
+              "completion_tokens": 137,
+              "total_tokens": 9868,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 48.399,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "You are tasked with creating a quantum circuit design for a given set of qubits and calculating the corresponding probability distribution of the quantum state, the request is give in the uploaded fil",
+      "expected_tools": [
+        {
+          "name": "create_design",
+          "arguments": {
+            "design_request": "outputs/quantum_design_request.txt"
+          }
+        },
+        {
+          "name": "visualize_data",
+          "arguments": {
+            "data_dir": "outputs/quantum_design.json",
+            "visualize_type": "3D_plot",
+            "output_dir": "outputs/quantum_plots",
+            "output_format": "jpg"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['create_design', 'visualize_data']",
+          "comparison": {
+            "expected": [
+              "create_design",
+              "visualize_data"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -66.5% (MAS: 20711 vs SAS: 61904 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 19448,
+        "completion_tokens": 1263,
+        "total_tokens": 20711,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 4,
+        "tool_call_llm_calls": 0,
+        "cost": 0.067565,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "cached_tokens": 0,
+            "count": 0
+          },
+          "response_steps": {
+            "prompt_tokens": 19448,
+            "completion_tokens": 1263,
+            "total_tokens": 20711,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 457,
+            "completion_tokens": 378,
+            "total_tokens": 835,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.593,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 457,
+              "completion_tokens": 378,
+              "total_tokens": 835,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1365,
+            "completion_tokens": 308,
+            "total_tokens": 1673,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.712,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1365,
+              "completion_tokens": 308,
+              "total_tokens": 1673,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 9482,
+            "completion_tokens": 256,
+            "total_tokens": 9738,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 3.898,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 9482,
+              "completion_tokens": 256,
+              "total_tokens": 9738,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8144,
+            "completion_tokens": 321,
+            "total_tokens": 8465,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.023,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8144,
+              "completion_tokens": 321,
+              "total_tokens": 8465,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 18.263,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_19",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm thinking about starting a halal food business in Canada and want to check recipes to make sure the ingredients and preparation methods fit halal guidelines while also looking at the nutritional in",
+      "expected_tools": [
+        {
+          "name": "search_recipes",
+          "arguments": {
+            "name": "halal recipes"
+          }
+        },
+        {
+          "name": "check_nutrition",
+          "arguments": {
+            "ingredient_list": [
+              "Basmati rice",
+              "Cucumber",
+              "Fresh coriander",
+              "Garlic sauce",
+              "Ginger-garlic paste",
+              "Halal beef",
+              "Halal chicken",
+              "Lettuce",
+              "Onions",
+              "Pita bread",
+              "Spices",
+              "Tomatoes",
+              "Yogurt"
+            ]
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['check_nutrition', 'search_recipes']",
+          "comparison": {
+            "expected": [
+              "search_recipes",
+              "check_nutrition"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.5155,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 145.4% (MAS: 21258 vs SAS: 8664 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 20097,
+        "completion_tokens": 1161,
+        "total_tokens": 21258,
+        "cached_tokens": 0,
+        "reasoning_tokens": 0,
+        "llm_calls": 4,
+        "tool_call_llm_calls": 0,
+        "cost": 0.067658,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "cached_tokens": 0,
+            "count": 0
+          },
+          "response_steps": {
+            "prompt_tokens": 20097,
+            "completion_tokens": 1161,
+            "total_tokens": 21258,
+            "cached_tokens": 0,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 402,
+            "completion_tokens": 438,
+            "total_tokens": 840,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 6.071,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 402,
+              "completion_tokens": 438,
+              "total_tokens": 840,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1296,
+            "completion_tokens": 328,
+            "total_tokens": 1624,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.714,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1296,
+              "completion_tokens": 328,
+              "total_tokens": 1624,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 9776,
+            "completion_tokens": 159,
+            "total_tokens": 9935,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.407,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 9776,
+              "completion_tokens": 159,
+              "total_tokens": 9935,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8623,
+            "completion_tokens": 236,
+            "total_tokens": 8859,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 4.267,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8623,
+              "completion_tokens": 236,
+              "total_tokens": 8859,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 17.48,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_sequential_tools_20",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I need you to design an automated data pipeline that collects business data from Zoho Invoice and Pipedrive, cleans and integrates it through a workflow, and finally stores it in Google BigQuery for c",
+      "expected_tools": [
+        {
+          "name": "execute_bigquery",
+          "arguments": {
+            "query": "SELECT * FROM business_data_summary",
+            "project_id": "my-gcp-project"
+          }
+        },
+        {
+          "name": "orchestrator_plan_task",
+          "arguments": {
+            "topic": "Zoho & Pipedrive to BigQuery pipeline",
+            "description": "Design and execute an automated pipeline to clean, integrate Zoho Invoice and Pipedrive data, and store in BigQuery for financial and sales analysis. Run existing SQL queries and verify results."
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "execute_bigquery",
+          "args": {
+            "query": "SELECT * FROM `region-us.INFORMATION_SCHEMA.TABLES`",
+            "project_id": "my-company-analytics"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\", \\\\\"rows\\\\\": []}\", \"id\": \"lc_1a7f2c5d-6ab4-4e1e-827e-14c2b7033052\"}], {\"structured_content\": {\"result\": \"{\\\\\"status\\\\\": \\\\\"success\\\\\", \\\\\"rows\\\\\": []}\"}}]' name='execute_bigquery' tool_call_id='call_rkWzlTBnN3SL4HcOxEyXJVs2'",
+          "start_time": 0.0,
+          "latency": 1.981211100006476,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['execute_bigquery']. Missing: ['orchestrator_plan_task']",
+          "comparison": {
+            "expected": [
+              "execute_bigquery",
+              "orchestrator_plan_task"
+            ],
+            "actual": [
+              "execute_bigquery"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: execute_bigquery\n- Expected parameters: query='SELECT * FROM business_data_summary' (str), project_id='my-gcp-project' (str)\n- Actual parameters: query='SELECT * FROM `region-us.INFORMATION_SCHEMA.TABLES`' (str), project_id='my-company-analytics' (str)\n- Parameter names match exactly.\n- Parameter types match (both strings).\n- Parameter values differ significantly for both 'query' and 'project_id'.\n- No missing or extra parameters.\n\nOverall, the actual call has correct parameter names and types but completely different parameter values from expected, which is a major issue. Therefore, the score is low (0.3).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "execute_bigquery",
+                "input_parameters": {
+                  "query": "SELECT * FROM business_data_summary",
+                  "project_id": "my-gcp-project"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "execute_bigquery",
+                "input_parameters": {
+                  "query": "SELECT * FROM `region-us.INFORMATION_SCHEMA.TABLES`",
+                  "project_id": "my-company-analytics"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7995,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 60.1% (MAS: 31457 vs SAS: 19643 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 28465,
+        "completion_tokens": 2992,
+        "total_tokens": 31457,
+        "cached_tokens": 9216,
+        "reasoning_tokens": 0,
+        "llm_calls": 5,
+        "tool_call_llm_calls": 1,
+        "cost": 0.116042,
+        "step_breakdown": {
+          "tool_call_steps": {
+            "prompt_tokens": 9229,
+            "completion_tokens": 125,
+            "total_tokens": 9354,
+            "cached_tokens": 0,
+            "count": 1
+          },
+          "response_steps": {
+            "prompt_tokens": 19236,
+            "completion_tokens": 2867,
+            "total_tokens": 22103,
+            "cached_tokens": 9216,
+            "count": 4
+          }
+        },
+        "per_node": [
+          {
+            "node": "swarm_analyst",
+            "prompt_tokens": 437,
+            "completion_tokens": 526,
+            "total_tokens": 963,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.915,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 437,
+              "completion_tokens": 526,
+              "total_tokens": 963,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_critic",
+            "prompt_tokens": 1301,
+            "completion_tokens": 371,
+            "total_tokens": 1672,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 5.35,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 1301,
+              "completion_tokens": 371,
+              "total_tokens": 1672,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_executor",
+            "prompt_tokens": 18671,
+            "completion_tokens": 1954,
+            "total_tokens": 20625,
+            "cached_tokens": 9216,
+            "reasoning_tokens": 0,
+            "llm_calls": 2,
+            "tool_call_llm_calls": 1,
+            "total_latency": 25.97,
+            "tool_call_steps": {
+              "prompt_tokens": 9229,
+              "completion_tokens": 125,
+              "total_tokens": 9354,
+              "cached_tokens": 0,
+              "count": 1
+            },
+            "response_steps": {
+              "prompt_tokens": 9442,
+              "completion_tokens": 1829,
+              "total_tokens": 11271,
+              "cached_tokens": 9216,
+              "count": 1
+            }
+          },
+          {
+            "node": "swarm_planner",
+            "prompt_tokens": 8056,
+            "completion_tokens": 141,
+            "total_tokens": 8197,
+            "cached_tokens": 0,
+            "reasoning_tokens": 0,
+            "llm_calls": 1,
+            "tool_call_llm_calls": 0,
+            "total_latency": 2.84,
+            "tool_call_steps": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0,
+              "cached_tokens": 0,
+              "count": 0
+            },
+            "response_steps": {
+              "prompt_tokens": 8056,
+              "completion_tokens": 141,
+              "total_tokens": 8197,
+              "cached_tokens": 0,
+              "count": 1
+            }
+          }
+        ]
+      },
+      "latency": {
+        "total": 42.079,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 20,
+      "mean": 0.5417,
+      "median": 0.5,
+      "std": 0.4006,
+      "variance": 0.1605,
+      "ci_lower": 0.3661,
+      "ci_upper": 0.7172,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.25,
+      "p75": 1.0,
+      "iqr": 0.75,
+      "pass_rate": 0.35,
+      "pass_ci_lower": 0.1812,
+      "pass_ci_upper": 0.5671,
+      "passed": 7,
+      "total": 20
+    },
+    "Argument Correctness [Reference]": {
+      "n": 20,
+      "mean": 0.5,
+      "median": 0.5,
+      "std": 0.3756,
+      "variance": 0.1411,
+      "ci_lower": 0.3354,
+      "ci_upper": 0.6646,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.225,
+      "p75": 0.775,
+      "iqr": 0.55,
+      "pass_rate": 0.25,
+      "pass_ci_lower": 0.1119,
+      "pass_ci_upper": 0.4687,
+      "passed": 5,
+      "total": 20
+    },
+    "Final State (Derived)": {
+      "n": 20,
+      "mean": 0.15,
+      "median": 0.0,
+      "std": 0.3663,
+      "variance": 0.1342,
+      "ci_lower": 0.0,
+      "ci_upper": 0.3106,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.15,
+      "pass_ci_lower": 0.0524,
+      "pass_ci_upper": 0.3604,
+      "passed": 3,
+      "total": 20
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 0.8702,
+      "median": 0.9046,
+      "std": 0.1326,
+      "variance": 0.0176,
+      "ci_lower": 0.8121,
+      "ci_upper": 0.9283,
+      "min": 0.5155,
+      "max": 1.0,
+      "p25": 0.8185,
+      "p75": 0.974,
+      "iqr": 0.1555,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 37442.85,
+        "median": 38019.0,
+        "std": 11015.76,
+        "variance": 121346967.9237,
+        "min": 18679.0,
+        "max": 57566.0,
+        "p25": 31051.0,
+        "p75": 44088.5,
+        "p95": 52742.85,
+        "p99": 56601.37,
+        "iqr": 13037.5
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 2155.95,
+        "median": 1634.0,
+        "std": 1493.5771,
+        "variance": 2230772.4711,
+        "min": 676.0,
+        "max": 7185.0,
+        "p25": 1247.75,
+        "p75": 2335.25,
+        "p95": 4244.75,
+        "p99": 6596.95,
+        "iqr": 1087.5
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 39598.8,
+        "median": 39976.0,
+        "std": 11716.8702,
+        "variance": 137285048.0632,
+        "min": 19637.0,
+        "max": 61484.0,
+        "p25": 33275.75,
+        "p75": 45776.5,
+        "p95": 57375.25,
+        "p99": 60662.25,
+        "iqr": 12500.75
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.1259,
+        "median": 0.1177,
+        "std": 0.0421,
+        "variance": 0.0018,
+        "min": 0.0611,
+        "max": 0.2327,
+        "p25": 0.1069,
+        "p75": 0.1459,
+        "p95": 0.2042,
+        "p99": 0.227,
+        "iqr": 0.039,
+        "total": 2.518926
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 7,
+      "failed": 13,
+      "errors": 0,
+      "total_tokens": 791976,
+      "tokens_per_pass": 113139.43,
+      "success_per_1k_tokens": 0.0088,
+      "pass_rate": 0.35,
+      "error_rate": 0.0
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:07.406590",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

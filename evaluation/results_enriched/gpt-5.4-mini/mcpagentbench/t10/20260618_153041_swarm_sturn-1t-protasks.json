@@ -1,0 +1,3369 @@
+{
+  "timestamp": "2026-06-18T15:30:41.765563+00:00",
+  "model": "gpt-5.4-mini",
+  "benchmark": "mcpagentbench",
+  "agent_type": "swarm",
+  "mode": "sturn-1t-protasks",
+  "num_tools": 10,
+  "num_test_cases": 30,
+  "errors_summary": {
+    "total_errors": 0,
+    "total_test_cases": 30,
+    "error_rate": 0.0
+  },
+  "aggregate": {
+    "total_prompt_tokens": 319695,
+    "total_completion_tokens": 26124,
+    "total_tokens": 345819,
+    "total_llm_calls": 146,
+    "total_cost": 0.357329,
+    "total_latency": 337.773,
+    "avg_latency": 11.259,
+    "pass_rate": 0.7333333333333333,
+    "passed": 22,
+    "failed": 8,
+    "errors": 0
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_1_tool_1",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I'm working on a computer vision project and need to detect objects in an image. Can you choose from a given list the API (Image Object Detection API, OCR Text Extract API, Vision Detect 3D API)that t",
+      "expected_tools": [
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": [
+              "Image Object Detection API",
+              "OCR Text Extract API",
+              "Vision Detect 3D API"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Image Object Detection API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: Image Object Detection API\\\\nDescription: Detects objects in an image from a provided image URL and returns an updated image with bounding boxes around detected objects. Optionally returns JSON metadata of detections.\\\\nEndpoint: POST https://api.example.com/v1/object-detection\\\\nRequest Schema: {\\'image_url\\': \\'string (URL to the image to process)\\', \\'return_json\\': \\'boolean (optional, if true returns detection metadata)\\'}\", \"id\": \"lc_23c326f0-",
+          "start_time": 0.0,
+          "latency": 2.684427500003949,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "OCR Text Extract API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: OCR Text Extract API\\\\nDescription: Extracts readable text from image/URL using OCR; returns plain text and layout hints.\\\\nEndpoint: POST https://api.example.com/v1/ocr-extract\\\\nRequest Schema: {\\'image_url\\': \\'string (URL to the image to extract text from)\\', \\'language_hint\\': \\'string (optional, ISO code for expected text language)\\'}\", \"id\": \"lc_12e03971-a481-4116-b654-98d5081ef08e\"}], {\"structured_content\": {\"result\": \"API Name: OCR Text Ext",
+          "start_time": 0.0,
+          "latency": 2.685676399851218,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Vision Detect 3D API"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"API Name: Vision Detect 3D API\\\\nDescription: Performs high-accuracy 3D object detection on input data (image sets, depth maps, or point clouds). Returns detected objects with 3D bounding boxes and annotated previews.\\\\nEndpoint: POST https://api.example.com/v1/vision-detect-3d\\\\nRequest Schema: {\\'input_type\\': \\\\\"string (required, one of: \\'image_set\\', \\'depth_map\\', \\'point_cloud\\')\\\\\", \\'data_url\\': \\'string (URL pointing to the 3D data or file to proces",
+          "start_time": 0.0,
+          "latency": 2.6820787000469863,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 3 total calls. Correct: ['request_api_schema']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "request_api_schema"
+            ],
+            "actual": [
+              "request_api_schema",
+              "request_api_schema",
+              "request_api_schema"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "The expected tool call 'request_api_schema' requires a single parameter 'ApiName' of type list containing exactly the three API names. The actual calls invoke 'request_api_schema' three separate times, each with 'ApiName' as a string instead of a list. This is a type mismatch: expected a list, actual is a string. Additionally, the expected call is a single call with a list parameter, but the actual calls are multiple calls with string parameters. This violates the expected argument structure and type safety rules. Therefore, the actual calls do not match the expected call in parameter type or call structure, resulting in a major issue and a score of 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": [
+                    "Image Object Detection API",
+                    "OCR Text Extract API",
+                    "Vision Detect 3D API"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Image Object Detection API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "OCR Text Extract API"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Vision Detect 3D API"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3333333333333333, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.3333333333333333,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -13.8% (MAS: 11382 vs SAS: 13211 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10649,
+        "completion_tokens": 733,
+        "total_tokens": 11382,
+        "llm_calls": 5,
+        "cost": 0.011285
+      },
+      "latency": {
+        "total": 11.146,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_2",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I want to create a DJ version of a song to go along with my dance, please help me add various tempo changes to this audio. Audio file url is url/to/audio.mp3, and I want to increase the speed by 1.25 ",
+      "expected_tools": [
+        {
+          "name": "AudioEditor_apply_speed_adjustment",
+          "arguments": {
+            "audio_file": "url/to/audio.mp3",
+            "speed_factor": 1.25
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "AudioEditor_apply_speed_adjustment",
+          "args": {
+            "audio_file": "url/to/audio.mp3",
+            "speed_factor": "1.25"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"((44100, [0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.1, -0.2, 0.1, 0.2, -0.",
+          "start_time": 0.0,
+          "latency": 1.7667831000871956,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "AudioEditor_apply_speed_adjustment"
+            ],
+            "actual": [
+              "AudioEditor_apply_speed_adjustment"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: AudioEditor_apply_speed_adjustment\n- Expected parameters: audio_file (str), speed_factor (float)\n- Actual parameters: audio_file (str), speed_factor (str)\n- Parameter names match exactly.\n- Parameter values for audio_file match and types match (str).\n- Parameter value for speed_factor is semantically equivalent (1.25 vs \"1.25\"), but there is a TYPE MISMATCH: expected float, actual str.\n- No extra or missing parameters.\nOverall, there is one type mismatch on speed_factor, which is a significant issue but not a missing or extra parameter. Hence, score is 0.5.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "AudioEditor_apply_speed_adjustment",
+                "input_parameters": {
+                  "audio_file": "url/to/audio.mp3",
+                  "speed_factor": 1.25
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "AudioEditor_apply_speed_adjustment",
+                "input_parameters": {
+                  "audio_file": "url/to/audio.mp3",
+                  "speed_factor": "1.25"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9746,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 7.6% (MAS: 41793 vs SAS: 38837 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 41386,
+        "completion_tokens": 407,
+        "total_tokens": 41793,
+        "llm_calls": 5,
+        "cost": 0.032871
+      },
+      "latency": {
+        "total": 9.57,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_3",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I am writing an academic report and required a list of books of the given id numbers. Please find the corresponding information based on the given id (from id 1 to 5).",
+      "expected_tools": [
+        {
+          "name": "get_book_details_by_id",
+          "arguments": {
+            "id": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_book_details_by_id",
+          "args": {
+            "id": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: The C Programming Language\\\\nAuthors: Brian W. Kernighan, Dennis M. Ritchie\\\\nPublisher: Prentice Hall\\\\nYear: 1988\\\\nEdition: 2nd\\\\nID: 1\\\\n\\\\nTitle: Introduction to Algorithms\\\\nAuthors: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein\\\\nPublisher: MIT Press\\\\nYear: 2009\\\\nEdition: 3rd\\\\nID: 2\\\\n\\\\nTitle: Design Patterns: Elements of Reusable Object-Oriented Software\\\\nAuthors: Erich Gamma, Richard Helm, Ralph Johnson, John Vl",
+          "start_time": 0.0,
+          "latency": 1.810332200024277,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_book_details_by_id"
+            ],
+            "actual": [
+              "get_book_details_by_id"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_book_details_by_id': Expected parameters 'id' with value [1,2,3,4,5] of type list; Actual parameters match exactly with same values and type. No extra or missing parameters. No type mismatches.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_book_details_by_id",
+                "input_parameters": {
+                  "id": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_book_details_by_id",
+                "input_parameters": {
+                  "id": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7191,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 84.3% (MAS: 10498 vs SAS: 5697 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9826,
+        "completion_tokens": 672,
+        "total_tokens": 10498,
+        "llm_calls": 5,
+        "cost": 0.010393
+      },
+      "latency": {
+        "total": 9.736,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_4",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I'm planning to purchase a car from toyota, and I need information about the available models. Can you provide me with a list of the car models? ",
+      "expected_tools": [
+        {
+          "name": "spu_list",
+          "arguments": {
+            "brand": "toyota"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['spu_list']",
+          "comparison": {
+            "expected": [
+              "spu_list"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9687,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 9.4% (MAS: 6287 vs SAS: 5748 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5962,
+        "completion_tokens": 325,
+        "total_tokens": 6287,
+        "llm_calls": 4,
+        "cost": 0.005934
+      },
+      "latency": {
+        "total": 5.498,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_5",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Design a program that can automatically identify scam text messages and mark them as junk. Use python as the programming language, set the temperature to 0.5, and limit the response to 1500 tokens. Th",
+      "expected_tools": [
+        {
+          "name": "generate_code",
+          "arguments": {
+            "prompt": "Design a program that can automatically identify scam text messages and mark them as junk",
+            "language": "python",
+            "temperature": 0.5,
+            "max_tokens": 1500,
+            "model": "gemini-pro"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "generate_code",
+          "args": {
+            "prompt": "Create a Python program that automatically identifies scam text messages and marks them as junk. Requirements:\n- Use the Gemini Pro model (`gemini-pro`)\n- Set temperature to 0.5\n- Limit the response to 1500 tokens\n- Language: Python\n- The program should:\n  1) accept incoming SMS text and a message ID,\n  2) classify each message as either `junk` or `not_junk`,\n  3) mark messages classified as `junk` accordingly,\n  4) use a strict prompt so the model returns only the label,\n  5) include a small demo/main section showing how it works.\n\nPlease write clean, production-oriented code with brief comments, and prefer robust parsing of the model response. If needed, include a helper function for marking a message as junk (stub or placeholder).",
+            "language": "python",
+            "model": "gemini-pro",
+            "output_name": "scam_text_classifier.py",
+            "temperature": 0.5,
+            "max_tokens": 1500
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to scam_text_classifier.py\", \"id\": \"lc_ea1807f6-a841-4220-80f1-08557a600b41\"}], {\"structured_content\": {\"result\": \"Code has been generated successfully and saved to scam_text_classifier.py\"}}]' name='generate_code' tool_call_id='call_0MPesyFXeGDVaUlf0jkwZqBr'",
+          "start_time": 0.0,
+          "latency": 1.7969313999637961,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "generate_code"
+            ],
+            "actual": [
+              "generate_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: generate_code\n- Expected parameters: prompt (str), language (str), temperature (float), max_tokens (int), model (str)\n- Actual parameters: prompt (str), language (str), temperature (float), max_tokens (int), model (str), output_name (str)\n\nIssues found:\n1. Parameter 'output_name' is present in actual but missing in expected (extra parameter) - penalize.\n2. Parameter 'prompt' values differ semantically but both are strings and valid prompts. The actual prompt is more detailed but still semantically equivalent in intent (design a program to identify scam texts and mark junk). This is acceptable.\n3. All parameter names match except for the extra 'output_name'.\n4. No type mismatches found.\n\nSummary: One extra parameter 'output_name' in actual causes a minor penalty, so score is 0.8.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "generate_code",
+                "input_parameters": {
+                  "prompt": "Design a program that can automatically identify scam text messages and mark them as junk",
+                  "language": "python",
+                  "temperature": 0.5,
+                  "max_tokens": 1500,
+                  "model": "gemini-pro"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "generate_code",
+                "input_parameters": {
+                  "prompt": "Create a Python program that automatically identifies scam text messages and marks them as junk. Requirements:\n- Use the Gemini Pro model (`gemini-pro`)\n- Set temperature to 0.5\n- Limit the response to 1500 tokens\n- Language: Python\n- The program should:\n  1) accept incoming SMS text and a message ID,\n  2) classify each message as either `junk` or `not_junk`,\n  3) mark messages classified as `junk` accordingly,\n  4) use a strict prompt so the model returns only the label,\n  5) include a small demo/main section showing how it works.\n\nPlease write clean, production-oriented code with brief comments, and prefer robust parsing of the model response. If needed, include a helper function for marking a message as junk (stub or placeholder).",
+                  "language": "python",
+                  "model": "gemini-pro",
+                  "output_name": "scam_text_classifier.py",
+                  "temperature": 0.5,
+                  "max_tokens": 1500
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.5552,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 133.4% (MAS: 14067 vs SAS: 6026 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12648,
+        "completion_tokens": 1419,
+        "total_tokens": 14067,
+        "llm_calls": 5,
+        "cost": 0.015872
+      },
+      "latency": {
+        "total": 13.12,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_6",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "How can a company protect its data from cyberattacks?",
+      "expected_tools": [
+        {
+          "name": "security_guidance",
+          "arguments": {
+            "query": "How can a company protect its data from cyberattacks?"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "How can a company protect its data from cyberattacks? Provide a concise layered-security checklist for a company protecting data from cyberattacks, covering employee training, access controls and MFA, patching, encryption, firewalls/endpoint protection, backups and recovery testing, monitoring and incident response, network segmentation, secure remote access, and vendor risk management."
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Security Best Practices for Protecting Data from Cyberattacks:\\\\n1. Implement strong authentication (MFA) for all user accounts.\\\\n2. Enforce least privilege access controls and role-based access control (RBAC).\\\\n3. Keep systems, libraries, and dependencies up-to-date with security patches.\\\\n4. Use encryption at rest (AES-256) and in transit (TLS 1.2+).\\\\n5. Regularly back up data and store backups in a secure, isolated environment.\\\\n6. Monitor logs for su",
+          "start_time": 0.0,
+          "latency": 2.0110038998536766,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "security_guidance"
+            ],
+            "actual": [
+              "security_guidance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: security_guidance\nExpected parameters: {\"query\": \"How can a company protect its data from cyberattacks?\"}\nActual parameters: {\"query\": \"How can a company protect its data from cyberattacks? Provide a concise layered-security checklist for a company protecting data from cyberattacks, covering employee training, access controls and MFA, patching, encryption, firewalls/endpoint protection, backups and recovery testing, monitoring and incident response, network segmentation, secure remote access, and vendor risk management.\"}\nIssues: Parameter 'query' value does not match expected value. Although types match (both strings), the actual query is significantly longer and semantically different from the expected query. According to the evaluation rules, parameter values must be semantically equivalent. This is a major issue leading to a score of 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "How can a company protect its data from cyberattacks?"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "How can a company protect its data from cyberattacks? Provide a concise layered-security checklist for a company protecting data from cyberattacks, covering employee training, access controls and MFA, patching, encryption, firewalls/endpoint protection, backups and recovery testing, monitoring and incident response, network segmentation, secure remote access, and vendor risk management."
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7918,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 62.5% (MAS: 10564 vs SAS: 6502 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9802,
+        "completion_tokens": 762,
+        "total_tokens": 10564,
+        "llm_calls": 5,
+        "cost": 0.010781
+      },
+      "latency": {
+        "total": 11.118,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_7",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Can you provide an optimized solution for the python file named 'heavy_numeric_computations.py' using techniques like vectorization and parallel programming, use model gpt-4o-mini for code optimizatio",
+      "expected_tools": [
+        {
+          "name": "generate_code",
+          "arguments": {
+            "prompt": "Given an existing Python script that performs heavy numeric computations in loops, produce an optimized version using NumPy vectorization and, where beneficial, multiprocessing (or concurrent.futures) for CPU-bound work. Include clear function docstrings, type hints, and brief inline comments explaining the vectorized transformations. Also provide a small benchmark snippet comparing the original loop implementation vs. the optimized version on synthetic data. Avoid unnecessary dependencies beyond numpy.",
+            "language": "python",
+            "model": "gpt-4o-mini",
+            "output_name": "new_heavy_numeric_computations",
+            "existing_file_path": "heavy_numeric_computations.py"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "generate_code",
+          "args": {
+            "prompt": "Optimize the existing Python file using vectorization and parallel programming where appropriate. Preserve the original functionality and public interface as much as possible, but refactor bottlenecks for better performance. Prefer NumPy vectorization for numeric loops, avoid unnecessary Python-level iteration, and use parallel execution for independent CPU-bound work when it provides a clear benefit. Add any needed imports and keep the code clean, readable, and production-ready.",
+            "language": "python",
+            "output_name": "code/new_heavy_numeric_computations.py",
+            "model": "gpt-4o-mini",
+            "temperature": 0.2,
+            "max_tokens": 3000,
+            "existing_file_path": "heavy_numeric_computations.py"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to code/new_heavy_numeric_computations.py\", \"id\": \"lc_275c443e-8400-4caf-b82e-31f6ac3b8934\"}], {\"structured_content\": {\"result\": \"Code has been generated successfully and saved to code/new_heavy_numeric_computations.py\"}}]' name='generate_code' tool_call_id='call_7WyHviMHhaseG7IxhP6JMmBE'",
+          "start_time": 0.0,
+          "latency": 1.947516999905929,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "generate_code"
+            ],
+            "actual": [
+              "generate_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: generate_code\n- Expected parameters: prompt, language, model, output_name, existing_file_path\n- Actual parameters: prompt, language, model, output_name, existing_file_path, temperature, max_tokens\n\nIssues found:\n1. Extra parameters in actual: temperature (float), max_tokens (int) - penalize for extra parameters.\n2. Missing parameters: None (all expected parameters present).\n3. Parameter names mostly match except output_name value differs in path format:\n   - Expected output_name: \"new_heavy_numeric_computations\"\n   - Actual output_name: \"code/new_heavy_numeric_computations.py\"\n   This is a value difference, not a type mismatch, but semantically different (filename vs path+filename), so considered a mismatch.\n4. Prompt values differ significantly in content, though both are strings - value mismatch.\n5. Types all match correctly (all strings where expected), no type mismatches.\n\nSummary: Major issues due to extra parameters and mismatched values for prompt and output_name. This results in a low score.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "generate_code",
+                "input_parameters": {
+                  "prompt": "Given an existing Python script that performs heavy numeric computations in loops, produce an optimized version using NumPy vectorization and, where beneficial, multiprocessing (or concurrent.futures) for CPU-bound work. Include clear function docstrings, type hints, and brief inline comments explaining the vectorized transformations. Also provide a small benchmark snippet comparing the original loop implementation vs. the optimized version on synthetic data. Avoid unnecessary dependencies beyond numpy.",
+                  "language": "python",
+                  "model": "gpt-4o-mini",
+                  "output_name": "new_heavy_numeric_computations",
+                  "existing_file_path": "heavy_numeric_computations.py"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "generate_code",
+                "input_parameters": {
+                  "prompt": "Optimize the existing Python file using vectorization and parallel programming where appropriate. Preserve the original functionality and public interface as much as possible, but refactor bottlenecks for better performance. Prefer NumPy vectorization for numeric loops, avoid unnecessary Python-level iteration, and use parallel execution for independent CPU-bound work when it provides a clear benefit. Add any needed imports and keep the code clean, readable, and production-ready.",
+                  "language": "python",
+                  "output_name": "code/new_heavy_numeric_computations.py",
+                  "model": "gpt-4o-mini",
+                  "temperature": 0.2,
+                  "max_tokens": 3000,
+                  "existing_file_path": "heavy_numeric_computations.py"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7493,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 75.2% (MAS: 10635 vs SAS: 6070 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10013,
+        "completion_tokens": 622,
+        "total_tokens": 10635,
+        "llm_calls": 5,
+        "cost": 0.010309
+      },
+      "latency": {
+        "total": 9.793,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_8",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Patient No.101 has presented with soreness in the lower back and knees, fear of cold, frequent urination at night, and mental fatigue. I would like to retrieve the diagnostic report from 2024-09-18 in",
+      "expected_tools": [
+        {
+          "name": "Traditional_Chinese_medicine_consultation",
+          "arguments": {
+            "date": "2024-09-18",
+            "patient_id": "101"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "Traditional_Chinese_medicine_consultation",
+          "args": {
+            "patient_id": "101",
+            "date": "2024-09-18"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"=== TCM DIAGNOSTIC REPORT ===\\\\nPatient ID: 101\\\\nPatient Name: John Smith\\\\nAge: 45 | Gender: Male\\\\nDate: 2024-09-18\\\\nChief Complaint: Lower back and knee pain with cold intolerance\\\\n\\\\nREPORTED SYMPTOMS:\\\\n• persistent soreness in lower back\\\\n• knee pain or weakness\\\\n• fear of cold\\\\n• frequent urination at night\\\\n• mental fatigue\\\\n• cold hands and feet\\\\n• low libido\\\\n\\\\nTCM DIAGNOSTIC FINDINGS:\\\\nTongue: Pale, swollen tongue with white coating\\\\nP",
+          "start_time": 0.0,
+          "latency": 1.8162243000697345,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "Traditional_Chinese_medicine_consultation"
+            ],
+            "actual": [
+              "Traditional_Chinese_medicine_consultation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool: Traditional_Chinese_medicine_consultation - Expected parameters: date (str='2024-09-18'), patient_id (str='101'); Actual parameters: patient_id (str='101'), date (str='2024-09-18'). Parameter names match exactly, values are semantically equivalent, and types match perfectly. Parameter order does not matter. No extra or missing parameters. No type mismatches or value discrepancies found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "Traditional_Chinese_medicine_consultation",
+                "input_parameters": {
+                  "date": "2024-09-18",
+                  "patient_id": "101"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "Traditional_Chinese_medicine_consultation",
+                "input_parameters": {
+                  "patient_id": "101",
+                  "date": "2024-09-18"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7466,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 76.0% (MAS: 9912 vs SAS: 5631 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9310,
+        "completion_tokens": 602,
+        "total_tokens": 9912,
+        "llm_calls": 5,
+        "cost": 0.009692
+      },
+      "latency": {
+        "total": 10.113,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_9",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "In MongoDB, there is storage for customer information and their corresponding postal codes in the database named 'customers_db' The username is Admin and the password is Admin123. Can you help me retr",
+      "expected_tools": [
+        {
+          "name": "mongo_mcp",
+          "arguments": {
+            "mongoUri": "mongodb://Admin:Admin123@localhost:27017/customers_db",
+            "collection_name": "customers"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "mongo_mcp",
+          "args": {
+            "mongoUri": "mongodb://Admin:Admin123@localhost/customers_db",
+            "collection_name": "customers"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Database \\'mongodb://Admin:Admin123@localhost/customers_db\\' not found in mock databases.\", \"id\": \"lc_fde71c46-cb20-40e3-af46-e4d8a6009035\"}], {\"structured_content\": {\"result\": \"Database \\'mongodb://Admin:Admin123@localhost/customers_db\\' not found in mock databases.\"}}]' name='mongo_mcp' tool_call_id='call_EdhKkf29m3Nq4QQfPCEXSoBR'",
+          "start_time": 0.0,
+          "latency": 1.8231265998911113,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "mongo_mcp"
+            ],
+            "actual": [
+              "mongo_mcp"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool 'mongo_mcp': Parameter names match exactly ('mongoUri', 'collection_name'). Types match (both strings). However, the value of 'mongoUri' differs: expected 'mongodb://Admin:Admin123@localhost:27017/customers_db' vs actual 'mongodb://Admin:Admin123@localhost/customers_db'. This is a major issue as the URI is semantically different (missing port 27017). No extra or missing parameters. Due to this critical value mismatch, the overall score is 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "mongo_mcp",
+                "input_parameters": {
+                  "mongoUri": "mongodb://Admin:Admin123@localhost:27017/customers_db",
+                  "collection_name": "customers"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "mongo_mcp",
+                "input_parameters": {
+                  "mongoUri": "mongodb://Admin:Admin123@localhost/customers_db",
+                  "collection_name": "customers"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -50.3% (MAS: 9352 vs SAS: 18816 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8881,
+        "completion_tokens": 471,
+        "total_tokens": 9352,
+        "llm_calls": 5,
+        "cost": 0.00878
+      },
+      "latency": {
+        "total": 8.686,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_10",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I am doing a reseach in the field of Sociology, and I need to collect relevant papers on the phenomenon of university students reserving seats. Please find me the most relevant papers.",
+      "expected_tools": [
+        {
+          "name": "search_academic_papers",
+          "arguments": {
+            "query": "phenomenon of university students reserving seats",
+            "subject": "sociology",
+            "max_results": 5
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_academic_papers",
+          "args": {
+            "query": "university students reserving seats seat saving seat reservation territorial behavior library classroom norms",
+            "subject": "sociology",
+            "max_results": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No academic papers found matching query \\'university students reserving seats seat saving seat reservation territorial behavior library classroom norms\\' for subject \\'sociology\\'.\", \"id\": \"lc_16815cf0-36d9-4c2f-b876-71537f58b105\"}], {\"structured_content\": {\"result\": \"No academic papers found matching query \\'university students reserving seats seat saving seat reservation territorial behavior library classroom norms\\' for subject \\'sociology\\'.\"}}]' name='se",
+          "start_time": 0.0,
+          "latency": 2.795426399912685,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_academic_papers",
+          "args": {
+            "query": "seat saving behavior university students library seating classroom seating norms",
+            "subject": "social psychology",
+            "max_results": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No academic papers found matching query \\'seat saving behavior university students library seating classroom seating norms\\' for subject \\'social psychology\\'.\", \"id\": \"lc_a8cad878-8411-42b2-9f4d-6fef38cc7f76\"}], {\"structured_content\": {\"result\": \"No academic papers found matching query \\'seat saving behavior university students library seating classroom seating norms\\' for subject \\'social psychology\\'.\"}}]' name='search_academic_papers' tool_call_id='call_g",
+          "start_time": 0.0,
+          "latency": 2.79369890014641,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_academic_papers",
+          "args": {
+            "query": "territorial behavior public seating university students reserved seats",
+            "subject": "anthropology",
+            "max_results": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No academic papers found matching query \\'territorial behavior public seating university students reserved seats\\' for subject \\'anthropology\\'.\", \"id\": \"lc_564f7d0a-9a02-4724-84ec-94c711a90da0\"}], {\"structured_content\": {\"result\": \"No academic papers found matching query \\'territorial behavior public seating university students reserved seats\\' for subject \\'anthropology\\'.\"}}]' name='search_academic_papers' tool_call_id='call_ux9aQXe8zgPVhHv7NxjuPBAD'",
+          "start_time": 0.0,
+          "latency": 2.806729400064796,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_academic_papers",
+          "args": {
+            "query": "seat saving seat reservation students",
+            "subject": "education",
+            "max_results": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No academic papers found matching query \\'seat saving seat reservation students\\' for subject \\'education\\'.\", \"id\": \"lc_bba171b3-f42f-457a-8e65-eb31ded8f833\"}], {\"structured_content\": {\"result\": \"No academic papers found matching query \\'seat saving seat reservation students\\' for subject \\'education\\'.\"}}]' name='search_academic_papers' tool_call_id='call_PPJu5Z6GyjVoKLRDjYkXKjvv'",
+          "start_time": 4.564,
+          "latency": 2.7969386000186205,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_academic_papers",
+          "args": {
+            "query": "territoriality space claiming students seating",
+            "subject": "sociology",
+            "max_results": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No academic papers found matching query \\'territoriality space claiming students seating\\' for subject \\'sociology\\'.\", \"id\": \"lc_18646a8a-0239-429b-ba09-8cb25a352f50\"}], {\"structured_content\": {\"result\": \"No academic papers found matching query \\'territoriality space claiming students seating\\' for subject \\'sociology\\'.\"}}]' name='search_academic_papers' tool_call_id='call_SBmpSUOLiiTWGE2Vt88QD3zv'",
+          "start_time": 4.564,
+          "latency": 2.7996217000763863,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_academic_papers",
+          "args": {
+            "query": "library study space territoriality students",
+            "subject": "library science",
+            "max_results": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No academic papers found matching query \\'library study space territoriality students\\' for subject \\'library science\\'.\", \"id\": \"lc_67d88d69-82d8-4ea2-bad0-ecab868de6a8\"}], {\"structured_content\": {\"result\": \"No academic papers found matching query \\'library study space territoriality students\\' for subject \\'library science\\'.\"}}]' name='search_academic_papers' tool_call_id='call_tkGfdt15sAuxAPQJpyu7Ahfu'",
+          "start_time": 4.564,
+          "latency": 2.8014865999575704,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.16666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 6 total calls. Correct: ['search_academic_papers']. Duplicates: 5",
+          "comparison": {
+            "expected": [
+              "search_academic_papers"
+            ],
+            "actual": [
+              "search_academic_papers",
+              "search_academic_papers",
+              "search_academic_papers",
+              "search_academic_papers",
+              "search_academic_papers",
+              "search_academic_papers"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There is only one expected tool call for 'search_academic_papers' with parameters: query='phenomenon of university students reserving seats' (str), subject='sociology' (str), max_results=5 (int). The actual calls include six calls to 'search_academic_papers', all with the correct parameter names and types, but all have different parameter values from the expected, specifically: \n- query values differ significantly in content (not semantically equivalent to expected query).\n- subject values differ in 4 out of 6 calls (only 2 calls have subject='sociology').\n- max_results is 10 in all actual calls vs expected 5.\n\nAccording to the rules, parameter values must be semantically equivalent. The queries and max_results differ, so this is a major issue. There are no type mismatches or missing/extra parameters. However, the actual calls do not match the expected arguments in value.\n\nSince the expected call is singular and the actual calls are multiple with none matching the expected arguments, the score is low (0.3) reflecting major issues with argument correctness.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "phenomenon of university students reserving seats",
+                  "subject": "sociology",
+                  "max_results": 5
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "university students reserving seats seat saving seat reservation territorial behavior library classroom norms",
+                  "subject": "sociology",
+                  "max_results": 10
+                }
+              },
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "seat saving behavior university students library seating classroom seating norms",
+                  "subject": "social psychology",
+                  "max_results": 10
+                }
+              },
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "territorial behavior public seating university students reserved seats",
+                  "subject": "anthropology",
+                  "max_results": 10
+                }
+              },
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "seat saving seat reservation students",
+                  "subject": "education",
+                  "max_results": 10
+                }
+              },
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "territoriality space claiming students seating",
+                  "subject": "sociology",
+                  "max_results": 10
+                }
+              },
+              {
+                "name": "search_academic_papers",
+                "input_parameters": {
+                  "query": "library study space territoriality students",
+                  "subject": "library science",
+                  "max_results": 10
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.16666666666666666, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.16666666666666666,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9705,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 8.9% (MAS: 15574 vs SAS: 14306 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 14562,
+        "completion_tokens": 1012,
+        "total_tokens": 15574,
+        "llm_calls": 6,
+        "cost": 0.015476
+      },
+      "latency": {
+        "total": 16.937,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_11",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Given a complex dataset saved in the file complex.csv, there is a problem that needs to be solved, generate a program algorithm that can automatically respond or solve the problem. The output file sho",
+      "expected_tools": [
+        {
+          "name": "generate_code",
+          "arguments": {
+            "prompt": "complex dataset analysis to automatically respond to detected issues",
+            "language": "Python",
+            "model": "gemini-pro",
+            "output_name": "code/complex_dataset_analysis",
+            "existing_file_path": "complex.csv"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "generate_code",
+          "args": {
+            "prompt": "Generate a Python program for a generic 'complex dataset analysis' workflow saved as `code/complex_dataset_analysis.py`. The program should:\n- Load a CSV file named `complex.csv` from the working directory.\n- Inspect columns, data types, missing values, duplicates, and basic statistics.\n- Automatically infer whether the target/problem is classification, regression, time series, or clustering based on the presence of likely target columns and data types.\n- If a target column is detected (common names like target, label, class, y, outcome, response), train an appropriate baseline model using scikit-learn with preprocessing for numeric/categorical data.\n- If no target column is detected, produce an exploratory analysis summary and a simple clustering or anomaly-detection fallback.\n- Output a concise report to stdout and save any generated predictions or summary artifacts to files in the same folder.\n- Include a `main()` entry point and clear function decomposition.\n- Be production-safe: handle file-not-found, empty data, non-numeric columns, and malformed CSVs gracefully.\n- Use only standard Python data science libraries (pandas, numpy, scikit-learn, matplotlib optional).\n- Add comments/docstrings explaining the algorithm and decision logic.\n\nThe code should be self-contained and runnable as `python code/complex_dataset_analysis.py`. Make reasonable assumptions since the exact dataset schema is unknown.",
+            "language": "python",
+            "output_name": "code/complex_dataset_analysis.py",
+            "model": "gemini-pro",
+            "temperature": 0.2,
+            "max_tokens": 2500
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Code has been generated successfully and saved to code/complex_dataset_analysis.py\", \"id\": \"lc_ae9a2b6a-9d73-4ab3-88cc-b9e840972379\"}], {\"structured_content\": {\"result\": \"Code has been generated successfully and saved to code/complex_dataset_analysis.py\"}}]' name='generate_code' tool_call_id='call_YKOAOuHCN0P9BAnBdKoRLUPq'",
+          "start_time": 0.0,
+          "latency": 1.8189973998814821,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "generate_code"
+            ],
+            "actual": [
+              "generate_code"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: generate_code\n- Expected parameters: prompt (str), language (str), model (str), output_name (str), existing_file_path (str)\n- Actual parameters: prompt (str), language (str), model (str), output_name (str), temperature (float), max_tokens (int)\n\nIssues found:\n1. Missing parameter: existing_file_path is expected but missing in actual call (penalize).\n2. Extra parameters: temperature and max_tokens are present in actual but not expected (penalize).\n3. Parameter names mostly match except for existing_file_path missing.\n4. Parameter values:\n   - prompt: values differ significantly but both are strings, so considered semantically different but no explicit rule penalizes content difference, only type and name.\n   - language: 'Python' vs 'python' - case-insensitive match, so OK.\n   - output_name: 'code/complex_dataset_analysis' vs 'code/complex_dataset_analysis.py' - different values, but no explicit rule penalizes value difference unless type mismatch; however, this is a semantic difference and should be considered a mismatch.\n   - model: 'gemini-pro' matches exactly.\n5. Type safety: all types match expected types for parameters present.\n\nSummary: Major issues due to missing required parameter (existing_file_path), extra unexpected parameters (temperature, max_tokens), and differing output_name value (missing .py extension in expected). These combined lead to a low score.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "generate_code",
+                "input_parameters": {
+                  "prompt": "complex dataset analysis to automatically respond to detected issues",
+                  "language": "Python",
+                  "model": "gemini-pro",
+                  "output_name": "code/complex_dataset_analysis",
+                  "existing_file_path": "complex.csv"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "generate_code",
+                "input_parameters": {
+                  "prompt": "Generate a Python program for a generic 'complex dataset analysis' workflow saved as `code/complex_dataset_analysis.py`. The program should:\n- Load a CSV file named `complex.csv` from the working directory.\n- Inspect columns, data types, missing values, duplicates, and basic statistics.\n- Automatically infer whether the target/problem is classification, regression, time series, or clustering based on the presence of likely target columns and data types.\n- If a target column is detected (common names like target, label, class, y, outcome, response), train an appropriate baseline model using scikit-learn with preprocessing for numeric/categorical data.\n- If no target column is detected, produce an exploratory analysis summary and a simple clustering or anomaly-detection fallback.\n- Output a concise report to stdout and save any generated predictions or summary artifacts to files in the same folder.\n- Include a `main()` entry point and clear function decomposition.\n- Be production-safe: handle file-not-found, empty data, non-numeric columns, and malformed CSVs gracefully.\n- Use only standard Python data science libraries (pandas, numpy, scikit-learn, matplotlib optional).\n- Add comments/docstrings explaining the algorithm and decision logic.\n\nThe code should be self-contained and runnable as `python code/complex_dataset_analysis.py`. Make reasonable assumptions since the exact dataset schema is unknown.",
+                  "language": "python",
+                  "output_name": "code/complex_dataset_analysis.py",
+                  "model": "gemini-pro",
+                  "temperature": 0.2,
+                  "max_tokens": 2500
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9503,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 14.9% (MAS: 11466 vs SAS: 9978 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10530,
+        "completion_tokens": 936,
+        "total_tokens": 11466,
+        "llm_calls": 5,
+        "cost": 0.012109
+      },
+      "latency": {
+        "total": 11.829,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_12",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Design a new interaction interface for the chating robot.",
+      "expected_tools": [
+        {
+          "name": "UIUX_Expert",
+          "arguments": {
+            "user_personas": "Young adults (18-35) who frequently use messaging apps, prefer quick and intuitive UI, comfortable with emojis and GIFs.",
+            "interaction_modes": "Voice commands, text chat, gesture recognition.",
+            "design_principles": "Minimalist design, high contrast for readability, responsive layout, accessibility compliance (WCAG 2.1).",
+            "prototyping_tools": "Figma, Adobe XD, InVision.",
+            "usability_testing": "A/B testing with 50 users, heuristic evaluation, think-aloud protocol.",
+            "output_artifacts": "Interactive prototype, persona documentation, usability test report."
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "UIUX_Expert",
+          "args": {
+            "user_personas": "Primary personas: busy knowledge workers (25-45) who need quick answers and task completion; students who need explanations and summarization; casual users who want friendly conversational assistance. Secondary personas: power users who need shortcuts, file handling, and multi-turn task workflows. Needs: fast onboarding, low-friction typing, clear response scanning, trust, accessibility, and support for both simple Q&A and richer task-oriented interactions.",
+            "interaction_modes": "Text chat as the primary mode; voice input/output as an optional mode; quick-reply chips and suggested prompts for low-friction starts; attachment/file upload for documents and images; action buttons for follow-up tasks (regenerate, summarize, translate, copy, continue); keyboard shortcuts for power users; inline rich content cards for structured answers.",
+            "design_principles": "Clarity first, minimal cognitive load, strong visual hierarchy, accessible contrast and spacing, responsive layout, conversational friendliness, action-oriented responses, progressive disclosure for advanced tools, error-tolerant flows, and persistent input visibility. The interface should make the next step obvious at all times and keep the chat readable even for long or complex responses.",
+            "prototyping_tools": "Figma for wireframes and high-fidelity interactive prototypes; shadcn/ui and Tailwind CSS for component-based implementation-ready previews; optional Framer for motion testing of typing/loading and message transitions.",
+            "usability_testing": "Heuristic evaluation for chat clarity and discoverability; task-based usability tests for common flows (ask a question, upload a file, continue a thread, use a quick action); A/B testing for prompt chips, composer placement, and response action buttons; accessibility checks for keyboard navigation, screen-reader labels, focus states, and color contrast; telemetry review for drop-off after first message and success rate on suggested prompts.",
+            "output_artifacts": "Information architecture outline, low-fidelity wireframe concept, component inventory, interaction state map (empty/loading/error/streaming), microcopy set, and a clickable prototype ready for stakeholder review."
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"UI/UX design process completed successfully with provided parameters.\", \"id\": \"lc_68d319c5-4ed9-4e45-9ff4-95d8b97482e4\"}], {\"structured_content\": {\"result\": \"UI/UX design process completed successfully with provided parameters.\"}}]' name='UIUX_Expert' tool_call_id='call_VRy9eJil0Y2FB7YN9Ae42RPu'",
+          "start_time": 0.0,
+          "latency": 1.952543499879539,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "UIUX_Expert"
+            ],
+            "actual": [
+              "UIUX_Expert"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: UIUX_Expert\n- Parameter names: All expected parameters are present in actual, no missing or extra parameters.\n- Parameter values: All parameter values differ significantly in content, though all are strings as expected. The actual values are semantically different from expected (different personas, design principles, tools, testing methods, and artifacts).\n- Type safety: All parameters have matching types (str vs str), no type mismatches.\n\nSummary: While parameter names and types match perfectly, the actual arguments do not match the expected arguments semantically. The evaluation rules emphasize semantic equivalence of parameter values, and here the actual values describe completely different content than expected. This is a major issue.\n\nScore rationale: Because all parameters are present and types match, but the values are semantically different, this is a major issue leading to a low score. According to the scoring guidelines, major issues like wrong values or missing required params lead to scores between 0.0 and 0.4. Here, no parameters are missing or extra, and no type mismatches, so the score is not zero but low.\n\nFinal score: 0.4",
+          "comparison": {
+            "expected": [
+              {
+                "name": "UIUX_Expert",
+                "input_parameters": {
+                  "user_personas": "Young adults (18-35) who frequently use messaging apps, prefer quick and intuitive UI, comfortable with emojis and GIFs.",
+                  "interaction_modes": "Voice commands, text chat, gesture recognition.",
+                  "design_principles": "Minimalist design, high contrast for readability, responsive layout, accessibility compliance (WCAG 2.1).",
+                  "prototyping_tools": "Figma, Adobe XD, InVision.",
+                  "usability_testing": "A/B testing with 50 users, heuristic evaluation, think-aloud protocol.",
+                  "output_artifacts": "Interactive prototype, persona documentation, usability test report."
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "UIUX_Expert",
+                "input_parameters": {
+                  "user_personas": "Primary personas: busy knowledge workers (25-45) who need quick answers and task completion; students who need explanations and summarization; casual users who want friendly conversational assistance. Secondary personas: power users who need shortcuts, file handling, and multi-turn task workflows. Needs: fast onboarding, low-friction typing, clear response scanning, trust, accessibility, and support for both simple Q&A and richer task-oriented interactions.",
+                  "interaction_modes": "Text chat as the primary mode; voice input/output as an optional mode; quick-reply chips and suggested prompts for low-friction starts; attachment/file upload for documents and images; action buttons for follow-up tasks (regenerate, summarize, translate, copy, continue); keyboard shortcuts for power users; inline rich content cards for structured answers.",
+                  "design_principles": "Clarity first, minimal cognitive load, strong visual hierarchy, accessible contrast and spacing, responsive layout, conversational friendliness, action-oriented responses, progressive disclosure for advanced tools, error-tolerant flows, and persistent input visibility. The interface should make the next step obvious at all times and keep the chat readable even for long or complex responses.",
+                  "prototyping_tools": "Figma for wireframes and high-fidelity interactive prototypes; shadcn/ui and Tailwind CSS for component-based implementation-ready previews; optional Framer for motion testing of typing/loading and message transitions.",
+                  "usability_testing": "Heuristic evaluation for chat clarity and discoverability; task-based usability tests for common flows (ask a question, upload a file, continue a thread, use a quick action); A/B testing for prompt chips, composer placement, and response action buttons; accessibility checks for keyboard navigation, screen-reader labels, focus states, and color contrast; telemetry review for drop-off after first message and success rate on suggested prompts.",
+                  "output_artifacts": "Information architecture outline, low-fidelity wireframe concept, component inventory, interaction state map (empty/loading/error/streaming), microcopy set, and a clickable prototype ready for stakeholder review."
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.4",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.4
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9731,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 8.1% (MAS: 14005 vs SAS: 12960 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11876,
+        "completion_tokens": 2129,
+        "total_tokens": 14005,
+        "llm_calls": 5,
+        "cost": 0.018487
+      },
+      "latency": {
+        "total": 19.163,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_13",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Based on the products and sales data in the default e-commerce database, analyze the current marketing strategies of the e-commerce store and provide five optimization suggestions.",
+      "expected_tools": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "arguments": {
+            "schema_filter": [
+              "products",
+              "sales"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "args": {
+            "schema_filter": [
+              "products",
+              "sales"
+            ],
+            "database_name": ""
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\\"error\\\\\": \\\\\"ValueError: Database \\'\\' not found in mock databases.\\\\\", \\\\\"tool\\\\\": \\\\\"E_commerce_analyst_MCP_get_schemas\\\\\"}\", \"id\": \"lc_496f7d13-0be7-43cb-9fc5-52a871e6697d\"}], {\"structured_content\": {\"result\": \"{\\\\\"error\\\\\": \\\\\"ValueError: Database \\'\\' not found in mock databases.\\\\\", \\\\\"tool\\\\\": \\\\\"E_commerce_analyst_MCP_get_schemas\\\\\"}\"}}]' name='E_commerce_analyst_MCP_get_schemas' tool_call_id='call_XqC9WjafkGfp3s9wxYScxH0o'",
+          "start_time": 0.0,
+          "latency": 1.8056830998975784,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "E_commerce_analyst_MCP_get_schemas"
+            ],
+            "actual": [
+              "E_commerce_analyst_MCP_get_schemas"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: E_commerce_analyst_MCP_get_schemas\n- Expected parameters: schema_filter\n- Actual parameters: schema_filter, database_name\n- Issue: Extra parameter 'database_name' present in actual but not expected (penalize).\n- Parameter values and types for 'schema_filter' match correctly.\nOverall, one extra parameter causes a minor issue, resulting in a score of 0.8.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "schema_filter": [
+                    "products",
+                    "sales"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "schema_filter": [
+                    "products",
+                    "sales"
+                  ],
+                  "database_name": ""
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9085,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 27.5% (MAS: 12342 vs SAS: 9683 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11155,
+        "completion_tokens": 1187,
+        "total_tokens": 12342,
+        "llm_calls": 5,
+        "cost": 0.013708
+      },
+      "latency": {
+        "total": 14.953,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_14",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Please provide a website development proposal, including website architecture, database design, and user experience optimization.",
+      "expected_tools": [
+        {
+          "name": "system_architecture_designer",
+          "arguments": {
+            "system_design": "A three-tier website architecture with a presentation layer (React.js frontend), an application layer (Node.js/Express backend), and a data layer (PostgreSQL). Incorporates CDN and load balancer for scalability and performance, along with secure API endpoints and modular components for maintainability.",
+            "technology_stack": "Frontend: React.js, Backend: Node.js with Express, Database: PostgreSQL, Hosting: AWS EC2 & S3, CDN: CloudFront, Version Control: GitHub",
+            "hardware_requirements": "Cloud-based hosting with minimum 2 vCPUs, 8GB RAM for app servers, AWS RDS for database, and 50GB SSD storage; scalable load balancer configuration for peak loads.",
+            "interaction_interface": "Responsive web interface with mobile-first design, intuitive navigation, accessibility compliance (WCAG 2.1), and optimized load times; includes interactive UI elements and seamless database-driven content updates.",
+            "test_optimization_plan": "Automated unit and integration testing using Jest and Cypress, load testing with Apache JMeter, continuous performance monitoring via New Relic, and iterative A/B testing for UI/UX refinement."
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "system_architecture_designer",
+          "args": {
+            "system_design": "Design a scalable, secure, content-driven website architecture suitable for a modern business website with marketing pages, blog/news content, user accounts, and optional e-commerce or service inquiry workflows. The system should separate presentation, application logic, and data access layers; support role-based access control; include APIs for front-end consumption; and be easy to extend for future features such as search, personalization, and analytics.",
+            "technology_stack": "Frontend: Next.js with React and TypeScript; styling via Tailwind CSS or a design system such as Chakra UI. Backend: Node.js with NestJS or Next.js API routes for modular services; REST or GraphQL API. Database: PostgreSQL as the primary relational database; Redis for caching/session storage; object storage for media assets (e.g., S3-compatible). Infrastructure: Docker for containerization, CI/CD via GitHub Actions, hosting on AWS/Vercel/Render depending on scale, CDN for static assets, and observability with logging/metrics tools.",
+            "hardware_requirements": "For a small-to-medium production deployment: 2–4 vCPU application instances, 4–8 GB RAM per instance, SSD-backed storage, managed PostgreSQL with at least 2 vCPU/4–8 GB RAM to start, Redis with 1 vCPU/1–2 GB RAM, and scalable object storage for images/files. If traffic is expected to grow, use autoscaling app instances, managed database read replicas, and CDN caching to reduce origin load.",
+            "interaction_interface": "Responsive web UI optimized for desktop and mobile. Include clear navigation, search, forms with validation, authentication flows, admin dashboard for content management, and accessible components that meet WCAG guidelines. Prioritize fast page loads and intuitive interaction patterns.",
+            "test_optimization_plan": "Implement unit, integration, and end-to-end tests for core flows; use automated linting and type checking in CI; set performance budgets for Core Web Vitals; monitor error rates and response times; run A/B tests on key UX changes; collect user feedback through analytics and surveys; and iterate on bottlenecks using profiling and load testing."
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"System Architecture Proposal:\\\\n- System Design: Design a scalable, secure, content-driven website architecture suitable for a modern business website with marketing pages, blog/news content, user accounts, and optional e-commerce or service inquiry workflows. The system should separate presentation, application logic, and data access layers; support role-based access control; include APIs for front-end consumption; and be easy to extend for future features s",
+          "start_time": 0.0,
+          "latency": 1.7776989000849426,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "system_architecture_designer"
+            ],
+            "actual": [
+              "system_architecture_designer"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: system_architecture_designer\n- Parameter names: All expected parameters (system_design, technology_stack, hardware_requirements, interaction_interface, test_optimization_plan) are present in actual call with no missing or extra parameters. Parameter names match exactly.\n- Parameter values: All parameter values differ significantly in content, though both are strings. The actual values do not semantically match the expected values as they describe different architectures and plans.\n- Type safety: All parameters are strings as expected, so no type mismatches.\n\nSummary: While parameter names and types are correct, the actual arguments do not semantically match the expected arguments (different descriptions and plans). According to the rules, this is a major issue (wrong values). Therefore, the score is 0.5 indicating a major issue due to argument value mismatch.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "system_architecture_designer",
+                "input_parameters": {
+                  "system_design": "A three-tier website architecture with a presentation layer (React.js frontend), an application layer (Node.js/Express backend), and a data layer (PostgreSQL). Incorporates CDN and load balancer for scalability and performance, along with secure API endpoints and modular components for maintainability.",
+                  "technology_stack": "Frontend: React.js, Backend: Node.js with Express, Database: PostgreSQL, Hosting: AWS EC2 & S3, CDN: CloudFront, Version Control: GitHub",
+                  "hardware_requirements": "Cloud-based hosting with minimum 2 vCPUs, 8GB RAM for app servers, AWS RDS for database, and 50GB SSD storage; scalable load balancer configuration for peak loads.",
+                  "interaction_interface": "Responsive web interface with mobile-first design, intuitive navigation, accessibility compliance (WCAG 2.1), and optimized load times; includes interactive UI elements and seamless database-driven content updates.",
+                  "test_optimization_plan": "Automated unit and integration testing using Jest and Cypress, load testing with Apache JMeter, continuous performance monitoring via New Relic, and iterative A/B testing for UI/UX refinement."
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "system_architecture_designer",
+                "input_parameters": {
+                  "system_design": "Design a scalable, secure, content-driven website architecture suitable for a modern business website with marketing pages, blog/news content, user accounts, and optional e-commerce or service inquiry workflows. The system should separate presentation, application logic, and data access layers; support role-based access control; include APIs for front-end consumption; and be easy to extend for future features such as search, personalization, and analytics.",
+                  "technology_stack": "Frontend: Next.js with React and TypeScript; styling via Tailwind CSS or a design system such as Chakra UI. Backend: Node.js with NestJS or Next.js API routes for modular services; REST or GraphQL API. Database: PostgreSQL as the primary relational database; Redis for caching/session storage; object storage for media assets (e.g., S3-compatible). Infrastructure: Docker for containerization, CI/CD via GitHub Actions, hosting on AWS/Vercel/Render depending on scale, CDN for static assets, and observability with logging/metrics tools.",
+                  "hardware_requirements": "For a small-to-medium production deployment: 2–4 vCPU application instances, 4–8 GB RAM per instance, SSD-backed storage, managed PostgreSQL with at least 2 vCPU/4–8 GB RAM to start, Redis with 1 vCPU/1–2 GB RAM, and scalable object storage for images/files. If traffic is expected to grow, use autoscaling app instances, managed database read replicas, and CDN caching to reduce origin load.",
+                  "interaction_interface": "Responsive web UI optimized for desktop and mobile. Include clear navigation, search, forms with validation, authentication flows, admin dashboard for content management, and accessible components that meet WCAG guidelines. Prioritize fast page loads and intuitive interaction patterns.",
+                  "test_optimization_plan": "Implement unit, integration, and end-to-end tests for core flows; use automated linting and type checking in CI; set performance budgets for Core Web Vitals; monitor error rates and response times; run A/B tests on key UX changes; collect user feedback through analytics and surveys; and iterate on bottlenecks using profiling and load testing."
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -23.6% (MAS: 11176 vs SAS: 14629 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9639,
+        "completion_tokens": 1537,
+        "total_tokens": 11176,
+        "llm_calls": 5,
+        "cost": 0.014146
+      },
+      "latency": {
+        "total": 14.354,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_15",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Research on the application of virtual reality technology in architecture, statistics on technology adoption in the global construction industry, and its impact on efficiency, costs, and customer expe",
+      "expected_tools": [
+        {
+          "name": "wolfram_query",
+          "arguments": {
+            "query": "Statistics on adoption of virtual reality technology in architecture and global construction industry, including impact on efficiency, costs, and customer experience",
+            "format": "json",
+            "location": "global"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['wolfram_query']",
+          "comparison": {
+            "expected": [
+              "wolfram_query"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -18.0% (MAS: 10408 vs SAS: 12693 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8409,
+        "completion_tokens": 1999,
+        "total_tokens": 10408,
+        "llm_calls": 4,
+        "cost": 0.015302
+      },
+      "latency": {
+        "total": 15.007,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_16",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Create a program that optimizes the CPU usage of a given program?",
+      "expected_tools": [
+        {
+          "name": "generate_code",
+          "arguments": {
+            "prompt": "Create a program that optimizes the CPU usage of a given program.",
+            "language": "python",
+            "output_name": "optimize_cpu_usage.py",
+            "model": "gemini-pro",
+            "temperature": 0.4,
+            "max_tokens": 1500,
+            "existing_file_path": ""
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['generate_code']",
+          "comparison": {
+            "expected": [
+              "generate_code"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9083,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 27.5% (MAS: 7815 vs SAS: 6129 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7154,
+        "completion_tokens": 661,
+        "total_tokens": 7815,
+        "llm_calls": 4,
+        "cost": 0.00834
+      },
+      "latency": {
+        "total": 8.103,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_17",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Please write a report summarizing the applications of AI technology in medicine, the data source is https://nature.com/articles/s41598-024-03418-1.",
+      "expected_tools": [
+        {
+          "name": "generate_summary_report",
+          "arguments": {
+            "data_link": "https://nature.com/articles/s41598-024-03418-1"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "generate_summary_report",
+          "args": {
+            "data_link": "https://nature.com/articles/s41598-024-03418-1"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Summary report generated successfully. Stored at: /reports/ai_medicine_applications_summary_2025.pdf\", \"id\": \"lc_57be868b-e104-4712-a7de-ef821ae75b54\"}], {\"structured_content\": {\"result\": \"Summary report generated successfully. Stored at: /reports/ai_medicine_applications_summary_2025.pdf\"}}]' name='generate_summary_report' tool_call_id='call_7UeCfKTM1cd5fSZCxabp8pmv'",
+          "start_time": 0.0,
+          "latency": 1.7925863000564277,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "generate_summary_report"
+            ],
+            "actual": [
+              "generate_summary_report"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'generate_summary_report': Expected parameters match actual parameters exactly. Parameter 'data_link' has the same name, value, and type (string) in both expected and actual calls. No extra or missing parameters. No type mismatches.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "generate_summary_report",
+                "input_parameters": {
+                  "data_link": "https://nature.com/articles/s41598-024-03418-1"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "generate_summary_report",
+                "input_parameters": {
+                  "data_link": "https://nature.com/articles/s41598-024-03418-1"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.826,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 52.2% (MAS: 8433 vs SAS: 5541 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7955,
+        "completion_tokens": 478,
+        "total_tokens": 8433,
+        "llm_calls": 5,
+        "cost": 0.008117
+      },
+      "latency": {
+        "total": 9.05,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_18",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Provide a structured summary of product details for Saikongqing, an ophthalmic preparation containing Brimonidine (5ml) — include brand manufacturer, recommended use, and important handling precaution",
+      "expected_tools": [
+        {
+          "name": "indian_branded_drug_search",
+          "arguments": {
+            "drug_name": "Saikongqing",
+            "generic_composition": "Brimonidine",
+            "drug_form": "Ophthalmic Solution",
+            "volume": "5ml"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "indian_branded_drug_search",
+          "args": {
+            "drug_name": "Saikongqing",
+            "generic_composition": "Brimonidine",
+            "drug_form": "Ophthalmic Solution",
+            "volume": "5ml"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Drug Name: Saikongqing\\\\nGeneric Composition: Brimonidine\\\\nForm: Ophthalmic Solution\\\\nVolume: 5ml\\\\nManufacturer: XYZ Pharma Pvt Ltd\\\\nUsage Instructions: Instill one drop in the affected eye(s) twice daily.\\\\nPrecautions: Avoid touching the dropper tip to any surface to prevent contamination. Do not use if the solution changes color.\", \"id\": \"lc_6c06a6b0-66d4-4281-8e0a-18ecd921c2e8\"}], {\"structured_content\": {\"result\": \"Drug Name: Saikongqing\\\\nGeneric Com",
+          "start_time": 0.0,
+          "latency": 1.7938017998822033,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "indian_branded_drug_search"
+            ],
+            "actual": [
+              "indian_branded_drug_search"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'indian_branded_drug_search': All expected parameters are present with exact matching names. Parameter values are semantically equivalent (all strings match exactly). No extra or missing parameters. Types match exactly for all parameters (all are strings). No issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "indian_branded_drug_search",
+                "input_parameters": {
+                  "drug_name": "Saikongqing",
+                  "generic_composition": "Brimonidine",
+                  "drug_form": "Ophthalmic Solution",
+                  "volume": "5ml"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "indian_branded_drug_search",
+                "input_parameters": {
+                  "drug_name": "Saikongqing",
+                  "generic_composition": "Brimonidine",
+                  "drug_form": "Ophthalmic Solution",
+                  "volume": "5ml"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.758,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 72.6% (MAS: 10157 vs SAS: 5885 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9241,
+        "completion_tokens": 916,
+        "total_tokens": 10157,
+        "llm_calls": 5,
+        "cost": 0.011053
+      },
+      "latency": {
+        "total": 11.438,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_19",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "How to conduct a market survey for caregiver robots in USA in recent 10 years with data source from https://www.google.com/search?q=caregiver+robots+market+survey and obtain qualitative and quantitati",
+      "expected_tools": [
+        {
+          "name": "Business_Analyst",
+          "arguments": {
+            "industry_focus": "caregiver robots",
+            "market_scope": "domestic",
+            "analysis_methods": "qualitative + quantitative",
+            "data_sources": "gov reports, market surveys",
+            "output_types": "market report",
+            "report_format": "pdf",
+            "time_horizon": "10 years"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "Business_Analyst",
+          "args": {
+            "industry_focus": "caregiver robots",
+            "market_scope": "domestic",
+            "analysis_methods": "qualitative + quantitative + trend analysis",
+            "data_sources": "gov reports, market surveys, news, industry articles",
+            "output_types": "market report",
+            "report_format": "pdf",
+            "time_horizon": "10 years"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Market Analysis Report\\\\nIndustry: caregiver robots\\\\nScope: domestic\\\\nMethods: qualitative + quantitative + trend analysis\\\\nData Sources: gov reports, market surveys, news, industry articles\\\\nOutput: market report in pdf for 10 years\\\\n\\\\nSummary: Preliminary analysis suggests stable market growth potential with moderate risk factors. Further in-depth research recommended.\", \"id\": \"lc_bc0010a9-a797-4f1c-ad95-5f614b545943\"}], {\"structured_content\": {\"resul",
+          "start_time": 0.0,
+          "latency": 1.8113369999919087,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "Business_Analyst"
+            ],
+            "actual": [
+              "Business_Analyst"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: Business_Analyst\n- Expected parameters: industry_focus='caregiver robots', market_scope='domestic', analysis_methods='qualitative + quantitative', data_sources='gov reports, market surveys', output_types='market report', report_format='pdf', time_horizon='10 years'\n- Actual parameters: industry_focus='caregiver robots', market_scope='domestic', analysis_methods='qualitative + quantitative + trend analysis', data_sources='gov reports, market surveys, news, industry articles', output_types='market report', report_format='pdf', time_horizon='10 years'\n- Parameter names: match exactly, no missing or extra parameters.\n- Parameter values: industry_focus, market_scope, output_types, report_format, time_horizon match exactly.\n- analysis_methods actual value includes extra content ('+ trend analysis') beyond expected; this is a semantic mismatch.\n- data_sources actual value includes extra sources ('news, industry articles') beyond expected; this is a semantic mismatch.\n- Types: all string types match correctly, no type mismatches.\n\nSummary: Although parameter names and types match, the actual values for 'analysis_methods' and 'data_sources' contain additional information not present in the expected values, which violates semantic equivalence. This is considered a major issue, resulting in a low score.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "Business_Analyst",
+                "input_parameters": {
+                  "industry_focus": "caregiver robots",
+                  "market_scope": "domestic",
+                  "analysis_methods": "qualitative + quantitative",
+                  "data_sources": "gov reports, market surveys",
+                  "output_types": "market report",
+                  "report_format": "pdf",
+                  "time_horizon": "10 years"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "Business_Analyst",
+                "input_parameters": {
+                  "industry_focus": "caregiver robots",
+                  "market_scope": "domestic",
+                  "analysis_methods": "qualitative + quantitative + trend analysis",
+                  "data_sources": "gov reports, market surveys, news, industry articles",
+                  "output_types": "market report",
+                  "report_format": "pdf",
+                  "time_horizon": "10 years"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.4",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.4
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7826,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 65.2% (MAS: 11649 vs SAS: 7050 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10296,
+        "completion_tokens": 1353,
+        "total_tokens": 11649,
+        "llm_calls": 5,
+        "cost": 0.01381
+      },
+      "latency": {
+        "total": 13.945,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_20",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Conduct a comprehensive analysis of the companies Accenture, Google, IBM, Microsoft, Oracle, and SAP and provide a report on their revenue growth and strategic focus.",
+      "expected_tools": [
+        {
+          "name": "octagon_deepresearch_agent",
+          "arguments": {
+            "companies": [
+              "accenture",
+              "google",
+              "ibm",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "revenue_growth",
+              "strategic_focus"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "octagon_deepresearch_agent",
+          "args": {
+            "companies": [
+              "accenture",
+              "google",
+              "ibm",
+              "microsoft",
+              "oracle",
+              "sap"
+            ],
+            "fields": [
+              "revenue_growth",
+              "strategic_focus"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"{\\\\n  \\\\\"accenture\\\\\": {\\\\n    \\\\\"revenue_growth\\\\\": \\\\\"3.5%\\\\\",\\\\n    \\\\\"strategic_focus\\\\\": \\\\\"Digital transformation, AI consulting, cloud migration, and automation services.\\\\\"\\\\n  },\\\\n  \\\\\"google\\\\\": {\\\\n    \\\\\"revenue_growth\\\\\": \\\\\"8.0%\\\\\",\\\\n    \\\\\"strategic_focus\\\\\": \\\\\"Search, advertising, AI research, cloud computing, and hardware.\\\\\"\\\\n  },\\\\n  \\\\\"ibm\\\\\": {\\\\n    \\\\\"revenue_growth\\\\\": \\\\\"1.5%\\\\\",\\\\n    \\\\\"strategic_focus\\\\\": \\\\\"Cloud computing, AI",
+          "start_time": 0.0,
+          "latency": 1.7887847998645157,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "octagon_deepresearch_agent"
+            ],
+            "actual": [
+              "octagon_deepresearch_agent"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "The tool 'octagon_deepresearch_agent' has matching parameter names: 'companies' and 'fields'. The parameter values are semantically equivalent, with identical lists of companies and fields. The types for both parameters are correctly matched as lists. There are no extra or missing parameters, and no type mismatches. Therefore, the actual tool call perfectly matches the expected tool call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "ibm",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "revenue_growth",
+                    "strategic_focus"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "octagon_deepresearch_agent",
+                "input_parameters": {
+                  "companies": [
+                    "accenture",
+                    "google",
+                    "ibm",
+                    "microsoft",
+                    "oracle",
+                    "sap"
+                  ],
+                  "fields": [
+                    "revenue_growth",
+                    "strategic_focus"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -18.6% (MAS: 10857 vs SAS: 13333 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9356,
+        "completion_tokens": 1501,
+        "total_tokens": 10857,
+        "llm_calls": 5,
+        "cost": 0.013771
+      },
+      "latency": {
+        "total": 15.319,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_21",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Retrieve all the earthquakes that occurred between 08/30/2023 and 09/29/2023 with latitude between 35.5 and 35.8 and longitude between 139.6 and 139.8 and magnitude greater than 0",
+      "expected_tools": [
+        {
+          "name": "find_earthquakes",
+          "arguments": {
+            "endTime": "2023-09-29T23:59:59",
+            "startTime": "2023-08-30T00:00:00",
+            "minLatitude": "35.5",
+            "maxLatitude": "35.8",
+            "minLongitude": "139.6",
+            "maxLongitude": "139.8",
+            "minmagnitude": "0"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "find_earthquakes",
+          "args": {
+            "startTime": "2023-08-30T00:00:00",
+            "endTime": "2023-09-29T23:59:59",
+            "minLatitude": "35.5",
+            "maxLatitude": "35.8",
+            "minLongitude": "139.6",
+            "maxLongitude": "139.8",
+            "minmagnitude": "0"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No earthquakes found matching the criteria.\", \"id\": \"lc_483e72dd-3e75-4de2-8afc-b1d4cf0fc95c\"}], {\"structured_content\": {\"result\": \"No earthquakes found matching the criteria.\"}}]' name='find_earthquakes' tool_call_id='call_Ielj8VRr8Y0S7PP9LHRIl8BO'",
+          "start_time": 0.0,
+          "latency": 1.799872700124979,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "find_earthquakes"
+            ],
+            "actual": [
+              "find_earthquakes"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "There is one tool call: 'find_earthquakes'. The expected parameters are: endTime, startTime, minLatitude, maxLatitude, minLongitude, maxLongitude, minmagnitude. The actual parameters match exactly in name and count, with no extra or missing parameters. Parameter values are semantically equivalent (all strings with matching values). Parameter types match exactly (all strings). The order of parameters differs but order is not relevant. Therefore, no issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "find_earthquakes",
+                "input_parameters": {
+                  "endTime": "2023-09-29T23:59:59",
+                  "startTime": "2023-08-30T00:00:00",
+                  "minLatitude": "35.5",
+                  "maxLatitude": "35.8",
+                  "minLongitude": "139.6",
+                  "maxLongitude": "139.8",
+                  "minmagnitude": "0"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "find_earthquakes",
+                "input_parameters": {
+                  "startTime": "2023-08-30T00:00:00",
+                  "endTime": "2023-09-29T23:59:59",
+                  "minLatitude": "35.5",
+                  "maxLatitude": "35.8",
+                  "minLongitude": "139.6",
+                  "maxLongitude": "139.8",
+                  "minmagnitude": "0"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7086,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 87.4% (MAS: 9939 vs SAS: 5303 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9412,
+        "completion_tokens": 527,
+        "total_tokens": 9939,
+        "llm_calls": 5,
+        "cost": 0.00943
+      },
+      "latency": {
+        "total": 9.639,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_22",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I am a developer working on a personal project and I need a tool to generate PDF documents. Can you suggest a list of APIs that allows me to create renders, retrieve the rendered PDFs, and get informa",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "pdf rendering"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "pdf rendering"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"pdf rendering: RenderFlow PDF API, PDF Render Job API, PDF Render Status API\", \"id\": \"lc_f8e0d96a-5616-4032-9ae6-9e5ce385f566\"}], {\"structured_content\": {\"result\": \"pdf rendering: RenderFlow PDF API, PDF Render Job API, PDF Render Status API\"}}]' name='searchApis' tool_call_id='call_nDvnca7FCQeBKpJpbREU6VHu'",
+          "start_time": 0.0,
+          "latency": 1.7848451999016106,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "searchApis"
+            ],
+            "actual": [
+              "searchApis"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'searchApis': Expected parameter 'keyword' with value 'pdf rendering' (type str). Actual parameter 'keyword' matches exactly in name, value, and type. No extra or missing parameters. No type mismatches. All arguments correct.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "pdf rendering"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "pdf rendering"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -2.1% (MAS: 12243 vs SAS: 12508 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11078,
+        "completion_tokens": 1165,
+        "total_tokens": 12243,
+        "llm_calls": 5,
+        "cost": 0.013551
+      },
+      "latency": {
+        "total": 13.441,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_23",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I want to analyze the nutrition data of a recipe I found online. Can you provide me with the nutritional analysis for the ingredients? The ingredients include chicken, broccoli, and rice.",
+      "expected_tools": [
+        {
+          "name": "check_nutrition",
+          "arguments": {
+            "ingredient_list": [
+              "Broccoli",
+              "Chicken",
+              "Rice"
+            ]
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['check_nutrition']",
+          "comparison": {
+            "expected": [
+              "check_nutrition"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9723,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 8.3% (MAS: 6567 vs SAS: 6063 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6078,
+        "completion_tokens": 489,
+        "total_tokens": 6567,
+        "llm_calls": 4,
+        "cost": 0.006759
+      },
+      "latency": {
+        "total": 6.537,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_24",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I'm a basketball coach looking for new strategies and plays. Can you provide player statistics for the key players LeBron James, Stephen Curry, and Anthony Davis?",
+      "expected_tools": [
+        {
+          "name": "get_players",
+          "arguments": {
+            "target_players": [
+              "LeBron James",
+              "Stephen Curry",
+              "Anthony Davis"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_players",
+          "args": {
+            "target_players": [
+              "LeBron James",
+              "Stephen Curry",
+              "Anthony Davis"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Player: LeBron James\\\\nTeam: Los Angeles Lakers\\\\nPosition: Forward\\\\nContact: lebron.james@nba.com\\\\nCareer Achievements: 4× NBA champion, 4× NBA Most Valuable Player, NBA All-Star 19 times\\\\nFun Fact: LeBron James is the youngest player to score 30,000 career points in NBA history.\\\\n\\\\nPlayer: Stephen Curry\\\\nTeam: Golden State Warriors\\\\nPosition: Guard\\\\nContact: stephen.curry@nba.com\\\\nCareer Achievements: 4× NBA champion, 2× NBA Most Valuable Player, N",
+          "start_time": 0.0,
+          "latency": 1.8105476999189705,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_players"
+            ],
+            "actual": [
+              "get_players"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_players': Expected parameter 'target_players' with value ['LeBron James', 'Stephen Curry', 'Anthony Davis'] of type list. Actual parameter 'target_players' matches exactly in name, value, and type. No extra or missing parameters. No type mismatches or value differences found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "LeBron James",
+                    "Stephen Curry",
+                    "Anthony Davis"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_players",
+                "input_parameters": {
+                  "target_players": [
+                    "LeBron James",
+                    "Stephen Curry",
+                    "Anthony Davis"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7587,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 72.4% (MAS: 10127 vs SAS: 5874 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9402,
+        "completion_tokens": 725,
+        "total_tokens": 10127,
+        "llm_calls": 5,
+        "cost": 0.010314
+      },
+      "latency": {
+        "total": 10.585,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_25",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I'm a data scientist working on an AI project and I need to gather information about recent AI advancements. Please fetch news articles about ArtificialIntelligence from 'gizmodo' and provide me with ",
+      "expected_tools": [
+        {
+          "name": "search_news",
+          "arguments": {
+            "query": "Artificial Intelligence",
+            "start_date": "2023-01-01",
+            "end_date": "2023-12-31",
+            "max_results": 10
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_news",
+          "args": {
+            "query": "Artificial Intelligence site:gizmodo.com",
+            "start_date": "2026-05-18",
+            "end_date": "2026-06-18",
+            "max_result": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No articles found for query \\'Artificial Intelligence site:gizmodo.com\\' in the given date range.\", \"id\": \"lc_58169f29-a224-40c4-b2b1-b54d8531c516\"}], {\"structured_content\": {\"result\": \"No articles found for query \\'Artificial Intelligence site:gizmodo.com\\' in the given date range.\"}}]' name='search_news' tool_call_id='call_hRWoDHFI6JWL1nr1Idh5oWsy'",
+          "start_time": 0.0,
+          "latency": 2.23691640002653,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "query": "Artificial Intelligence",
+            "start_date": "2026-05-18",
+            "end_date": "2026-06-18",
+            "max_result": 15
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No articles found for query \\'Artificial Intelligence\\' in the given date range.\", \"id\": \"lc_16826d42-87c8-4eb1-b055-4fbba78d04f6\"}], {\"structured_content\": {\"result\": \"No articles found for query \\'Artificial Intelligence\\' in the given date range.\"}}]' name='search_news' tool_call_id='call_23mdgBMBYpmxrPsXZu02EyM9'",
+          "start_time": 0.0,
+          "latency": 2.233706100145355,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 2 total calls. Correct: ['search_news']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_news"
+            ],
+            "actual": [
+              "search_news",
+              "search_news"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There is one expected tool call: 'search_news' with parameters: query (str, 'Artificial Intelligence'), start_date (str, '2023-01-01'), end_date (str, '2023-12-31'), max_results (int, 10).\n\nActual calls:\n1) 'search_news' with parameters: query (str, 'Artificial Intelligence site:gizmodo.com'), start_date (str, '2026-05-18'), end_date (str, '2026-06-18'), max_result (int, 10).\n- Issues:\n  - Parameter name 'max_result' does not match expected 'max_results' (missing expected param 'max_results', extra param 'max_result').\n  - Parameter values for 'query', 'start_date', and 'end_date' differ from expected values (not semantically equivalent).\n\n2) 'search_news' with parameters: query (str, 'Artificial Intelligence'), start_date (str, '2026-05-18'), end_date (str, '2026-06-18'), max_result (int, 15).\n- Issues:\n  - Parameter name 'max_result' does not match expected 'max_results' (missing expected param 'max_results', extra param 'max_result').\n  - Parameter values for 'start_date', 'end_date', and 'max_result' differ from expected values.\n\nSummary:\n- Both actual calls have incorrect parameter names (max_result vs max_results).\n- Both calls have parameter value mismatches for dates and max_results/max_result.\n- No type mismatches, but parameter name mismatch and value mismatches are major issues.\n- Since the expected call is only one, and actual calls do not match it correctly, score is 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "Artificial Intelligence",
+                  "start_date": "2023-01-01",
+                  "end_date": "2023-12-31",
+                  "max_results": 10
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "Artificial Intelligence site:gizmodo.com",
+                  "start_date": "2026-05-18",
+                  "end_date": "2026-06-18",
+                  "max_result": 10
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "Artificial Intelligence",
+                  "start_date": "2026-05-18",
+                  "end_date": "2026-06-18",
+                  "max_result": 15
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8937,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 31.9% (MAS: 10688 vs SAS: 8104 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10043,
+        "completion_tokens": 645,
+        "total_tokens": 10688,
+        "llm_calls": 5,
+        "cost": 0.010435
+      },
+      "latency": {
+        "total": 10.83,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_26",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I am working on a content moderation system for a social media platform. Can you suggest an API that checks if a text contains profanity or inappropriate language? ",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "profanity detection"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "profanity detection"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"profanity detection: Profanity Filter API, Content Moderation Check API\", \"id\": \"lc_0534d194-2474-47fb-9545-a0cf939c9fc0\"}], {\"structured_content\": {\"result\": \"profanity detection: Profanity Filter API, Content Moderation Check API\"}}]' name='searchApis' tool_call_id='call_0RqIqtzzZlV2FuUG1bzpcRC6'",
+          "start_time": 0.0,
+          "latency": 1.8062509999144822,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "searchApis"
+            ],
+            "actual": [
+              "searchApis"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'searchApis': Expected parameters: keyword='profanity detection' (str). Actual parameters: keyword='profanity detection' (str). Parameter names match exactly. Parameter values are semantically equivalent. Types match correctly. No extra or missing parameters. No issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "profanity detection"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "profanity detection"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -4.8% (MAS: 11613 vs SAS: 12198 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10670,
+        "completion_tokens": 943,
+        "total_tokens": 11613,
+        "llm_calls": 5,
+        "cost": 0.012246
+      },
+      "latency": {
+        "total": 13.108,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_27",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I want to know the current time in London.",
+      "expected_tools": [
+        {
+          "name": "get_time",
+          "arguments": {
+            "timezone": [
+              "Europe/London"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "Europe/London"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The current time in Europe/London is 23:00:00.\", \"id\": \"lc_f39df357-33e9-4d6c-9e26-52c180886e9a\"}], {\"structured_content\": {\"result\": \"The current time in Europe/London is 23:00:00.\"}}]' name='get_time' tool_call_id='call_QkVdTWnrgIjStYWBqYudoge2'",
+          "start_time": 0.0,
+          "latency": 1.8902487000450492,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_time"
+            ],
+            "actual": [
+              "get_time"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_time': Expected parameters: timezone=['Europe/London'] (type=list). Actual parameters: timezone=['Europe/London'] (type=list). Parameter names match exactly. Parameter values are semantically equivalent (case-sensitive match). Types match exactly (list of strings). No extra or missing parameters. No type mismatches. Therefore, all arguments match perfectly.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/London"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/London"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -28.9% (MAS: 8592 vs SAS: 12081 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8304,
+        "completion_tokens": 288,
+        "total_tokens": 8592,
+        "llm_calls": 5,
+        "cost": 0.007524
+      },
+      "latency": {
+        "total": 8.75,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_28",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "I want to know the current time in Berlin.",
+      "expected_tools": [
+        {
+          "name": "get_time",
+          "arguments": {
+            "timezone": [
+              "Europe/Berlin"
+            ]
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_time",
+          "args": {
+            "timezone": [
+              "Europe/Berlin"
+            ]
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The current time in Europe/Berlin is 00:00:00.\", \"id\": \"lc_3e044c26-77f9-4ee8-ba1d-d1cb27a52ea2\"}], {\"structured_content\": {\"result\": \"The current time in Europe/Berlin is 00:00:00.\"}}]' name='get_time' tool_call_id='call_ZO1hqoC7em5SzcPX0lDc2erK'",
+          "start_time": 0.0,
+          "latency": 2.190340700093657,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_time"
+            ],
+            "actual": [
+              "get_time"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_time': Expected parameters: timezone (list of string) with value ['Europe/Berlin']. Actual parameters: timezone (list of string) with value ['Europe/Berlin']. Parameter names match exactly. Parameter values are semantically equivalent. Parameter types match exactly. No extra or missing parameters. No type mismatches. Therefore, the arguments match perfectly.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/Berlin"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_time",
+                "input_parameters": {
+                  "timezone": [
+                    "Europe/Berlin"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -20.6% (MAS: 9565 vs SAS: 12044 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9297,
+        "completion_tokens": 268,
+        "total_tokens": 9565,
+        "llm_calls": 5,
+        "cost": 0.008179
+      },
+      "latency": {
+        "total": 8.801,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_29",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "Please provide a comprehensive analysis of the file 'data.csv' which is saved in the current directory.",
+      "expected_tools": [
+        {
+          "name": "get_comprehensive_analysis",
+          "arguments": {
+            "file_path": "data.csv"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_comprehensive_analysis",
+          "args": {
+            "file_path": "data.csv"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Comprehensive Analysis for file: data.csv\\\\nFile Path: data.csv\\\\n\\\\nContent Statistics:\\\\n  - Word Count: 1,247\\\\n  - Character Count: 7,892\\\\n  - Line Count: 156\\\\n\\\\nKey Findings:\\\\n  - File contains 1,247 words across 156 lines\\\\n  - Average words per line: 8.0\\\\n  - File size: 7,892 characters\\\\n  - Content appears to be well-structured with consistent formatting\\\\n  - Multiple sections identified with clear topic separation\\\\n\\\\nAnalysis Summary:\\\\n  - ",
+          "start_time": 0.0,
+          "latency": 2.0176407999824733,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 1 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_comprehensive_analysis"
+            ],
+            "actual": [
+              "get_comprehensive_analysis"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_comprehensive_analysis': Expected parameters {'file_path': 'data.csv'} with type str; Actual parameters match exactly with same parameter name, value, and type. No extra or missing parameters, no type mismatches.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_comprehensive_analysis",
+                "input_parameters": {
+                  "file_path": "data.csv"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_comprehensive_analysis",
+                "input_parameters": {
+                  "file_path": "data.csv"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7106,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 86.8% (MAS: 10979 vs SAS: 5877 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10231,
+        "completion_tokens": 748,
+        "total_tokens": 10979,
+        "llm_calls": 5,
+        "cost": 0.011039
+      },
+      "latency": {
+        "total": 9.952,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_1_tool_30",
+      "dimension": "STurn-1T",
+      "category": "single",
+      "input": "My company is conducting a cryptocurrency market research on trending stocks. Can you provide me with a list of five stocks that are currently most popular between 09/01/2025 and 09/30/2025?.",
+      "expected_tools": [
+        {
+          "name": "get_market_summary",
+          "arguments": {
+            "filter_type": [
+              "popular"
+            ],
+            "filter_count": "5",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-30"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['get_market_summary']",
+          "comparison": {
+            "expected": [
+              "get_market_summary"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -22.6% (MAS: 7134 vs SAS: 9220 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6530,
+        "completion_tokens": 604,
+        "total_tokens": 7134,
+        "llm_calls": 4,
+        "cost": 0.007616
+      },
+      "latency": {
+        "total": 7.252,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 30,
+      "mean": 0.7667,
+      "median": 1.0,
+      "std": 0.405,
+      "variance": 0.164,
+      "ci_lower": 0.6218,
+      "ci_upper": 0.9116,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.625,
+      "p75": 1.0,
+      "iqr": 0.375,
+      "pass_rate": 0.7333,
+      "pass_ci_lower": 0.5555,
+      "pass_ci_upper": 0.8582,
+      "passed": 22,
+      "total": 30
+    },
+    "Argument Correctness [Reference]": {
+      "n": 30,
+      "mean": 0.5433,
+      "median": 0.5,
+      "std": 0.436,
+      "variance": 0.1901,
+      "ci_lower": 0.3873,
+      "ci_upper": 0.6994,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 1.0,
+      "iqr": 1.0,
+      "pass_rate": 0.4,
+      "pass_ci_lower": 0.2459,
+      "pass_ci_upper": 0.5768,
+      "passed": 12,
+      "total": 30
+    },
+    "Final State (Derived)": {
+      "n": 30,
+      "mean": 0.4,
+      "median": 0.0,
+      "std": 0.4983,
+      "variance": 0.2483,
+      "ci_lower": 0.2217,
+      "ci_upper": 0.5783,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 1.0,
+      "iqr": 1.0,
+      "pass_rate": 0.4,
+      "pass_ci_lower": 0.2459,
+      "pass_ci_upper": 0.5768,
+      "passed": 12,
+      "total": 30
+    },
+    "Coordination Token Overhead": {
+      "n": 30,
+      "mean": 0.8875,
+      "median": 0.9595,
+      "std": 0.1267,
+      "variance": 0.016,
+      "ci_lower": 0.8422,
+      "ci_upper": 0.9329,
+      "min": 0.5552,
+      "max": 1.0,
+      "p25": 0.7647,
+      "p75": 1.0,
+      "iqr": 0.2353,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8865,
+      "pass_ci_upper": 1.0,
+      "passed": 30,
+      "total": 30
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 30,
+        "mean": 10656.5,
+        "median": 9720.5,
+        "std": 6082.2488,
+        "variance": 36993750.3276,
+        "min": 5962.0,
+        "max": 41386.0,
+        "p25": 8971.0,
+        "p75": 10619.25,
+        "p95": 13700.7,
+        "p99": 33607.04,
+        "iqr": 1648.25
+      },
+      "completion_tokens": {
+        "n": 30,
+        "mean": 870.8,
+        "median": 729.0,
+        "std": 478.8296,
+        "variance": 229277.7517,
+        "min": 268.0,
+        "max": 2129.0,
+        "p25": 545.75,
+        "p75": 1126.75,
+        "p95": 1791.1,
+        "p99": 2091.3,
+        "iqr": 581.0
+      },
+      "total_tokens": {
+        "n": 30,
+        "mean": 11527.3,
+        "median": 10599.5,
+        "std": 6081.9289,
+        "variance": 36989858.8379,
+        "min": 6287.0,
+        "max": 41793.0,
+        "p25": 9651.75,
+        "p75": 11576.25,
+        "p95": 14895.85,
+        "p99": 34189.49,
+        "iqr": 1924.5
+      },
+      "cost": {
+        "n": 30,
+        "mean": 0.0119,
+        "median": 0.0109,
+        "std": 0.005,
+        "variance": 0.0,
+        "min": 0.0059,
+        "max": 0.0329,
+        "p25": 0.0089,
+        "p75": 0.0138,
+        "p95": 0.0173,
+        "p99": 0.0287,
+        "iqr": 0.0048,
+        "total": 0.357329
+      }
+    },
+    "efficiency": {
+      "total_tests": 30,
+      "passed": 22,
+      "failed": 8,
+      "errors": 0,
+      "total_tokens": 345819,
+      "tokens_per_pass": 15719.05,
+      "success_per_1k_tokens": 0.0636,
+      "pass_rate": 0.7333,
+      "error_rate": 0.0
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:04.383053",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 30,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

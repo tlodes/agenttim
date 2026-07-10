@@ -1,0 +1,245 @@
+"""
+Generate LaTeX tables for tool scaling results.
+One table per (model x benchmark) showing TC and AC across tool counts.
+Usage:
+    cd agenttim/evaluation
+    python scripts/generate_scaling_tables.py
+"""
+import json
+from pathlib import Path
+import numpy as np
+RESULTS_DIR = Path(__file__).resolve().parent.parent / "results_enriched"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "results"
+MODELS = ["gpt-5.4-mini", "june-gpt-5-4-datazone", "deepseek/deepseek-v4-pro"]
+MODEL_DISPLAY = {
+
+    "gpt-5.4-mini": "GPT-5.4-mini",
+
+    "deepseek/deepseek-v4-pro": "Deepseek V4 Pro",
+
+    "june-gpt-5-4-datazone": "GPT-5.4",
+}
+MODEL_FILE_KEY = {
+
+    "gpt-5.4-mini": "gpt-54-mini",
+
+    "deepseek/deepseek-v4-pro": "deepseek",
+
+    "june-gpt-5-4-datazone": "gpt-54",
+}
+BENCHMARKS = ["mcpagentbench", "bfcl_multiturn"]
+BENCH_DISPLAY = {"mcpagentbench": "MCPAgentBench", "bfcl_multiturn": "BFCL Multiturn"}
+AGENTS = ["single", "orchestrator_fine", "orchestrator_coarse", "router", "swarm"]
+AGENT_DISPLAY = {
+
+    "single": "Single Agent",
+
+    "orchestrator_fine": "Orch.\\ (Fine)",
+
+    "orchestrator_coarse": "Orch.\\ (Coarse)",
+
+    "router": "Router",
+
+    "swarm": "Swarm",
+}
+TOOLS = [10, 20, 40, 80]
+def load_all():
+
+    results = []
+
+    for fp in sorted(RESULTS_DIR.rglob("*.json")):
+
+        if "_errors" in fp.name:
+
+            continue
+
+        try:
+
+            results.append(json.loads(fp.read_text(encoding="utf-8")))
+
+        except (json.JSONDecodeError, OSError):
+
+            continue
+
+    return results
+def agg(all_data, model, benchmark, agent, metric, num_tools):
+
+    scores = []
+
+    for r in all_data:
+
+        if (r.get("model") != model or r.get("benchmark") != benchmark
+
+                or r.get("agent_type") != agent or r.get("num_tools") != num_tools):
+
+            continue
+
+        for tc in r.get("test_cases", []):
+
+            s = tc.get("metrics", {}).get(metric, {}).get("score")
+
+            if s is not None:
+
+                scores.append(float(s))
+
+    if not scores:
+
+        return None, 0
+
+    arr = np.array(scores)
+
+    return float(np.mean(arr)), len(arr)
+def generate_tables(all_data):
+
+    tables = []
+
+    for model in MODELS:
+
+        for benchmark in BENCHMARKS:
+
+            agents_with_data = [
+
+                a for a in AGENTS
+
+                if agg(all_data, model, benchmark, a, "Tool Correctness", 10)[0] is not None
+
+            ]
+
+            if not agents_with_data:
+
+                continue
+
+            model_name = MODEL_DISPLAY[model]
+
+            bench_name = BENCH_DISPLAY[benchmark]
+
+            safe_model = MODEL_FILE_KEY[model]
+
+            label = f"tab:scaling-{safe_model}-{benchmark}"
+
+            lines = []
+
+            lines.append(r"\begin{table}[htbp]")
+
+            lines.append(r"  \centering")
+
+            lines.append(
+
+                f"  \\caption{ {model_name} -- {bench_name}: "
+
+                f"Tool Correctness (TC) pro Architektur und Tool-Stufe.} "
+
+            )
+
+            lines.append(f"  \\label{ {label}} ")
+
+            lines.append(r"  \begin{tabular}{l r r r r r}")
+
+            lines.append(r"    \toprule")
+
+            lines.append(
+
+                r"    Architecture & $t{=}10$ & $t{=}20$ & $t{=}40$ & $t{=}80$ "
+
+                r"& $\Delta$ \\"
+
+            )
+
+            lines.append(r"    \midrule")
+
+            for agent in agents_with_data:
+
+                name = AGENT_DISPLAY[agent]
+
+                vals = []
+
+                for t in TOOLS:
+
+                    v, n = agg(all_data, model, benchmark, agent, "Tool Correctness", t)
+
+                    vals.append(v)
+
+                cells = []
+
+                for v in vals:
+
+                    cells.append(f"${v:.3f}$" if v is not None else "--")
+
+                if vals[0] is not None and vals[-1] is not None:
+
+                    delta = vals[0] - vals[-1]
+
+                    delta_str = f"${delta:+.3f}$"
+
+                else:
+
+                    delta_str = "--"
+
+                lines.append(
+
+                    f"    {name} & {' & '.join(cells)} & {delta_str} \\\\"
+
+                )
+
+            lines.append(r"    \bottomrule")
+
+            lines.append(r"  \end{tabular}")
+
+            lines.append(
+
+                r"  \par\footnotesize{$\Delta = $ TC($t{=}10$) $-$ TC($t{=}80$); "
+
+                r"positive Werte zeigen Degradation bei steigender Tool-Anzahl an.}"
+
+            )
+
+            lines.append(r"\end{table}")
+
+            tables.append((model, benchmark, "\n".join(lines)))
+
+    return tables
+def main():
+
+    print("Loading results...")
+
+    all_data = load_all()
+
+    print(f"  Loaded {len(all_data)} result files")
+
+    print("\nGenerating scaling tables...")
+
+    tables = generate_tables(all_data)
+
+    output_path = OUTPUT_DIR / "scaling_tables.tex"
+
+    with open(output_path, "w", encoding="utf-8") as f:
+
+        f.write("% Auto-generated scaling tables\n")
+
+        f.write("% Generated by scripts/generate_scaling_tables.py\n\n")
+
+        for model, benchmark, table in tables:
+
+            model_name = MODEL_DISPLAY[model]
+
+            bench_name = BENCH_DISPLAY[benchmark]
+
+            f.write(f"% === {model_name} x {bench_name} ===\n")
+
+            f.write(table)
+
+            f.write("\n\n")
+
+    print(f"  Saved: {output_path}")
+
+    print(f"  {len(tables)} tables generated")
+
+    for _, _, table in tables:
+
+        print()
+
+        print(table)
+if __name__ == "__main__":
+
+    main()
+

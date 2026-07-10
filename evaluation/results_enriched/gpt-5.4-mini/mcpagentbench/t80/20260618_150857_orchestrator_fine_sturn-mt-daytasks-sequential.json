@@ -1,0 +1,2748 @@
+{
+  "timestamp": "2026-06-18T15:08:57.827279+00:00",
+  "model": "gpt-5.4-mini",
+  "benchmark": "mcpagentbench",
+  "agent_type": "orchestrator_fine",
+  "mode": "sturn-mt-daytasks-sequential",
+  "num_tools": 80,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 0,
+    "total_test_cases": 20,
+    "error_rate": 0.0
+  },
+  "aggregate": {
+    "total_prompt_tokens": 190366,
+    "total_completion_tokens": 13269,
+    "total_tokens": 203635,
+    "total_llm_calls": 123,
+    "total_cost": 0.202485,
+    "total_latency": 258.483,
+    "avg_latency": 12.924,
+    "pass_rate": 0.45,
+    "passed": 9,
+    "failed": 11,
+    "errors": 0
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a good Ethiopian restaurant in Berkeley. They want to reserve a table at the found restaurant for the 2nd of this month at 17:30.",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "Berkeley",
+            "cuisineTypes": "Ethiopian"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Ethiopian Delight"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "Berkeley",
+            "cuisineTypes": "Ethiopian"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: Ethiopian Delight, Location: Berkeley, Cuisine: Ethiopian, Price Level: 2', 'id': 'lc_2e8788bf-42b9-407e-a7e1-40b37a5ff851'}] name='search_restaurant' tool_call_id='call_gro1sqaCqFYOivlP90GE4cY7' artifact={'structured_content': {'result': 'Found the following restaurant: Name: Ethiopian Delight, Location: Berkeley, Cuisine: Ethiopian, Price Level: 2'}}",
+          "start_time": 1.609,
+          "latency": 1.7737509000580758,
+          "agent_id": "dining"
+        },
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Ethiopian Delight"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Invalid restaurant name. The restaurant details could not be found.', 'id': 'lc_5c813356-215e-4996-a240-5c25e0c79f53'}] name='get_restaurant_details' tool_call_id='call_DCwzCEwqpNdwVdleQSO4ujtn' artifact={'structured_content': {'result': 'Error: Invalid restaurant name. The restaurant details could not be found.'}}",
+          "start_time": 4.205,
+          "latency": 1.7850367999635637,
+          "agent_id": "dining"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Ethiopian Delight"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Ethiopian Delight.', 'id': 'lc_25e43237-62ac-4fbb-916e-432727bf092c'}] name='make_reservation' tool_call_id='call_bdB1Bd78c9FucXYOxSBOBzN0' artifact={'structured_content': {'result': 'Success: Reservation made at Ethiopian Delight.'}}",
+          "start_time": 7.264,
+          "latency": 2.0101548999082297,
+          "agent_id": "dining"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['make_reservation', 'search_restaurant']. Extra: ['get_restaurant_details']",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation"
+            ],
+            "actual": [
+              "search_restaurant",
+              "get_restaurant_details",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have matching parameter names and values with correct types. For 'search_restaurant', expected parameters are 'location' and 'cuisineTypes' with string values 'Berkeley' and 'Ethiopian' respectively; actual matches exactly with same parameter names and string types. For 'make_reservation', expected parameter is 'restaurant_name' with string value 'Ethiopian Delight'; actual matches exactly with same parameter name and string type. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Berkeley",
+                  "cuisineTypes": "Ethiopian"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Ethiopian Delight"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Berkeley",
+                  "cuisineTypes": "Ethiopian"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Ethiopian Delight"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.8% (MAS: 8105 vs SAS: 53256 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7582,
+        "completion_tokens": 523,
+        "total_tokens": 8105,
+        "llm_calls": 6,
+        "cost": 0.00804
+      },
+      "latency": {
+        "total": 14.155,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a restaurant in Palo Alto that serves freshwater fish dishes. They want a reservation for one at 6:30 PM.",
+      "expected_tools": [
+        {
+          "name": "search_restaurant",
+          "arguments": {
+            "location": "Palo Alto",
+            "cuisineTypes": "Freshwater Fish"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Freshwater Fishery"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_restaurant",
+          "args": {
+            "location": "Palo Alto",
+            "cuisineTypes": "Freshwater Fish"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following restaurant: Name: Freshwater Fishery, Location: Palo Alto, Cuisine: Freshwater Fish, Price Level: 3', 'id': 'lc_231ba3e7-3abc-48ce-a083-75cd555075e2'}] name='search_restaurant' tool_call_id='call_D0EiOi6cfDdnmhDwaJua9ImP' artifact={'structured_content': {'result': 'Found the following restaurant: Name: Freshwater Fishery, Location: Palo Alto, Cuisine: Freshwater Fish, Price Level: 3'}}",
+          "start_time": 1.709,
+          "latency": 1.820219699991867,
+          "agent_id": "dining"
+        },
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Freshwater Fishery"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Invalid restaurant name. The restaurant details could not be found.', 'id': 'lc_22f91482-e17b-45a9-9f5f-b2631a045a18'}] name='get_restaurant_details' tool_call_id='call_dfC4D5eBFcy9UPfy17rgqDCq' artifact={'structured_content': {'result': 'Error: Invalid restaurant name. The restaurant details could not be found.'}}",
+          "start_time": 4.84,
+          "latency": 1.775983199942857,
+          "agent_id": "dining"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Freshwater Fishery"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Success: Reservation made at Freshwater Fishery.', 'id': 'lc_7dc8d8fd-17d6-40e8-9dfc-a7e1a3887e90'}] name='make_reservation' tool_call_id='call_iH5goY07g0AL4YNTREVCUwx3' artifact={'structured_content': {'result': 'Success: Reservation made at Freshwater Fishery.'}}",
+          "start_time": 7.999,
+          "latency": 1.8047807000111789,
+          "agent_id": "dining"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['make_reservation', 'search_restaurant']. Extra: ['get_restaurant_details']",
+          "comparison": {
+            "expected": [
+              "search_restaurant",
+              "make_reservation"
+            ],
+            "actual": [
+              "search_restaurant",
+              "get_restaurant_details",
+              "make_reservation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_restaurant', expected parameters are 'location' (str) = 'Palo Alto' and 'cuisineTypes' (str) = 'Freshwater Fish', which exactly match the actual call. For 'make_reservation', expected parameter is 'restaurant_name' (str) = 'Freshwater Fishery', which also exactly matches the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is awarded.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Palo Alto",
+                  "cuisineTypes": "Freshwater Fish"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Freshwater Fishery"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_restaurant",
+                "input_parameters": {
+                  "location": "Palo Alto",
+                  "cuisineTypes": "Freshwater Fish"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Freshwater Fishery"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -81.0% (MAS: 8866 vs SAS: 46672 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8310,
+        "completion_tokens": 556,
+        "total_tokens": 8866,
+        "llm_calls": 6,
+        "cost": 0.008734
+      },
+      "latency": {
+        "total": 14.238,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to listen to music, specifically enjoys El Alfa.",
+      "expected_tools": [
+        {
+          "name": "itunes_search",
+          "arguments": {
+            "artist": "El Alfa"
+          }
+        },
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "La Romana"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "El Alfa"
+          },
+          "output": "content=[{'type': 'text', 'text': 'El Alfa - La Romana (El Hombre, Latin)', 'id': 'lc_58f79695-dae0-4398-a0ba-9a751b47a4af'}] name='itunes_search' tool_call_id='call_MTuaP3lf9lCeZhT4CmXdJDrj' artifact={'structured_content': {'result': 'El Alfa - La Romana (El Hombre, Latin)'}}",
+          "start_time": 2.376,
+          "latency": 2.2748348999302834,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "El Alfa"
+            ],
+            "result_num": 5
+          },
+          "output": "content=[{'type': 'text', 'text': 'No recommendations found for the given track IDs and filter criteria.', 'id': 'lc_8cc57710-8fce-4058-9c14-14be460c50c4'}] name='recommend_musictracks' tool_call_id='call_mS7VIr11iCHP75a0h60A5UMY' artifact={'structured_content': {'result': 'No recommendations found for the given track IDs and filter criteria.'}}",
+          "start_time": 2.376,
+          "latency": 2.2775397999212146,
+          "agent_id": "entertainment"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 2 total calls. Correct: ['itunes_search']. Missing: ['itunes_play_song']. Extra: ['recommend_musictracks']",
+          "comparison": {
+            "expected": [
+              "itunes_search",
+              "itunes_play_song"
+            ],
+            "actual": [
+              "itunes_search",
+              "recommend_musictracks"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'itunes_search': Expected parameter 'artist' with value 'El Alfa' (str), Actual parameter 'artist' with value 'El Alfa' (str). Parameter names match exactly, values are semantically equivalent, and types match. No extra or missing parameters. No issues found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "El Alfa"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "El Alfa"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -80.9% (MAS: 7105 vs SAS: 37258 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6488,
+        "completion_tokens": 617,
+        "total_tokens": 7105,
+        "llm_calls": 4,
+        "cost": 0.007642
+      },
+      "latency": {
+        "total": 9.914,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for Frank Ocean songs, inquiring about the genre, and then requesting to play them.",
+      "expected_tools": [
+        {
+          "name": "itunes_search",
+          "arguments": {
+            "artist": "Frank Ocean"
+          }
+        },
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Nikes"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Frank Ocean"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Frank Ocean - Nikes (Blonde, R&B)', 'id': 'lc_c547ee3a-2119-41c8-ab2f-88be12183d57'}] name='itunes_search' tool_call_id='call_TtlMjDARtcAvdSqEJxVOnoue' artifact={'structured_content': {'result': 'Frank Ocean - Nikes (Blonde, R&B)'}}",
+          "start_time": 1.475,
+          "latency": 1.782920700032264,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Nikes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Nikes' on iTunes.\", 'id': 'lc_d83ee04c-6416-4c63-beba-881b68b6999a'}] name='itunes_play_song' tool_call_id='call_cpYSs5UA8mfvPgPAAvAsnVyy' artifact={'structured_content': {'result': \"Playing 'Nikes' on iTunes.\"}}",
+          "start_time": 6.929,
+          "latency": 1.7839376998599619,
+          "agent_id": "entertainment"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "itunes_search",
+              "itunes_play_song"
+            ],
+            "actual": [
+              "itunes_search",
+              "itunes_play_song"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. \n\n1. itunes_search:\n- Expected parameters: artist = 'Frank Ocean' (str)\n- Actual parameters: artist = 'Frank Ocean' (str)\n- No mismatches or extra/missing parameters.\n\n2. itunes_play_song:\n- Expected parameters: song = 'Nikes' (str)\n- Actual parameters: song = 'Nikes' (str)\n- No mismatches or extra/missing parameters.\n\nAll parameters match exactly in name, value, and type. No extra or missing parameters found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Frank Ocean"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Nikes"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Frank Ocean"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Nikes"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -74.9% (MAS: 13102 vs SAS: 52233 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12533,
+        "completion_tokens": 569,
+        "total_tokens": 13102,
+        "llm_calls": 7,
+        "cost": 0.01196
+      },
+      "latency": {
+        "total": 12.536,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for song suggestions, particularly by Karolina Protsenko, and is a fan of pop songs, especially those on the album \"Fly.\" They also requested to play a selected song in the album u",
+      "expected_tools": [
+        {
+          "name": "itunes_search",
+          "arguments": {
+            "artist": "Karolina Protsenko"
+          }
+        },
+        {
+          "name": "itunes_play_song",
+          "arguments": {
+            "song": "Closer"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Karolina Protsenko"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Karolina Protsenko - Closer (Fly, Pop)', 'id': 'lc_01e64fa0-2d5a-48f4-bb5e-3acdc53dc609'}] name='itunes_search' tool_call_id='call_82EYxVRfFUoQmVMYPnU8ACU5' artifact={'structured_content': {'result': 'Karolina Protsenko - Closer (Fly, Pop)'}}",
+          "start_time": 1.324,
+          "latency": 2.48174410010688,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "Fly"
+            ],
+            "result_num": 5
+          },
+          "output": "content=[{'type': 'text', 'text': 'No recommendations found for the given track IDs and filter criteria.', 'id': 'lc_c06d973e-b704-4fb3-8bbb-e31675cbf68d'}] name='recommend_musictracks' tool_call_id='call_jAMxpq4KvIoNvb3ATfD6KQNu' artifact={'structured_content': {'result': 'No recommendations found for the given track IDs and filter criteria.'}}",
+          "start_time": 1.325,
+          "latency": 2.479767099954188,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "itunes_search",
+          "args": {
+            "artist": "Karolina Protsenko"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Karolina Protsenko - Closer (Fly, Pop)', 'id': 'lc_9d6f86ab-a901-4e70-8165-5f74c1a05f34'}] name='itunes_search' tool_call_id='call_04SJxYPm573UYgbF9VzNi61b' artifact={'structured_content': {'result': 'Karolina Protsenko - Closer (Fly, Pop)'}}",
+          "start_time": 2.241,
+          "latency": 1.797699499875307,
+          "agent_id": "entertainment"
+        },
+        {
+          "name": "itunes_play_song",
+          "args": {
+            "song": "Closer"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Playing 'Closer' on iTunes.\", 'id': 'lc_a7b7e0f7-6c5f-4e7a-a5d2-bdcf497afd77'}] name='itunes_play_song' tool_call_id='call_qRpTrZ4NSyWXAb4gj6lDf1JW' artifact={'structured_content': {'result': \"Playing 'Closer' on iTunes.\"}}",
+          "start_time": 5.228,
+          "latency": 1.8138626997824758,
+          "agent_id": "entertainment"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['itunes_play_song', 'itunes_search']. Extra: ['recommend_musictracks']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "itunes_search",
+              "itunes_play_song"
+            ],
+            "actual": [
+              "itunes_search",
+              "recommend_musictracks",
+              "itunes_search",
+              "itunes_play_song"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "There are two expected tool calls: 'itunes_search' with parameter artist='Karolina Protsenko' (string) and 'itunes_play_song' with parameter song='Closer' (string). The actual calls include an extra duplicate 'itunes_search' call with the same correct parameter and type, and the correct 'itunes_play_song' call. All parameters match exactly in name and value, and types are correct. Extra calls of the same tool with correct parameters do not cause penalties. Therefore, all expected tool calls have matching actual calls with correct arguments and types, resulting in a perfect score.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Karolina Protsenko"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Closer"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Karolina Protsenko"
+                }
+              },
+              {
+                "name": "itunes_search",
+                "input_parameters": {
+                  "artist": "Karolina Protsenko"
+                }
+              },
+              {
+                "name": "itunes_play_song",
+                "input_parameters": {
+                  "song": "Closer"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -80.0% (MAS: 11365 vs SAS: 56900 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10628,
+        "completion_tokens": 737,
+        "total_tokens": 11365,
+        "llm_calls": 7,
+        "cost": 0.011288
+      },
+      "latency": {
+        "total": 11.559,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Find a house in New York with laundry service for 2 people, check in on Monday the 4th and check out on Saturday the 9th, and provide the total price and a contact number.",
+      "expected_tools": [
+        {
+          "name": "search_rental_properties",
+          "arguments": {
+            "location": "New York",
+            "property_type": "house"
+          }
+        },
+        {
+          "name": "get_rental_property_details",
+          "arguments": {
+            "property_id": "NY123"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_rental_properties",
+          "args": {
+            "location": "New York",
+            "property_type": "house"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Type: house, Rating: 4.0, Property ID: NY123, Address: 123 New York Ave\\n', 'id': 'lc_5e15aea8-0cec-4acc-95e6-4d9163cd652d'}] name='search_rental_properties' tool_call_id='call_9KYaUW75YoPPA2zqkDXXy7s5' artifact={'structured_content': {'result': 'Type: house, Rating: 4.0, Property ID: NY123, Address: 123 New York Ave\\n'}}",
+          "start_time": 2.008,
+          "latency": 2.0619102998171,
+          "agent_id": "travel"
+        },
+        {
+          "name": "get_rental_property_details",
+          "args": {
+            "property_id": "NY123"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Property ID: NY123\\nLocation: New York\\nDescription: Cozy house with laundry service, perfect for small families.\\nCapacity: 2 persons\\nAvailable Date: Monday the 4th to Saturday the 9th\\nPrice per Night: $150\\nContact Number: +1-415-123-4567\\nLaundry Service: Yes\\nAir Conditioning: No', 'id': 'lc_248f329d-b81f-4f25-8568-e4138851066d'}] name='get_rental_property_details' tool_call_id='call_v7P1GAvhlcgy9Juy09sMWwD3' artifact={'structured_content': {'result': 'Pr",
+          "start_time": 5.684,
+          "latency": 2.1427452000789344,
+          "agent_id": "travel"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_rental_properties",
+              "get_rental_property_details"
+            ],
+            "actual": [
+              "search_rental_properties",
+              "get_rental_property_details"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_rental_properties', expected parameters are 'location' (str)='New York' and 'property_type' (str)='house', which exactly match the actual call. For 'get_rental_property_details', expected parameter is 'property_id' (str)='NY123', which also exactly matches the actual call. No extra or missing parameters, no type mismatches, and no parameterless tools with arguments. Therefore, full score of 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "New York",
+                  "property_type": "house"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "NY123"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "New York",
+                  "property_type": "house"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "NY123"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.8% (MAS: 8482 vs SAS: 55620 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7879,
+        "completion_tokens": 603,
+        "total_tokens": 8482,
+        "llm_calls": 5,
+        "cost": 0.008623
+      },
+      "latency": {
+        "total": 12.169,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is interested in renting a house in Paris for themselves, arriving on the 1st and checking out on the 11th. They want to reserve the property and would like to know the total price.",
+      "expected_tools": [
+        {
+          "name": "search_rental_properties",
+          "arguments": {
+            "location": "Paris",
+            "property_type": "house"
+          }
+        },
+        {
+          "name": "get_rental_property_details",
+          "arguments": {
+            "property_id": "PAR456"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_rental_properties",
+          "args": {
+            "location": "Paris",
+            "property_type": "house"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Type: house, Rating: 4.5, Property ID: PAR456, Address: 123 Paris Ave\\n', 'id': 'lc_f8345245-1510-45f8-945d-4a56c018bdb0'}] name='search_rental_properties' tool_call_id='call_yr1elXBACqnwNYL4fpz0Y6RP' artifact={'structured_content': {'result': 'Type: house, Rating: 4.5, Property ID: PAR456, Address: 123 Paris Ave\\n'}}",
+          "start_time": 1.375,
+          "latency": 2.0769469998776913,
+          "agent_id": "travel"
+        },
+        {
+          "name": "get_rental_property_details",
+          "args": {
+            "property_id": "PAR456"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Property ID: PAR456\\nLocation: Paris\\nDescription: Charming studio in the heart of Paris, ideal for solo travelers.\\nCapacity: 1 persons\\nAvailable Date: 1st to 11th\\nPrice per Night: $100\\nContact Number: +33-1-2345-6789\\nLaundry Service: No\\nAir Conditioning: Yes', 'id': 'lc_14b278a7-cec2-405a-8070-d6d144bd4d17'}] name='get_rental_property_details' tool_call_id='call_jo5iR0jpNv6nXSB77zGSdUfR' artifact={'structured_content': {'result': 'Property ID: PAR456\\nLo",
+          "start_time": 4.892,
+          "latency": 2.1226071999408305,
+          "agent_id": "travel"
+        },
+        {
+          "name": "get_rental_property_details",
+          "args": {
+            "property_id": "PAR456"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Property ID: PAR456\\nLocation: Paris\\nDescription: Charming studio in the heart of Paris, ideal for solo travelers.\\nCapacity: 1 persons\\nAvailable Date: 1st to 11th\\nPrice per Night: $100\\nContact Number: +33-1-2345-6789\\nLaundry Service: No\\nAir Conditioning: Yes', 'id': 'lc_05e1808c-d598-47f7-84e1-eeb22d6574e0'}] name='get_rental_property_details' tool_call_id='call_LZJbcavNBErsCmDWAF1Vh9n1' artifact={'structured_content': {'result': 'Property ID: PAR456\\nLo",
+          "start_time": 12.127,
+          "latency": 1.7722745998762548,
+          "agent_id": "travel"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_rental_property_details', 'search_rental_properties']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_rental_properties",
+              "get_rental_property_details"
+            ],
+            "actual": [
+              "search_rental_properties",
+              "get_rental_property_details",
+              "get_rental_property_details"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "There are two expected tool calls: 'search_rental_properties' and 'get_rental_property_details'.\n\n1. 'search_rental_properties':\n- Expected parameters: location='Paris' (str), property_type='house' (str)\n- Actual parameters: location='Paris' (str), property_type='house' (str)\n- Parameters match exactly with correct types.\n\n2. 'get_rental_property_details':\n- Expected parameters: property_id='PAR456' (str)\n- Actual parameters: property_id='PAR456' (str)\n- Parameters match exactly with correct types.\n\nNote: The actual calls contain an extra invocation of 'get_rental_property_details' with the same correct parameters. Since the evaluation is per expected tool call and the arguments match perfectly, the extra call does not cause any penalty.\n\nNo parameter name mismatches, no type mismatches, no missing or extra parameters for the expected calls.\n\nTherefore, the score is 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "Paris",
+                  "property_type": "house"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "PAR456"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "Paris",
+                  "property_type": "house"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "PAR456"
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "PAR456"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -76.3% (MAS: 11947 vs SAS: 50445 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11094,
+        "completion_tokens": 853,
+        "total_tokens": 11947,
+        "llm_calls": 8,
+        "cost": 0.012159
+      },
+      "latency": {
+        "total": 18.114,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a house in San Francisco for 5 people with a rating of 4.3 or higher, available on March 2nd. They also want to know if there is laundry service included.",
+      "expected_tools": [
+        {
+          "name": "search_rental_properties",
+          "arguments": {
+            "location": "San Francisco",
+            "property_type": "house",
+            "rating": 4.3
+          }
+        },
+        {
+          "name": "get_rental_property_details",
+          "arguments": {
+            "property_id": "SF789"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_rental_properties",
+          "args": {
+            "location": "San Francisco",
+            "property_type": "house",
+            "rating": 4.3
+          },
+          "output": "content=[{'type': 'text', 'text': 'Type: house, Rating: 4.3, Property ID: SF789, Address: 123 San Francisco Ave\\n', 'id': 'lc_33f24723-e162-44e2-ac36-41870d2c9726'}] name='search_rental_properties' tool_call_id='call_kOq9M6qNdVXAYtNyDsQChJQ7' artifact={'structured_content': {'result': 'Type: house, Rating: 4.3, Property ID: SF789, Address: 123 San Francisco Ave\\n'}}",
+          "start_time": 1.84,
+          "latency": 1.790046300040558,
+          "agent_id": "travel"
+        },
+        {
+          "name": "get_rental_property_details",
+          "args": {
+            "property_id": "SF789"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Property ID: SF789\\nLocation: San Francisco\\nDescription: Spacious house, great for groups, includes laundry service.\\nCapacity: 5 persons\\nAvailable Date: March 2nd\\nPrice per Night: $200\\nContact Number: +1-415-987-6543\\nLaundry Service: Yes\\nAir Conditioning: Yes', 'id': 'lc_f0d0acdd-dfa6-40ed-8422-5e866ba687c7'}] name='get_rental_property_details' tool_call_id='call_dt1vc2maQxvJNoqe1Vrq8KkH' artifact={'structured_content': {'result': 'Property ID: SF789\\nLo",
+          "start_time": 8.27,
+          "latency": 1.803560100030154,
+          "agent_id": "travel"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_rental_properties",
+              "get_rental_property_details"
+            ],
+            "actual": [
+              "search_rental_properties",
+              "get_rental_property_details"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_rental_properties', parameters location, property_type, and rating match perfectly in name, value, and type (str, str, float). For 'get_rental_property_details', the single parameter property_id matches exactly in name, value, and type (str). There are no extra or missing parameters, and no type mismatches in either tool call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "property_type": "house",
+                  "rating": 4.3
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "SF789"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "San Francisco",
+                  "property_type": "house",
+                  "rating": 4.3
+                }
+              },
+              {
+                "name": "get_rental_property_details",
+                "input_parameters": {
+                  "property_id": "SF789"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -78.1% (MAS: 12849 vs SAS: 58568 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12039,
+        "completion_tokens": 810,
+        "total_tokens": 12849,
+        "llm_calls": 7,
+        "cost": 0.012674
+      },
+      "latency": {
+        "total": 14.909,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user asks for the current balances in their savings accounts, then requesting assistance in transferring $590 from their savings account to Amir's savings account.",
+      "expected_tools": [
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "savings"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Amir",
+            "amount": 590
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "savings"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's savings account is 3000 USD.\", 'id': 'lc_45973f0b-704c-4d67-84b2-e418c8e78d81'}] name='get_balance' tool_call_id='call_BwGTAoo4r06A7DC9cVrpEQjn' artifact={'structured_content': {'result': \"The balance of the user's savings account is 3000 USD.\"}}",
+          "start_time": 1.542,
+          "latency": 1.804279699921608,
+          "agent_id": "finance"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Amir",
+            "amount": 590
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Amir received 590.0 USD.', 'id': 'lc_c97b49e5-4b52-4985-b87f-1d63be5979f7'}] name='send_transaction' tool_call_id='call_sLM0br2wsuZpxVu5ifefCsXs' artifact={'structured_content': {'result': 'Transaction successful! The Amir received 590.0 USD.'}}",
+          "start_time": 4.526,
+          "latency": 1.7857627999037504,
+          "agent_id": "finance"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_balance",
+              "send_transaction"
+            ],
+            "actual": [
+              "get_balance",
+              "send_transaction"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. For 'get_balance', expected and actual parameters are {'account_type': 'savings'} with type str, matching perfectly. For 'send_transaction', expected and actual parameters are {'target': 'Amir', 'amount': 590} with types str and int respectively, also matching perfectly. No extra or missing parameters, no type mismatches, and no value discrepancies found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Amir",
+                  "amount": 590
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Amir",
+                  "amount": 590
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -87.0% (MAS: 6507 vs SAS: 50170 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6158,
+        "completion_tokens": 349,
+        "total_tokens": 6507,
+        "llm_calls": 5,
+        "cost": 0.006189
+      },
+      "latency": {
+        "total": 10.43,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user inquires about the balances of their checking account, and then wants to transfer $270 to Pranav from their checking account.",
+      "expected_tools": [
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Pranav",
+            "amount": 270
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's checking account is 1500 USD.\", 'id': 'lc_50ad5811-60a5-4ba7-9cb5-e58f73157208'}] name='get_balance' tool_call_id='call_xeYeQTJdk0GcbGJewixcy6th' artifact={'structured_content': {'result': \"The balance of the user's checking account is 1500 USD.\"}}",
+          "start_time": 1.318,
+          "latency": 1.807182400021702,
+          "agent_id": "finance"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Pranav",
+            "amount": 270
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Pranav received 270.0 USD.', 'id': 'lc_c9903c57-f525-47e0-9297-2f376525a22c'}] name='send_transaction' tool_call_id='call_vb6KeG1nU93R4THnaIy5MSMl' artifact={'structured_content': {'result': 'Transaction successful! The Pranav received 270.0 USD.'}}",
+          "start_time": 4.09,
+          "latency": 1.782480400055647,
+          "agent_id": "finance"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_balance",
+              "send_transaction"
+            ],
+            "actual": [
+              "get_balance",
+              "send_transaction"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'get_balance', expected and actual have parameter 'account_type' with value 'checking' as string, matching perfectly. For 'send_transaction', expected and actual have parameters 'target' as string 'Pranav' and 'amount' as integer 270, all matching exactly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Pranav",
+                  "amount": 270
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Pranav",
+                  "amount": 270
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.7% (MAS: 7962 vs SAS: 52142 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7692,
+        "completion_tokens": 270,
+        "total_tokens": 7962,
+        "llm_calls": 5,
+        "cost": 0.006984
+      },
+      "latency": {
+        "total": 10.059,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user requests to check their balance, specifying the savings account. After that, they also want to transfer $170 from their savings account to Mr. Raghav's checking account and confirm the detail",
+      "expected_tools": [
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "savings"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Raghav",
+            "amount": 170
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "savings"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's savings account is 3000 USD.\", 'id': 'lc_b2e8870b-90ab-4fbb-9274-352b6ffc48a9'}] name='get_balance' tool_call_id='call_oebY4mDcv5WJc96npbdDubmI' artifact={'structured_content': {'result': \"The balance of the user's savings account is 3000 USD.\"}}",
+          "start_time": 1.129,
+          "latency": 1.7851052000187337,
+          "agent_id": "finance"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Raghav",
+            "amount": 170
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Raghav received 170.0 USD.', 'id': 'lc_12492b25-b7a1-40a8-aa51-cd888b17c935'}] name='send_transaction' tool_call_id='call_lAG1suf1LZpvpzyTplBd9qgk' artifact={'structured_content': {'result': 'Transaction successful! The Raghav received 170.0 USD.'}}",
+          "start_time": 6.985,
+          "latency": 1.7890306001063436,
+          "agent_id": "finance"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_balance",
+              "send_transaction"
+            ],
+            "actual": [
+              "get_balance",
+              "send_transaction"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'get_balance', expected and actual parameters are {'account_type': 'savings'} with type str, matching perfectly. For 'send_transaction', expected and actual parameters are {'target': 'Raghav', 'amount': 170} with types str and int respectively, also matching perfectly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is justified.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Raghav",
+                  "amount": 170
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Raghav",
+                  "amount": 170
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -73.1% (MAS: 13888 vs SAS: 51677 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13354,
+        "completion_tokens": 534,
+        "total_tokens": 13888,
+        "llm_calls": 7,
+        "cost": 0.012418
+      },
+      "latency": {
+        "total": 12.351,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user requests their checking account balance and then wants to transfer $440 to Maria using their checking account.",
+      "expected_tools": [
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        },
+        {
+          "name": "send_transaction",
+          "arguments": {
+            "target": "Maria",
+            "amount": 440
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content=[{'type': 'text', 'text': \"The balance of the user's checking account is 1500 USD.\", 'id': 'lc_0148cc19-d04c-4a4c-84d7-fbf86fdce8f0'}] name='get_balance' tool_call_id='call_XznOYPSzYq8Wpjr78aKhy7u7' artifact={'structured_content': {'result': \"The balance of the user's checking account is 1500 USD.\"}}",
+          "start_time": 1.195,
+          "latency": 1.7747273000422865,
+          "agent_id": "finance"
+        },
+        {
+          "name": "send_transaction",
+          "args": {
+            "target": "Maria",
+            "amount": 440
+          },
+          "output": "content=[{'type': 'text', 'text': 'Transaction successful! The Maria received 440.0 USD.', 'id': 'lc_03cc83df-1703-4430-8af2-dc9718e4d1fa'}] name='send_transaction' tool_call_id='call_lJhelio996UiJG1MBZjmhkm5' artifact={'structured_content': {'result': 'Transaction successful! The Maria received 440.0 USD.'}}",
+          "start_time": 6.564,
+          "latency": 1.7940314000006765,
+          "agent_id": "finance"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_balance",
+              "send_transaction"
+            ],
+            "actual": [
+              "get_balance",
+              "send_transaction"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'get_balance', expected and actual parameters are {'account_type': 'checking'} with type str, matching perfectly. For 'send_transaction', expected and actual parameters are {'target': 'Maria', 'amount': 440} with types str and int respectively, also matching perfectly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Maria",
+                  "amount": 440
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              },
+              {
+                "name": "send_transaction",
+                "input_parameters": {
+                  "target": "Maria",
+                  "amount": 440
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -74.8% (MAS: 13426 vs SAS: 53336 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13065,
+        "completion_tokens": 361,
+        "total_tokens": 13426,
+        "llm_calls": 7,
+        "cost": 0.011423
+      },
+      "latency": {
+        "total": 12.327,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for match events in Portland, OR, interested in exploring options on different dates, and added the match on the 6th of March to their calendar using title \"Match\".",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Match Event",
+            "city": "Portland"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Match",
+            "startDate": "03/06",
+            "endDate": "03/06",
+            "location": "Portland"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Match",
+            "startDate": "03/06",
+            "endDate": "03/06",
+            "location": "No location specified"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Match' has been created on the default calendar.\\nLocation: No location specified\\n\", 'id': 'lc_44c19563-a61f-401c-92f4-66b08fd20fbc'}] name='create_event' tool_call_id='call_EE3LgpqGhJS32ItMCtUVqvuB' artifact={'structured_content': {'result': \"Event 'Match' has been created on the default calendar.\\nLocation: No location specified\\n\"}}",
+          "start_time": 6.381,
+          "latency": 1.8033198998309672,
+          "agent_id": "calendar"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['create_event']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "create_event"
+            ],
+            "actual": [
+              "create_event"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: create_event\n- Expected parameters: subject='Match' (str), startDate='03/06' (str), endDate='03/06' (str), location='Portland' (str)\n- Actual parameters: subject='Match' (str), startDate='03/06' (str), endDate='03/06' (str), location='No location specified' (str)\n- Parameter names match exactly.\n- All parameter types match (all strings).\n- Parameter values for subject, startDate, endDate match.\n- Parameter value for location differs: expected 'Portland' but got 'No location specified'.\n\nSince the location parameter value does not match the expected value, this is a major issue resulting in a low score.\n\nNo extra or missing parameters, no type mismatches.\n\nOverall score is 0.4 due to the incorrect location value.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Match",
+                  "startDate": "03/06",
+                  "endDate": "03/06",
+                  "location": "Portland"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Match",
+                  "startDate": "03/06",
+                  "endDate": "03/06",
+                  "location": "No location specified"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.4",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.4
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -68.2% (MAS: 10640 vs SAS: 33462 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9676,
+        "completion_tokens": 964,
+        "total_tokens": 10640,
+        "llm_calls": 6,
+        "cost": 0.011595
+      },
+      "latency": {
+        "total": 12.674,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user expresses interest in attending a baseball event in New York, asks for available dates, and decides on a specific date that works for them. They finally add the match on the 13th of March to ",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Baseball Event",
+            "city": "New York"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Baseball",
+            "startDate": "03/13",
+            "endDate": "03/13",
+            "location": "New York"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Baseball",
+            "startDate": "03/13",
+            "endDate": "03/13",
+            "location": "TBD"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Baseball' has been created on the default calendar.\\nLocation: TBD\\n\", 'id': 'lc_b71ecdff-f812-4959-96ed-6f37efa4536d'}] name='create_event' tool_call_id='call_FNfKasngL8Rinfpb1DEaWjTR' artifact={'structured_content': {'result': \"Event 'Baseball' has been created on the default calendar.\\nLocation: TBD\\n\"}}",
+          "start_time": 1.872,
+          "latency": 1.791411700192839,
+          "agent_id": "calendar"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['create_event']. Missing: ['search_ticketmaster']",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "create_event"
+            ],
+            "actual": [
+              "create_event"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: create_event\n- Expected parameters: subject='Baseball' (str), startDate='03/13' (str), endDate='03/13' (str), location='New York' (str)\n- Actual parameters: subject='Baseball' (str), startDate='03/13' (str), endDate='03/13' (str), location='TBD' (str)\n- Parameter names match exactly.\n- All parameter types match (all strings).\n- However, the value for 'location' differs: expected 'New York' vs actual 'TBD'. This is a semantic mismatch.\n- No extra or missing parameters.\n\nOverall, the only issue is the incorrect value for 'location', which is a major semantic error. Therefore, the score is 0.4.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Baseball",
+                  "startDate": "03/13",
+                  "endDate": "03/13",
+                  "location": "New York"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Baseball",
+                  "startDate": "03/13",
+                  "endDate": "03/13",
+                  "location": "TBD"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.4",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.4
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -87.3% (MAS: 6537 vs SAS: 51515 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6221,
+        "completion_tokens": 316,
+        "total_tokens": 6537,
+        "llm_calls": 4,
+        "cost": 0.006088
+      },
+      "latency": {
+        "total": 7.446,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a concert event in Washington, requesting information about the venue and start dates, and plan to attend on a specific date that is available. They also want to add the trip t",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Concert Event",
+            "city": "Washington"
+          }
+        },
+        {
+          "name": "create_event",
+          "arguments": {
+            "subject": "Concert",
+            "startDate": "03/07",
+            "endDate": "03/07",
+            "location": "Washington"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Concert Event",
+            "city": "Washington"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Found the following events: Concert Event in Washington on 03/07 to 03/07', 'id': 'lc_48c7edbc-7fb7-4baa-9bcc-fdc5004ca234'}] name='search_ticketmaster' tool_call_id='call_cWnj3oi9uyliC2EyZvotjosA' artifact={'structured_content': {'result': 'Found the following events: Concert Event in Washington on 03/07 to 03/07'}}",
+          "start_time": 1.494,
+          "latency": 1.8008023998700082,
+          "agent_id": "travel"
+        },
+        {
+          "name": "create_event",
+          "args": {
+            "subject": "Concert",
+            "startDate": "03/07",
+            "endDate": "03/07",
+            "location": "Washington",
+            "isMeeting": false,
+            "attendees": ""
+          },
+          "output": "content=[{'type': 'text', 'text': \"Event 'Concert' has been created on the default calendar.\\nLocation: Washington\\n\", 'id': 'lc_4051d988-497c-451a-8032-2dcdb093a261'}] name='create_event' tool_call_id='call_mLnC0SSofdbXXQhiNg4giJl6' artifact={'structured_content': {'result': \"Event 'Concert' has been created on the default calendar.\\nLocation: Washington\\n\"}}",
+          "start_time": 8.582,
+          "latency": 1.771665999898687,
+          "agent_id": "calendar"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "create_event"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "create_event"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: search_ticketmaster - Expected parameters: type (str), city (str); Actual parameters: type (str), city (str). All parameters match exactly with correct types and values. No issues.\nTool: create_event - Expected parameters: subject (str), startDate (str), endDate (str), location (str); Actual parameters: subject (str), startDate (str), endDate (str), location (str), isMeeting (bool), attendees (str). Issues: Extra parameters 'isMeeting' (bool) and 'attendees' (str) present in actual but not expected, which is penalized. No missing parameters or type mismatches. Overall, one tool has extra parameters leading to a minor penalty.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "Washington"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Concert",
+                  "startDate": "03/07",
+                  "endDate": "03/07",
+                  "location": "Washington"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "Washington"
+                }
+              },
+              {
+                "name": "create_event",
+                "input_parameters": {
+                  "subject": "Concert",
+                  "startDate": "03/07",
+                  "endDate": "03/07",
+                  "location": "Washington",
+                  "isMeeting": false,
+                  "attendees": ""
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -85.4% (MAS: 10423 vs SAS: 71531 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9677,
+        "completion_tokens": 746,
+        "total_tokens": 10423,
+        "llm_calls": 7,
+        "cost": 0.010615
+      },
+      "latency": {
+        "total": 14.639,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for an apartment to rent in Oakley with 3 bedrooms and 3 bathrooms. They want to check how to get to the found apartment from Oakland International Airport by car.",
+      "expected_tools": [
+        {
+          "name": "search_rental_properties",
+          "arguments": {
+            "location": "Oakley",
+            "property_type": "apartment"
+          }
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "arguments": {
+            "origin_address": "Oakland International Airport",
+            "destination_address": "123 Oakley Ave"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_rental_properties",
+          "args": {
+            "location": "Oakley",
+            "property_type": "apartment"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Type: apartment, Rating: 4.2, Property ID: OAK123, Address: 123 Oakley Ave\\n', 'id': 'lc_85e4f0cb-5719-48e4-81b6-b2b1d87d93ab'}] name='search_rental_properties' tool_call_id='call_1QDOmLk7H5H2NuDI5CxJGyQF' artifact={'structured_content': {'result': 'Type: apartment, Rating: 4.2, Property ID: OAK123, Address: 123 Oakley Ave\\n'}}",
+          "start_time": 2.27,
+          "latency": 1.7792962999083102,
+          "agent_id": "travel"
+        },
+        {
+          "name": "get_rental_property_details",
+          "args": {
+            "property_id": "OAK123"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Error: Property with ID 'OAK123' not found.\", 'id': 'lc_1faaf8d3-6371-402e-89f3-febc95a08a34'}] name='get_rental_property_details' tool_call_id='call_hc9iiqjpjFAsK0iUUHSIc7pX' artifact={'structured_content': {'result': \"Error: Property with ID 'OAK123' not found.\"}}",
+          "start_time": 8.489,
+          "latency": 2.0021748000290245,
+          "agent_id": "travel"
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "args": {
+            "origin_address": "Oakland International Airport",
+            "destination_address": "123 Oakley Ave"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Driving route from Oakland International Airport to 123 Oakley Ave: Take I-880 N and CA-4 E. Estimated time: 50 minutes.', 'id': 'lc_5e1fd2ca-57b4-4fd6-a2e2-0d80c55776fe'}] name='maps_direction_driving_by_address' tool_call_id='call_jOB6YTMmBK4stcVieEU3hsyH' artifact={'structured_content': {'result': 'Driving route from Oakland International Airport to 123 Oakley Ave: Take I-880 N and CA-4 E. Estimated time: 50 minutes.'}}",
+          "start_time": 15.245,
+          "latency": 1.7856420997995883,
+          "agent_id": "geo"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['maps_direction_driving_by_address', 'search_rental_properties']. Extra: ['get_rental_property_details']",
+          "comparison": {
+            "expected": [
+              "search_rental_properties",
+              "maps_direction_driving_by_address"
+            ],
+            "actual": [
+              "search_rental_properties",
+              "get_rental_property_details",
+              "maps_direction_driving_by_address"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_rental_properties', expected parameters are 'location'='Oakley' (str) and 'property_type'='apartment' (str), which exactly match the actual call. For 'maps_direction_driving_by_address', expected parameters are 'origin_address'='Oakland International Airport' (str) and 'destination_address'='123 Oakley Ave' (str), which also exactly match the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "Oakley",
+                  "property_type": "apartment"
+                }
+              },
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Oakland International Airport",
+                  "destination_address": "123 Oakley Ave"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "Oakley",
+                  "property_type": "apartment"
+                }
+              },
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Oakland International Airport",
+                  "destination_address": "123 Oakley Ave"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -79.0% (MAS: 15350 vs SAS: 72911 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 14337,
+        "completion_tokens": 1013,
+        "total_tokens": 15350,
+        "llm_calls": 10,
+        "cost": 0.015311
+      },
+      "latency": {
+        "total": 21.221,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user wants to rent a two-bedroom, one-bathroom apartment in Santa Rosa. They want to know how to drive to the found apartment by car from 888 Fourth Street.",
+      "expected_tools": [
+        {
+          "name": "search_rental_properties",
+          "arguments": {
+            "location": "Santa Rosa",
+            "property_type": "apartment"
+          }
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "arguments": {
+            "origin_address": "888 Fourth Street",
+            "destination_address": "123 Santa Rosa Ave"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_rental_properties",
+          "args": {
+            "location": "Santa Rosa",
+            "property_type": "apartment"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Type: apartment, Rating: 4.1, Property ID: SRO123, Address: 123 Santa Rosa Ave\\n', 'id': 'lc_6d00e04f-2bf9-46ee-8da4-a680a8f26c36'}] name='search_rental_properties' tool_call_id='call_cKvXGIDrYkE94lRm6BJXpLk2' artifact={'structured_content': {'result': 'Type: apartment, Rating: 4.1, Property ID: SRO123, Address: 123 Santa Rosa Ave\\n'}}",
+          "start_time": 1.653,
+          "latency": 1.7794002001173794,
+          "agent_id": "travel"
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "args": {
+            "origin_address": "888 Fourth Street",
+            "destination_address": "123 Santa Rosa Ave"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Driving route from 888 Fourth Street to 123 Santa Rosa Ave: Take US-101 N. Estimated time: 1 hour 30 minutes.', 'id': 'lc_5963357d-3376-4926-a7f6-28ee44a208aa'}] name='maps_direction_driving_by_address' tool_call_id='call_LqBKnLB5RTOxNlhHG1LJ5Ma9' artifact={'structured_content': {'result': 'Driving route from 888 Fourth Street to 123 Santa Rosa Ave: Take US-101 N. Estimated time: 1 hour 30 minutes.'}}",
+          "start_time": 8.847,
+          "latency": 1.77017299993895,
+          "agent_id": "geo"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_rental_properties",
+              "maps_direction_driving_by_address"
+            ],
+            "actual": [
+              "search_rental_properties",
+              "maps_direction_driving_by_address"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_rental_properties', expected parameters are 'location'='Santa Rosa' (str) and 'property_type'='apartment' (str), which exactly match the actual call. For 'maps_direction_driving_by_address', expected parameters are 'origin_address'='888 Fourth Street' (str) and 'destination_address'='123 Santa Rosa Ave' (str), which also exactly match the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "Santa Rosa",
+                  "property_type": "apartment"
+                }
+              },
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "888 Fourth Street",
+                  "destination_address": "123 Santa Rosa Ave"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_rental_properties",
+                "input_parameters": {
+                  "location": "Santa Rosa",
+                  "property_type": "apartment"
+                }
+              },
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "888 Fourth Street",
+                  "destination_address": "123 Santa Rosa Ave"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -82.4% (MAS: 10690 vs SAS: 60675 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10066,
+        "completion_tokens": 624,
+        "total_tokens": 10690,
+        "llm_calls": 7,
+        "cost": 0.010358
+      },
+      "latency": {
+        "total": 14.382,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for attractions to visit in Philadelphia, specifically a museum, and inquires about the best way to drive there from Wilmington.",
+      "expected_tools": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "Philadelphia",
+            "category": "museum"
+          }
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "arguments": {
+            "origin_address": "Wilmington",
+            "destination_address": "Philadelphia Museum of Art"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "maps_direction_driving_by_address",
+          "args": {
+            "origin_address": "Wilmington",
+            "destination_address": "Philadelphia Museum of Art"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Driving route from Wilmington to Philadelphia Museum of Art: A drive of about 32 miles from Wilmington to the Philadelphia Museum of Art takes roughly 40 minutes, mostly via I-95, with your destination on the Benjamin Franklin Parkway near Eakins Oval.', 'id': 'lc_3acdb610-6945-46eb-9183-cee0f802b732'}] name='maps_direction_driving_by_address' tool_call_id='call_8A9hUTJRuLexiwFZVlaMUQFT' artifact={'structured_content': {'result': 'Driving route from Wilmington ",
+          "start_time": 5.184,
+          "latency": 1.7853611998725682,
+          "agent_id": "geo"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['maps_direction_driving_by_address']. Missing: ['geocalc_mcp_get_points_of_interest']",
+          "comparison": {
+            "expected": [
+              "geocalc_mcp_get_points_of_interest",
+              "maps_direction_driving_by_address"
+            ],
+            "actual": [
+              "maps_direction_driving_by_address"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'maps_direction_driving_by_address': Expected parameters are origin_address (str) = 'Wilmington' and destination_address (str) = 'Philadelphia Museum of Art'. Actual parameters match exactly in names and values with correct types (str). No extra or missing parameters. No type mismatches. All arguments are semantically and syntactically correct.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Wilmington",
+                  "destination_address": "Philadelphia Museum of Art"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Wilmington",
+                  "destination_address": "Philadelphia Museum of Art"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -73.4% (MAS: 9752 vs SAS: 36671 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8934,
+        "completion_tokens": 818,
+        "total_tokens": 9752,
+        "llm_calls": 6,
+        "cost": 0.010382
+      },
+      "latency": {
+        "total": 11.557,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_19",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for music attractions in New York, and needs help planning a driving route from Avalon Clinton to the selected attraction.",
+      "expected_tools": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "New York",
+            "category": "music"
+          }
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "arguments": {
+            "origin_address": "Avalon Clinton",
+            "destination_address": "Metropolitan Museum of Art"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['geocalc_mcp_get_points_of_interest', 'maps_direction_driving_by_address']",
+          "comparison": {
+            "expected": [
+              "geocalc_mcp_get_points_of_interest",
+              "maps_direction_driving_by_address"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -88.7% (MAS: 6008 vs SAS: 52980 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5131,
+        "completion_tokens": 877,
+        "total_tokens": 6008,
+        "llm_calls": 3,
+        "cost": 0.007795
+      },
+      "latency": {
+        "total": 8.477,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_sequential_tools_20",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "The user is looking for a music attraction in New York and inquires about the best way to drive there from Ridgewood.",
+      "expected_tools": [
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "New York",
+            "category": "music"
+          }
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "arguments": {
+            "origin_address": "Ridgewood",
+            "destination_address": "Metropolitan Museum of Art"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "maps_direction_driving_by_address",
+          "args": {
+            "origin_address": "Ridgewood",
+            "destination_address": "Carnegie Hall"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Driving route from Ridgewood to Carnegie Hall not found in the mock database.', 'id': 'lc_780efa59-4e9d-481a-91f9-dd686f1f2a0c'}] name='maps_direction_driving_by_address' tool_call_id='call_3wbZJVyzJj931W1fCCU6mPsJ' artifact={'structured_content': {'result': 'Error: Driving route from Ridgewood to Carnegie Hall not found in the mock database.'}}",
+          "start_time": 2.58,
+          "latency": 1.7919681000057608,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "maps_direction_driving_by_address",
+          "args": {
+            "origin_address": "Ridgewood",
+            "destination_address": "Lincoln Center"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Error: Driving route from Ridgewood to Lincoln Center not found in the mock database.', 'id': 'lc_675ac79f-8cec-4922-9ba9-9432a501539a'}] name='maps_direction_driving_by_address' tool_call_id='call_fPWMmaIPZMNT6uhuJY73uORb' artifact={'structured_content': {'result': 'Error: Driving route from Ridgewood to Lincoln Center not found in the mock database.'}}",
+          "start_time": 6.075,
+          "latency": 1.785910899983719,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 2 total calls. Correct: ['maps_direction_driving_by_address']. Missing: ['geocalc_mcp_get_points_of_interest']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "geocalc_mcp_get_points_of_interest",
+              "maps_direction_driving_by_address"
+            ],
+            "actual": [
+              "maps_direction_driving_by_address",
+              "maps_direction_driving_by_address"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There is one expected tool call: 'maps_direction_driving_by_address' with parameters origin_address='Ridgewood' and destination_address='Metropolitan Museum of Art'. The actual calls include two calls to the same tool with the same origin_address='Ridgewood' but different destination_address values: 'Carnegie Hall' and 'Lincoln Center'. Both actual destination_address values do not match the expected value 'Metropolitan Museum of Art'. There are no type mismatches or extra/missing parameters, but the parameter values for destination_address do not match the expected value. Since the expected tool call is not matched by any actual call, this is a major issue resulting in a score of 0.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Ridgewood",
+                  "destination_address": "Metropolitan Museum of Art"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Ridgewood",
+                  "destination_address": "Carnegie Hall"
+                }
+              },
+              {
+                "name": "maps_direction_driving_by_address",
+                "input_parameters": {
+                  "origin_address": "Ridgewood",
+                  "destination_address": "Lincoln Center"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -81.1% (MAS: 10631 vs SAS: 56308 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9502,
+        "completion_tokens": 1129,
+        "total_tokens": 10631,
+        "llm_calls": 6,
+        "cost": 0.012207
+      },
+      "latency": {
+        "total": 15.325,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 20,
+      "mean": 0.7333,
+      "median": 0.6667,
+      "std": 0.283,
+      "variance": 0.0801,
+      "ci_lower": 0.6093,
+      "ci_upper": 0.8574,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.5,
+      "p75": 1.0,
+      "iqr": 0.5,
+      "pass_rate": 0.45,
+      "pass_ci_lower": 0.2582,
+      "pass_ci_upper": 0.6579,
+      "passed": 9,
+      "total": 20
+    },
+    "Argument Correctness [Reference]": {
+      "n": 20,
+      "mean": 0.825,
+      "median": 1.0,
+      "std": 0.3401,
+      "variance": 0.1157,
+      "ci_lower": 0.676,
+      "ci_upper": 0.974,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.925,
+      "p75": 1.0,
+      "iqr": 0.075,
+      "pass_rate": 0.75,
+      "pass_ci_lower": 0.5313,
+      "pass_ci_upper": 0.8881,
+      "passed": 15,
+      "total": 20
+    },
+    "Final State (Derived)": {
+      "n": 20,
+      "mean": 0.4,
+      "median": 0.0,
+      "std": 0.5026,
+      "variance": 0.2526,
+      "ci_lower": 0.1797,
+      "ci_upper": 0.6203,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 1.0,
+      "iqr": 1.0,
+      "pass_rate": 0.4,
+      "pass_ci_lower": 0.2188,
+      "pass_ci_upper": 0.6134,
+      "passed": 8,
+      "total": 20
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 1.0,
+      "median": 1.0,
+      "std": 0.0,
+      "variance": 0.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 9518.3,
+        "median": 9589.0,
+        "std": 2637.6495,
+        "variance": 6957194.8526,
+        "min": 5131.0,
+        "max": 14337.0,
+        "p25": 7664.5,
+        "p75": 11330.25,
+        "p95": 13403.15,
+        "p99": 14150.23,
+        "iqr": 3665.75
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 663.45,
+        "median": 620.5,
+        "std": 240.4567,
+        "variance": 57819.4184,
+        "min": 270.0,
+        "max": 1129.0,
+        "p25": 531.25,
+        "p75": 826.75,
+        "p95": 1018.8,
+        "p99": 1106.96,
+        "iqr": 295.5
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 10181.75,
+        "median": 10527.0,
+        "std": 2710.3957,
+        "variance": 7346244.6184,
+        "min": 6008.0,
+        "max": 15350.0,
+        "p25": 8069.25,
+        "p75": 12172.5,
+        "p95": 13961.1,
+        "p99": 15072.22,
+        "iqr": 4103.25
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0101,
+        "median": 0.0105,
+        "std": 0.0025,
+        "variance": 0.0,
+        "min": 0.0061,
+        "max": 0.0153,
+        "p25": 0.008,
+        "p75": 0.012,
+        "p95": 0.0128,
+        "p99": 0.0148,
+        "iqr": 0.004,
+        "total": 0.202485
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 9,
+      "failed": 11,
+      "errors": 0,
+      "total_tokens": 203635,
+      "tokens_per_pass": 22626.11,
+      "success_per_1k_tokens": 0.0442,
+      "pass_rate": 0.45,
+      "error_rate": 0.0
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:05.261259",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

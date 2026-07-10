@@ -1,0 +1,3509 @@
+{
+  "timestamp": "2026-07-03T13:56:59.664262+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "router",
+  "mode": "sturn-mt-protasks-parallel",
+  "num_tools": 10,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 1,
+    "total_test_cases": 20,
+    "error_rate": 0.05
+  },
+  "aggregate": {
+    "total_prompt_tokens": 176682,
+    "total_completion_tokens": 54375,
+    "total_tokens": 231057,
+    "total_llm_calls": 119,
+    "total_cost": 0.124163,
+    "total_latency": 1086.772,
+    "avg_latency": 54.339,
+    "pass_rate": 0.35,
+    "passed": 7,
+    "failed": 12,
+    "errors": 1
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_2_parallel_tools_1",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "How can I establish a secure connection to a database for a large-scale movie review website, the project id is 'movie-reviews-db', and at the same time obtain security guidance to ensure safe data st",
+      "expected_tools": [
+        {
+          "name": "connect_database",
+          "arguments": {
+            "database_name": "movie_reviews_db"
+          }
+        },
+        {
+          "name": "security_guidance",
+          "arguments": {
+            "query": "secure mysql connection for large-scale movie review website"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "connect_database",
+          "args": {
+            "database_name": "movie_reviews_db"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Successfully connected to 'movie_reviews_db' with TLS-enabled pooled connection. Ready for secure movie review operations.\", 'id': 'lc_c6a26d7a-3d27-4a79-ada8-afefa8c6a897'}] name='connect_database' tool_call_id='call_334e582dc8f846d7b7b9530d' artifact={'structured_content': {'result': \"Successfully connected to 'movie_reviews_db' with TLS-enabled pooled connection. Ready for secure movie review operations.\"}}",
+          "start_time": 0.0,
+          "latency": 2.3201335999183357,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "best practices for secure data storage, access control, PII handling, encryption at rest and in transit, and parameterized queries for a movie reviews database"
+          },
+          "output": "content=[{'type': 'text', 'text': 'General Application Security Guidelines:\\n1. Apply the principle of least privilege to all systems and services.\\n2. Keep all software dependencies updated and patched.\\n3. Enforce strong authentication and use MFA where possible.\\n4. Encrypt sensitive data both at rest and in transit.\\n5. Validate and sanitize all user inputs to prevent injection attacks.\\n6. Monitor system logs and set up alerts for suspicious activity.\\n7. Back up data regularly and test res",
+          "start_time": 0.0,
+          "latency": 2.3216736000031233,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "secure data storage at rest, access control RBAC patterns, PII handling, and logging monitoring for relational databases"
+          },
+          "output": "content=[{'type': 'text', 'text': 'General Application Security Guidelines:\\n1. Apply the principle of least privilege to all systems and services.\\n2. Keep all software dependencies updated and patched.\\n3. Enforce strong authentication and use MFA where possible.\\n4. Encrypt sensitive data both at rest and in transit.\\n5. Validate and sanitize all user inputs to prevent injection attacks.\\n6. Monitor system logs and set up alerts for suspicious activity.\\n7. Back up data regularly and test res",
+          "start_time": 8.717,
+          "latency": 1.9210694999201223,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['connect_database', 'security_guidance']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "connect_database",
+              "security_guidance"
+            ],
+            "actual": [
+              "connect_database",
+              "security_guidance",
+              "security_guidance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'connect_database' and 'security_guidance'.\n\n1. connect_database:\n- Expected parameters: {\"database_name\": \"movie_reviews_db\"} (type str)\n- Actual parameters: {\"database_name\": \"movie_reviews_db\"} (type str)\n- Evaluation: Perfect match in parameter names, values, and types.\n\n2. security_guidance:\n- Expected parameters: {\"query\": \"secure mysql connection for large-scale movie review website\"} (type str)\n- Actual calls: Two calls with parameter 'query' but with different string values:\n  a) \"best practices for secure data storage, access control, PII handling, encryption at rest and in transit, and parameterized queries for a movie reviews database\"\n  b) \"secure data storage at rest, access control RBAC patterns, PII handling, and logging monitoring for relational databases\"\n- Evaluation: Parameter names and types match, but the actual parameter values differ significantly from the expected value.\n\nAdditional notes:\n- The expected 'security_guidance' tool is called twice in actual, which is not an error per se but the values do not match the expected query.\n- No type mismatches or extra/missing parameters.\n\nOverall, the 'connect_database' call is fully correct, but the 'security_guidance' calls have incorrect argument values.\nThis is a major issue but not a complete failure, so the score is set to 0.7 to reflect the correct parameter usage but incorrect argument values.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "movie_reviews_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "secure mysql connection for large-scale movie review website"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "movie_reviews_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "best practices for secure data storage, access control, PII handling, encryption at rest and in transit, and parameterized queries for a movie reviews database"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "secure data storage at rest, access control RBAC patterns, PII handling, and logging monitoring for relational databases"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -79.8% (MAS: 7859 vs SAS: 38976 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5593,
+        "completion_tokens": 2266,
+        "total_tokens": 7859,
+        "llm_calls": 4,
+        "cost": 0.004404
+      },
+      "latency": {
+        "total": 48.153,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_2",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Get the diagnosis fot Steve and also write a medical report of treatment recommendations for patients kathy_001.",
+      "expected_tools": [
+        {
+          "name": "get_patient_conditions",
+          "arguments": {
+            "patientId": "steve"
+          }
+        },
+        {
+          "name": "get_patient_medications",
+          "arguments": {
+            "patient_id": "kathy_001"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_patient_conditions",
+          "args": {
+            "patientName": "Steve"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Active conditions for patient 'Steve' (ID: steve_001):\\n1. Type 2 Diabetes Mellitus (Onset: 2018-04-12, Status: Active) - Managed with oral hypoglycemics; periodic blood glucose monitoring required.\\n2. Hypertension (Onset: 2016-09-05, Status: Active) - Well-controlled with ACE inhibitors.\", 'id': 'lc_52713afc-ad4a-4ed9-8936-843cfa784ff6'}] name='get_patient_conditions' tool_call_id='call_2620177b9978404b89216cd1' artifact={'structured_content': {'result': \"Act",
+          "start_time": 0.0,
+          "latency": 3.26335480005946,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_patient_conditions",
+          "args": {
+            "patientName": "kathy_001"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No active conditions found for patient with ID 'kathy_001'.\", 'id': 'lc_a28080fe-6ed4-4d74-8786-9268a3714297'}] name='get_patient_conditions' tool_call_id='call_151a898e0b404d2b97e11e41' artifact={'structured_content': {'result': \"No active conditions found for patient with ID 'kathy_001'.\"}}",
+          "start_time": 0.0,
+          "latency": 3.261250499985181,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_patient_medications",
+          "args": {
+            "patientId": "kathy_001"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Current medications for patient 'kathy_001':\\n- Atorvastatin 20mg: 20 mg at bedtime (Indication: Hyperlipidemia, Started: 2023-05-20)\\n- Albuterol inhaler: 2 puffs every 4-6 hours as needed (Indication: Asthma, Started: 2021-09-10)\", 'id': 'lc_3212e178-e0d4-4386-b32f-646dfff00b62'}] name='get_patient_medications' tool_call_id='call_28f0592c71464b0996f68867' artifact={'structured_content': {'result': \"Current medications for patient 'kathy_001':\\n- Atorvastatin ",
+          "start_time": 0.0,
+          "latency": 3.2650317000225186,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_patient_conditions', 'get_patient_medications']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "get_patient_conditions",
+              "get_patient_medications"
+            ],
+            "actual": [
+              "get_patient_conditions",
+              "get_patient_conditions",
+              "get_patient_medications"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. Tool: get_patient_conditions\n   - Expected parameters: { patientId: 'steve' }\n   - Actual parameters found:\n     a) { patientName: 'Steve' }\n     b) { patientName: 'kathy_001' }\n   - Issues:\n     * Parameter name mismatch: expected 'patientId' but got 'patientName' (missing expected param, extra param present)\n     * Parameter values differ ('steve' vs 'Steve') but case-insensitive match applies only to identifiers, not values; however, parameter name mismatch is primary issue.\n     * No actual call with correct parameter name 'patientId' found.\n   - Result: Major issue (missing expected parameter, wrong parameter name)\n\n2. Tool: get_patient_medications\n   - Expected parameters: { patient_id: 'kathy_001' }\n   - Actual parameters found:\n     a) { patientId: 'kathy_001' }\n   - Issues:\n     * Parameter name mismatch: expected 'patient_id' but got 'patientId' (missing expected param, extra param present)\n     * Parameter value matches ('kathy_001')\n   - Result: Major issue (missing expected parameter, wrong parameter name)\n\nSummary:\n- Both expected tools have no matching actual calls with correct parameter names.\n- Actual calls use incorrect parameter names, missing expected parameters.\n- No type mismatches, but parameter name mismatches are critical.\n- No extra or missing parameters beyond name mismatches.\n\nOverall score: 0.0 due to major parameter name mismatches and missing expected parameters.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_patient_conditions",
+                "input_parameters": {
+                  "patientId": "steve"
+                }
+              },
+              {
+                "name": "get_patient_medications",
+                "input_parameters": {
+                  "patient_id": "kathy_001"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_patient_conditions",
+                "input_parameters": {
+                  "patientName": "Steve"
+                }
+              },
+              {
+                "name": "get_patient_conditions",
+                "input_parameters": {
+                  "patientName": "kathy_001"
+                }
+              },
+              {
+                "name": "get_patient_medications",
+                "input_parameters": {
+                  "patientId": "kathy_001"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -43.7% (MAS: 4819 vs SAS: 8555 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 2906,
+        "completion_tokens": 1913,
+        "total_tokens": 4819,
+        "llm_calls": 3,
+        "cost": 0.002928
+      },
+      "latency": {
+        "total": 36.08,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_3",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Hello! I am a food merchant, and I need to prepare a presentation for the guests tonight, which requires understanding the ingredients. Can you provide information about the food based on the product ",
+      "expected_tools": [
+        {
+          "name": "get_product_by_barcode",
+          "arguments": {
+            "barcode": [
+              "4902102079290",
+              "0737628064502",
+              "8410076471305"
+            ]
+          }
+        },
+        {
+          "name": "spu_list",
+          "arguments": {
+            "brand": "salalad"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_product_by_barcode",
+          "args": {
+            "barcode": [
+              "4902102079290",
+              "0737628064502",
+              "8410076471305"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': \"\\n\\n================================================================================Barcode: 4902102079290\\nProduct Name: Salalad Dressing\\nBrand: Kewpie\\nCategory: Salad Dressing\\nOrigin: Japan\\nDescription: A light and tangy Japanese-style salad dressing that pairs well with fresh vegetables.\\nIngredients: Soybean oil, Vinegar, Egg yolk, Sugar, Salt, Mustard, Spices\\nNutrition Facts (per 15ml):\\n  Calories: 60\\n  Fat: 6g\\n  Carbohydrates: 1g\\n  Protein: 0g\\n\\",
+          "start_time": 0.0,
+          "latency": 1.925323599949479,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['get_product_by_barcode']. Missing: ['spu_list']",
+          "comparison": {
+            "expected": [
+              "get_product_by_barcode",
+              "spu_list"
+            ],
+            "actual": [
+              "get_product_by_barcode"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'get_product_by_barcode': Expected parameters 'barcode' with a list of strings matching exactly the actual parameters 'barcode' with the same list of strings. Parameter names match exactly. Parameter values are semantically equivalent. Types match (both are lists of strings). No extra or missing parameters. No type mismatches found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_product_by_barcode",
+                "input_parameters": {
+                  "barcode": [
+                    "4902102079290",
+                    "0737628064502",
+                    "8410076471305"
+                  ]
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_product_by_barcode",
+                "input_parameters": {
+                  "barcode": [
+                    "4902102079290",
+                    "0737628064502",
+                    "8410076471305"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['spu_list']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -87.6% (MAS: 4601 vs SAS: 36987 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 2769,
+        "completion_tokens": 1832,
+        "total_tokens": 4601,
+        "llm_calls": 3,
+        "cost": 0.002798
+      },
+      "latency": {
+        "total": 47.703,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_4",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Please retrieve and organize the available schema and table information for sales and inventory from our website's default e-commerce database. There are already lists of popular products for various ",
+      "expected_tools": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "arguments": {
+            "schema_filter": [
+              "sales",
+              "inventory"
+            ]
+          }
+        },
+        {
+          "name": "visualize_data",
+          "arguments": {
+            "data_dir": "/business/analytics/ecommerce_sales.csv",
+            "visualize_type": "bar_chart",
+            "output_dir": "/business/analytics/visualizations",
+            "output_format": "png"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "args": {
+            "schema_filter": [
+              "sales",
+              "inventory"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Database: default_ecommerce_db\\nSchemas:\\n  - sales: Contains sales order records, transaction history, and return information.\\n    Tables: sales_orders, sales_transactions, sales_returns\\n  - inventory: Contains inventory stock levels, warehouse data, and supplier details.\\n    Tables: stock_levels, warehouse_locations, supplier_info', 'id': 'lc_e7d52042-a4f0-4fff-a826-13eecd9236dd'}] name='E_commerce_analyst_MCP_get_schemas' tool_call_id='call_03189a4f7d1644",
+          "start_time": 0.0,
+          "latency": 2.409909199923277,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "args": {
+            "schema_filter": [
+              "sales",
+              "products",
+              "inventory",
+              "customers",
+              "promotions"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Database: default_ecommerce_db\\nSchemas:\\n  - products: Contains product-related data including details, categories, and reviews.\\n    Tables: product_list, product_categories, product_reviews\\n  - sales: Contains sales order records, transaction history, and return information.\\n    Tables: sales_orders, sales_transactions, sales_returns\\n  - customers: Contains customer personal information, feedback, and loyalty program data.\\n    Tables: customer_profiles, ",
+          "start_time": 0.7,
+          "latency": 2.0192060999106616,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "visualize_data",
+          "args": {
+            "data_dir": "/business/analytics/ecommerce_sales.csv",
+            "visualize_type": "bar_chart",
+            "output_dir": "/business/analytics/visualizations/ecommerce_sales",
+            "output_format": "png"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Operation succeed', 'id': 'lc_38c3faf7-1645-4a99-a737-5477c6bd2fe0'}] name='visualize_data' tool_call_id='call_67095ef36c114d88a1f4538b' artifact={'structured_content': {'result': 'Operation succeed'}}",
+          "start_time": 4.331,
+          "latency": 1.954429000033997,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['E_commerce_analyst_MCP_get_schemas', 'visualize_data']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "E_commerce_analyst_MCP_get_schemas",
+              "visualize_data"
+            ],
+            "actual": [
+              "E_commerce_analyst_MCP_get_schemas",
+              "E_commerce_analyst_MCP_get_schemas",
+              "visualize_data"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. E_commerce_analyst_MCP_get_schemas:\n- Expected one call with schema_filter: [\"sales\", \"inventory\"]\n- Actual has two calls:\n  a) schema_filter: [\"sales\", \"inventory\"] - matches expected exactly.\n  b) schema_filter: [\"sales\", \"products\", \"inventory\", \"customers\", \"promotions\"] - extra values beyond expected.\n- Issue: The second call has extra schema_filter values not in expected, which is a major issue (wrong values).\n- Since expected only one call, the extra call is unexpected but not explicitly penalized by rules; focus is on argument correctness.\n- Overall for this tool: one perfect match, one major mismatch due to extra values.\n\n2. visualize_data:\n- Expected parameters:\n  data_dir: \"/business/analytics/ecommerce_sales.csv\"\n  visualize_type: \"bar_chart\"\n  output_dir: \"/business/analytics/visualizations\"\n  output_format: \"png\"\n- Actual parameters:\n  data_dir: \"/business/analytics/ecommerce_sales.csv\" (matches)\n  visualize_type: \"bar_chart\" (matches)\n  output_dir: \"/business/analytics/visualizations/ecommerce_sales\" (does NOT match expected, extra subfolder)\n  output_format: \"png\" (matches)\n- Issue: output_dir value mismatch is a major issue (wrong value).\n\nSummary:\n- E_commerce_analyst_MCP_get_schemas: one perfect call, one major mismatch (extra values in list).\n- visualize_data: one call with one major parameter value mismatch (output_dir).\n\nGiven multiple major issues (wrong parameter values and extra unexpected values), the score is low.\n\nScore assigned: 0.3 (major issues with parameter values in both tools).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "schema_filter": [
+                    "sales",
+                    "inventory"
+                  ]
+                }
+              },
+              {
+                "name": "visualize_data",
+                "input_parameters": {
+                  "data_dir": "/business/analytics/ecommerce_sales.csv",
+                  "visualize_type": "bar_chart",
+                  "output_dir": "/business/analytics/visualizations",
+                  "output_format": "png"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "schema_filter": [
+                    "sales",
+                    "inventory"
+                  ]
+                }
+              },
+              {
+                "name": "E_commerce_analyst_MCP_get_schemas",
+                "input_parameters": {
+                  "schema_filter": [
+                    "sales",
+                    "products",
+                    "inventory",
+                    "customers",
+                    "promotions"
+                  ]
+                }
+              },
+              {
+                "name": "visualize_data",
+                "input_parameters": {
+                  "data_dir": "/business/analytics/ecommerce_sales.csv",
+                  "visualize_type": "bar_chart",
+                  "output_dir": "/business/analytics/visualizations/ecommerce_sales",
+                  "output_format": "png"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.0,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "0/1 checks passed. Issues: Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.6387,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 108.4% (MAS: 16238 vs SAS: 7792 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11280,
+        "completion_tokens": 4958,
+        "total_tokens": 16238,
+        "llm_calls": 8,
+        "cost": 0.00922
+      },
+      "latency": {
+        "total": 77.588,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_5",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I'm working on a research project and I require soil data for a specific region. Today is Sep 27, 2025. Please provide me with today's soil data for the coordinates 51.5074° N, 0.1278° W. Additionally",
+      "expected_tools": [
+        {
+          "name": "get_data_products",
+          "arguments": {
+            "coordinates": [
+              51.5074,
+              -0.1278
+            ],
+            "data_type": "soil",
+            "start_date": "2025-09-27",
+            "end_date": "2025-09-27"
+          }
+        },
+        {
+          "name": "get_data_products",
+          "arguments": {
+            "coordinates": [
+              60.5074,
+              -1.1278
+            ],
+            "data_type": "soil",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-27"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['get_data_products']",
+          "comparison": {
+            "expected": [
+              "get_data_products",
+              "get_data_products"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -70.2% (MAS: 2369 vs SAS: 7963 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 1183,
+        "completion_tokens": 1186,
+        "total_tokens": 2369,
+        "llm_calls": 1,
+        "cost": 0.001546
+      },
+      "latency": {
+        "total": 23.261,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_6",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "My company is conducting market research on popular cryptocurrencies. Can you provide me with a list of all the markets supported by the Upbit exchange along with their currency codes? At the same tim",
+      "expected_tools": [
+        {
+          "name": "get_markets",
+          "arguments": {
+            "exchange": "Upbit"
+          }
+        },
+        {
+          "name": "get_market_summary",
+          "arguments": {
+            "filter_type": [
+              "popular",
+              "most_visited",
+              "new_listing"
+            ],
+            "filter_count": "10",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-27"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_markets",
+          "args": {
+            "exchange": "Upbit"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Supported markets for Upbit:\\n- KRW-BTC | Base: BTC, Quote: KRW, Popularity: high\\n- KRW-ETH | Base: ETH, Quote: KRW, Popularity: high\\n- KRW-XRP | Base: XRP, Quote: KRW, Popularity: medium\\n- KRW-APT | Base: APT, Quote: KRW, Popularity: emerging (New Listing)\\n- KRW-SAND | Base: SAND, Quote: KRW, Popularity: medium (New Listing)\\n- BTC-ETH | Base: ETH, Quote: BTC, Popularity: high', 'id': 'lc_c8024054-3f7e-42af-ae17-51f69a3b46b9'}] name='get_markets' tool_call",
+          "start_time": 0.0,
+          "latency": 3.226929900003597,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_market_summary",
+          "args": {
+            "filter_type": [
+              "popular",
+              "most_visited",
+              "new_listing"
+            ],
+            "filter_count": "10",
+            "start_date": "2025-09-01",
+            "end_date": "2025-09-30"
+          },
+          "output": "content=[{'type': 'text', 'text': 'KRW Market Summary:\\n==================================================\\n\\nTop 10 Popular Cryptocurrencies (by Volume):\\n1. Bitcoin (KRW-BTC): ₩25,000,000,000\\n2. Ethereum (KRW-ETH): ₩15,000,000,000\\n3. Ripple (KRW-XRP): ₩8,000,000,000\\n4. Cardano (KRW-ADA): ₩6,000,000,000\\n5. Dogecoin (KRW-DOGE): ₩5,500,000,000\\n6. Solana (KRW-SOL): ₩5,000,000,000\\n7. Chainlink (KRW-LINK): ₩4,500,000,000\\n8. Polkadot (KRW-DOT): ₩4,200,000,000\\n9. Uniswap (KRW-UNI): ₩4,000,000,",
+          "start_time": 0.0,
+          "latency": 3.148767299950123,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "get_markets",
+              "get_market_summary"
+            ],
+            "actual": [
+              "get_markets",
+              "get_market_summary"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: get_markets - Expected parameters: exchange='Upbit' (str); Actual parameters: exchange='Upbit' (str). All parameters match exactly with correct types. No issues.\nTool: get_market_summary - Expected parameters: filter_type=['popular','most_visited','new_listing'] (list), filter_count='10' (str), start_date='2025-09-01' (str), end_date='2025-09-27' (str); Actual parameters: filter_type=['popular','most_visited','new_listing'] (list), filter_count='10' (str), start_date='2025-09-01' (str), end_date='2025-09-30' (str). Parameter names and types match exactly. However, the value of 'end_date' differs ('2025-09-27' vs '2025-09-30'), which is a semantic mismatch. This is a major issue but no type mismatch or missing/extra parameters.\nOverall, one tool fully correct, one tool with a value mismatch on a required parameter, resulting in a score of 0.8.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_markets",
+                "input_parameters": {
+                  "exchange": "Upbit"
+                }
+              },
+              {
+                "name": "get_market_summary",
+                "input_parameters": {
+                  "filter_type": [
+                    "popular",
+                    "most_visited",
+                    "new_listing"
+                  ],
+                  "filter_count": "10",
+                  "start_date": "2025-09-01",
+                  "end_date": "2025-09-27"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_markets",
+                "input_parameters": {
+                  "exchange": "Upbit"
+                }
+              },
+              {
+                "name": "get_market_summary",
+                "input_parameters": {
+                  "filter_type": [
+                    "popular",
+                    "most_visited",
+                    "new_listing"
+                  ],
+                  "filter_count": "10",
+                  "start_date": "2025-09-01",
+                  "end_date": "2025-09-30"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -49.6% (MAS: 5341 vs SAS: 10596 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 3709,
+        "completion_tokens": 1632,
+        "total_tokens": 5341,
+        "llm_calls": 3,
+        "cost": 0.003033
+      },
+      "latency": {
+        "total": 28.023,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_7",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Hello, I'm working on a language learning app and I need to integrate translation and language correction features. Find me a list of APIs that can be used for translation. Additionally, I would like ",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "translation"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": "Microsoft Translator Text API"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "translation"
+          },
+          "output": "content=[{'type': 'text', 'text': 'translation: Microsoft Translator Text API, Simple & Elegant Translation Service API', 'id': 'lc_ee7a4f4e-872f-423d-bfe0-cffea472e936'}] name='searchApis' tool_call_id='call_b750d1a33f3848c19e9bd02d' artifact={'structured_content': {'result': 'translation: Microsoft Translator Text API, Simple & Elegant Translation Service API'}}",
+          "start_time": 0.0,
+          "latency": 2.6281868000514805,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "translation"
+          },
+          "output": "content=[{'type': 'text', 'text': 'translation: Microsoft Translator Text API, Simple & Elegant Translation Service API', 'id': 'lc_ba82ca95-827f-4f58-9a92-b6ed1198ac9c'}] name='searchApis' tool_call_id='call_b52d6b647fd94dfd8abdc003' artifact={'structured_content': {'result': 'translation: Microsoft Translator Text API, Simple & Elegant Translation Service API'}}",
+          "start_time": 0.651,
+          "latency": 1.94678220001515,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "request_api_schema",
+          "args": {
+            "ApiName": "Microsoft Translator Text API"
+          },
+          "output": "content=[{'type': 'text', 'text': 'API Name: Microsoft Translator Text API\\nDescription: Provides translation services and lists supported languages.\\nEndpoint: GET https://api.cognitive.microsofttranslator.com/languages\\nRequest Schema: {\\'scope\\': \"string (optional, e.g., \\'translation\\', \\'transliteration\\', \\'dictionary\\')\"}', 'id': 'lc_d08f1b3f-6752-4edd-bb6c-659858a0f60f'}] name='request_api_schema' tool_call_id='call_cf5a0e1c21234cf09b81cd08' artifact={'structured_content': {'result': 'AP",
+          "start_time": 4.817,
+          "latency": 1.9134395000291988,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "searchApis",
+          "args": {
+            "keyword": "language correction"
+          },
+          "output": "content=[{'type': 'text', 'text': 'language correction: LanguageTool API, Grammarify Proofread API (Mock)', 'id': 'lc_67e49577-3cb5-4a32-995c-df0ea5a13568'}] name='searchApis' tool_call_id='call_11c169e4e0a7443bafc57e3e' artifact={'structured_content': {'result': 'language correction: LanguageTool API, Grammarify Proofread API (Mock)'}}",
+          "start_time": 11.324,
+          "latency": 1.9676818000152707,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['request_api_schema', 'searchApis']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema"
+            ],
+            "actual": [
+              "searchApis",
+              "searchApis",
+              "request_api_schema",
+              "searchApis"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.7,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'searchApis' with parameter keyword='translation' (string), and 'request_api_schema' with parameter ApiName='Microsoft Translator Text API' (string).\n\nActual calls:\n1) 'searchApis' with keyword='translation' (string) - matches expected exactly.\n2) 'searchApis' with keyword='translation' (string) - duplicate call, still correct.\n3) 'request_api_schema' with ApiName='Microsoft Translator Text API' (string) - matches expected exactly.\n4) 'searchApis' with keyword='language correction' (string) - parameter name correct and type correct, but value differs from expected ('language correction' vs 'translation'). This is a semantic mismatch.\n\nEvaluation:\n- The expected 'searchApis' call is matched twice correctly, but one extra call has a different keyword value, which is a semantic mismatch.\n- The expected 'request_api_schema' call is matched correctly.\n- No type mismatches or missing/extra parameters.\n\nBecause there is one semantic mismatch in one of the 'searchApis' calls (wrong keyword value), and one extra 'searchApis' call with correct parameters, the score is reduced but not to zero.\n\nScore rationale:\n- Perfect matches for expected calls: 2/2\n- One extra call with wrong parameter value (semantic mismatch) - penalize\n- Duplicate correct call is not penalized but does not increase score\n\nOverall score: 0.7 (minor semantic mismatch and extra call with wrong argument value).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "translation"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Microsoft Translator Text API"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "translation"
+                }
+              },
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "translation"
+                }
+              },
+              {
+                "name": "request_api_schema",
+                "input_parameters": {
+                  "ApiName": "Microsoft Translator Text API"
+                }
+              },
+              {
+                "name": "searchApis",
+                "input_parameters": {
+                  "keyword": "language correction"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.0,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "0/1 checks passed. Issues: Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.7",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.7
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -71.2% (MAS: 12571 vs SAS: 43666 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10990,
+        "completion_tokens": 1581,
+        "total_tokens": 12571,
+        "llm_calls": 8,
+        "cost": 0.006156
+      },
+      "latency": {
+        "total": 42.948,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_8",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "My colleagues and I are planning a cocktail-making competition. Can you provide us with a list of cocktails and their recipes? Also, we would like to know the details of NBA teams for incorporating th",
+      "expected_tools": [
+        {
+          "name": "search_recipes",
+          "arguments": {
+            "name": "cocktail recipes"
+          }
+        },
+        {
+          "name": "get_teams",
+          "arguments": {
+            "nameFilter": "NBA"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_teams",
+          "args": {
+            "nameFilter": "NBA"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Teams in NBA:\\n- Los Angeles Lakers\\n   • LeBron James (Forward)\\n   • Anthony Davis (Forward-Center)\\n   • D'Angelo Russell (Guard)\\n   • Russell Westbrook (Guard)\\n   • Thomas Bryant (Center)\\n   • Troy Brown Jr. (Forward)\\n   • Austin Reaves (Guard)\\n   • Lonnie Walker IV (Guard)\\n   • Patrick Beverley (Guard)\\n   • Wenyen Gabriel (Forward)\\n- Golden State Warriors\\n   • Stephen Curry (Guard)\\n   • Klay Thompson (Guard)\\n   • Draymond Green (Forward)\\n   • J",
+          "start_time": 0.0,
+          "latency": 2.340772300027311,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_recipes",
+          "args": {
+            "name": "cocktail recipes"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Name: Margarita Cocktail\\nIngredients: Tequila, Triple sec, Lime juice, Salt, Ice\\nInstruction: Shake tequila, triple sec, and lime juice with ice, strain into glass with salted rim.\\nPrep Time: 5 minutes\\nCook Time: 0 minutes\\n--------------------------------------------------\\nName: Toronto Maple Leafs Blue Lagoon Cocktail\\nIngredients: Vodka, Blue curaçao, Lemonade, Ice, Lemon slice\\nInstruction: Mix vodka, blue curaçao, and lemonade over ice, garnish with l",
+          "start_time": 0.606,
+          "latency": 1.9551962999394163,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_recipes",
+              "get_teams"
+            ],
+            "actual": [
+              "get_teams",
+              "search_recipes"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameters with correct names and values. The types for all parameters match as expected (all strings). The order of tool calls differs but that does not affect correctness. No extra or missing parameters, no type mismatches.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "cocktail recipes"
+                }
+              },
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_teams",
+                "input_parameters": {
+                  "nameFilter": "NBA"
+                }
+              },
+              {
+                "name": "search_recipes",
+                "input_parameters": {
+                  "name": "cocktail recipes"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -5.1% (MAS: 10239 vs SAS: 10792 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6982,
+        "completion_tokens": 3257,
+        "total_tokens": 10239,
+        "llm_calls": 6,
+        "cost": 0.005871
+      },
+      "latency": {
+        "total": 66.319,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_9",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "What additional measures can be taken to establish a strong online presence, cultivate customer loyalty, and achieve long-term success when starting and expanding an e-commerce business, find 5 pieces",
+      "expected_tools": [
+        {
+          "name": "search_news",
+          "arguments": {
+            "query": "e-commerce failures case studies",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+            "max_results": 5
+          }
+        },
+        {
+          "name": "analyze_trends",
+          "arguments": {
+            "topic": "Webvan",
+            "timeframe": "last_year"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_news",
+          "args": {
+            "query": "e-commerce online presence customer loyalty long-term success",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+            "max_result": 5
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'e-commerce online presence customer loyalty long-term success' in the given date range.\", 'id': 'lc_b6ea984d-4689-46d5-a22e-e5bdc76b31ab'}] name='search_news' tool_call_id='call_5c42a47febc647c6804b2a5f' artifact={'structured_content': {'result': \"No articles found for query 'e-commerce online presence customer loyalty long-term success' in the given date range.\"}}",
+          "start_time": 0.0,
+          "latency": 1.9285384000977501,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "query": "e-commerce brand building online presence strategy",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+            "max_result": 5
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'e-commerce brand building online presence strategy' in the given date range.\", 'id': 'lc_a033005f-1f55-40b8-91e1-82496200ef34'}] name='search_news' tool_call_id='call_b68044bb436f4d7f8084aa7d' artifact={'structured_content': {'result': \"No articles found for query 'e-commerce brand building online presence strategy' in the given date range.\"}}",
+          "start_time": 5.964,
+          "latency": 2.566710199927911,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "query": "e-commerce customer loyalty retention strategies",
+            "start_date": "2020-01-01",
+            "end_date": "2024-12-31",
+            "max_result": 5
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'e-commerce customer loyalty retention strategies' in the given date range.\", 'id': 'lc_5dc6a09c-b2b8-489f-96ee-a15cae29b282'}] name='search_news' tool_call_id='call_49a82750d17341b2aeb7bb57' artifact={'structured_content': {'result': \"No articles found for query 'e-commerce customer loyalty retention strategies' in the given date range.\"}}",
+          "start_time": 5.964,
+          "latency": 2.5687189999734983,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "ecommerce direct-to-consumer DTC online presence growth",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'ecommerce direct-to-consumer DTC online presence growth' in the given date range.\", 'id': 'lc_53259b40-0840-4e3c-bada-424ed97192c3'}] name='search_news' tool_call_id='call_ed70ae11e7fe40779789ba2a' artifact={'structured_content': {'result': \"No articles found for query 'ecommerce direct-to-consumer DTC online presence growth' in the given date range.\"}}",
+          "start_time": 14.311,
+          "latency": 3.2940693999407813,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "online retail customer experience personalization loyalty",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'online retail customer experience personalization loyalty' in the given date range.\", 'id': 'lc_6d415e6f-2608-4566-a448-e4e8704cc387'}] name='search_news' tool_call_id='call_99c26c1a597841dd943df67f' artifact={'structured_content': {'result': \"No articles found for query 'online retail customer experience personalization loyalty' in the given date range.\"}}",
+          "start_time": 14.311,
+          "latency": 3.297995000029914,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "e-commerce social commerce digital marketing success",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'e-commerce social commerce digital marketing success' in the given date range.\", 'id': 'lc_37eab620-7033-4b19-9678-cbd7480bb2e2'}] name='search_news' tool_call_id='call_de3dca4699864c7ea0f4064d' artifact={'structured_content': {'result': \"No articles found for query 'e-commerce social commerce digital marketing success' in the given date range.\"}}",
+          "start_time": 14.311,
+          "latency": 3.2960419000592083,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "ecommerce business growth tips",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'ecommerce business growth tips' in the given date range.\", 'id': 'lc_ccc0d210-053f-46ff-8b75-6e3594414c40'}] name='search_news' tool_call_id='call_980757fb5541414fb380cd76' artifact={'structured_content': {'result': \"No articles found for query 'ecommerce business growth tips' in the given date range.\"}}",
+          "start_time": 22.871,
+          "latency": 3.5063458000076935,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "online store customer loyalty program",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'online store customer loyalty program' in the given date range.\", 'id': 'lc_37b83aa6-065a-49be-86be-2d88d086af6f'}] name='search_news' tool_call_id='call_5fd7e3a0f9244ae1900ab615' artifact={'structured_content': {'result': \"No articles found for query 'online store customer loyalty program' in the given date range.\"}}",
+          "start_time": 22.871,
+          "latency": 3.509366900078021,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "small business ecommerce platform digital presence",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'small business ecommerce platform digital presence' in the given date range.\", 'id': 'lc_825fb7da-8830-479e-a9a6-71afdc7b1fc8'}] name='search_news' tool_call_id='call_5a1f39ca380340928d4f1791' artifact={'structured_content': {'result': \"No articles found for query 'small business ecommerce platform digital presence' in the given date range.\"}}",
+          "start_time": 22.871,
+          "latency": 3.5080679999664426,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "e-commerce",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'e-commerce' in the given date range.\", 'id': 'lc_cc96cadc-ff7c-4c32-9952-2a70f61fa4d5'}] name='search_news' tool_call_id='call_b0f66b7c5d454a88b4bc70c8' artifact={'structured_content': {'result': \"No articles found for query 'e-commerce' in the given date range.\"}}",
+          "start_time": 31.018,
+          "latency": 2.682462599943392,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_pubmed",
+          "args": {
+            "maxResult": 5,
+            "query": "e-commerce online presence customer loyalty long-term success"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\nAuthors: Smith J, Khan A, Rodriguez M\\nJournal: Journal of Hematology Research (2021)\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\nRelated EFO Traits: EFO_0000305\\n\\nTitle: GWAS-Identified Genetic Variants Associated with GVH",
+          "start_time": 31.018,
+          "latency": 2.6842261999845505,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "retail online shopping digital transformation",
+            "start_date": "2021-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'retail online shopping digital transformation' in the given date range.\", 'id': 'lc_5d89d769-dc66-49b5-a40d-11dcf6a9e325'}] name='search_news' tool_call_id='call_58f7d220dad94abfbd54c300' artifact={'structured_content': {'result': \"No articles found for query 'retail online shopping digital transformation' in the given date range.\"}}",
+          "start_time": 38.811,
+          "latency": 2.7336274000117555,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "Amazon Shopify online store success",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'Amazon Shopify online store success' in the given date range.\", 'id': 'lc_b947d74d-82e8-4518-8f6c-73a6bfbfac2e'}] name='search_news' tool_call_id='call_34881884bec844ccafa727b7' artifact={'structured_content': {'result': \"No articles found for query 'Amazon Shopify online store success' in the given date range.\"}}",
+          "start_time": 38.811,
+          "latency": 2.735511599923484,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-06-30",
+            "max_result": 5,
+            "query": "ecommerce trends",
+            "start_date": "2023-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'ecommerce trends' in the given date range.\", 'id': 'lc_88b65fd0-8111-422d-8549-1c10aa2c53ed'}] name='search_news' tool_call_id='call_6ca766c0540e4d2cbcfd67e2' artifact={'structured_content': {'result': \"No articles found for query 'ecommerce trends' in the given date range.\"}}",
+          "start_time": 47.886,
+          "latency": 2.8799668001011014,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2022-12-31",
+            "max_result": 5,
+            "query": "online business customer retention",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'online business customer retention' in the given date range.\", 'id': 'lc_5bd9a34e-17c1-40cb-b9fc-392b6f5b8e0b'}] name='search_news' tool_call_id='call_41de11dbe9884738afcf0d10' artifact={'structured_content': {'result': \"No articles found for query 'online business customer retention' in the given date range.\"}}",
+          "start_time": 47.886,
+          "latency": 2.878658900037408,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 10,
+            "query": "business",
+            "start_date": "2022-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'business' in the given date range.\", 'id': 'lc_724e84cf-009d-45df-bda2-c7211f41b19c'}] name='search_news' tool_call_id='call_d4312c3e42fa42ae83357336' artifact={'structured_content': {'result': \"No articles found for query 'business' in the given date range.\"}}",
+          "start_time": 54.785,
+          "latency": 2.1648811999475583,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "COVID pandemic ecommerce boom online stores",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'COVID pandemic ecommerce boom online stores' in the given date range.\", 'id': 'lc_d5ac5845-0b1a-4ad7-acb1-69481b085a1f'}] name='search_news' tool_call_id='call_3381a994efa74f07aa8db42c' artifact={'structured_content': {'result': \"No articles found for query 'COVID pandemic ecommerce boom online stores' in the given date range.\"}}",
+          "start_time": 61.57,
+          "latency": 2.641094799968414,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_pubmed",
+          "args": {
+            "maxResult": 5,
+            "query": "e-commerce customer loyalty retention online presence business success"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Title: Biomarkers Predicting Risk of GVHD After Bone Marrow Transplantation\\nAuthors: Smith J, Khan A, Rodriguez M\\nJournal: Journal of Hematology Research (2021)\\nAbstract: This study reviews biomarkers associated with predicting graft-versus-host disease (GVHD) risk in bone marrow transplant recipients, based on recent PubMed literature and GWAS trait associations.\\nRelated EFO Traits: EFO_0000305\\n\\nTitle: GWAS-Identified Genetic Variants Associated with GVH",
+          "start_time": 61.57,
+          "latency": 2.6390791999874637,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "ecommerce",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'ecommerce' in the given date range.\", 'id': 'lc_a883a6e8-2638-480e-aa9e-2842031ac4e9'}] name='search_news' tool_call_id='call_b43b1d9907ce4ab9b685a3b6' artifact={'structured_content': {'result': \"No articles found for query 'ecommerce' in the given date range.\"}}",
+          "start_time": 70.146,
+          "latency": 3.4888412000145763,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "Shopify",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'Shopify' in the given date range.\", 'id': 'lc_6c8c4616-43db-48f9-a67b-c47071384cf1'}] name='search_news' tool_call_id='call_cd38f12810d5458eb9f3afcb' artifact={'structured_content': {'result': \"No articles found for query 'Shopify' in the given date range.\"}}",
+          "start_time": 70.146,
+          "latency": 3.486346499994397,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_news",
+          "args": {
+            "end_date": "2024-12-31",
+            "max_result": 5,
+            "query": "customer loyalty",
+            "start_date": "2020-01-01"
+          },
+          "output": "content=[{'type': 'text', 'text': \"No articles found for query 'customer loyalty' in the given date range.\", 'id': 'lc_1e800b30-7ced-4fe9-87ab-bf8c377a127f'}] name='search_news' tool_call_id='call_24b7a61172f84d87a73c0a40' artifact={'structured_content': {'result': \"No articles found for query 'customer loyalty' in the given date range.\"}}",
+          "start_time": 70.146,
+          "latency": 3.4906801999313757,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.047619047619047616,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 21 total calls. Correct: ['search_news']. Missing: ['analyze_trends']. Extra: ['search_pubmed']. Duplicates: 19",
+          "comparison": {
+            "expected": [
+              "search_news",
+              "analyze_trends"
+            ],
+            "actual": [
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_pubmed",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_news",
+              "search_pubmed",
+              "search_news",
+              "search_news",
+              "search_news"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There is only one expected tool call: 'search_news' with parameters: query (str), start_date (str), end_date (str), max_results (int). The actual calls are multiple 'search_news' calls but all have the following issues: 1) The parameter 'max_results' is misspelled as 'max_result' in all actual calls, which is a missing parameter error for 'max_results' and an extra parameter error for 'max_result'. This violates rule #1 (parameter names must match exactly) and rules #5 and #6 (extra and missing parameters). 2) The 'query' parameter values differ from the expected value 'e-commerce failures case studies' in all actual calls, which is a semantic mismatch (rule #2). 3) The 'start_date' and 'end_date' parameters mostly match in type and format, except in two calls where 'start_date' is '2021-01-01' or '2023-01-01' or '2022-01-01' instead of '2020-01-01', which is a semantic mismatch but not a type error. 4) The 'max_result' parameter is always an integer 5 or 10, so no type mismatch, but the parameter name is wrong. 5) Because the parameter name 'max_results' is missing and replaced by 'max_result', the actual calls do not match the expected call parameters. 6) The presence of multiple actual calls does not change the fact that none of them correctly match the expected call parameters. Therefore, the overall score is 0.0 due to major issues: missing required parameter 'max_results', extra parameter 'max_result', and incorrect 'query' values.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "e-commerce failures case studies",
+                  "start_date": "2020-01-01",
+                  "end_date": "2024-12-31",
+                  "max_results": 5
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "e-commerce online presence customer loyalty long-term success",
+                  "start_date": "2020-01-01",
+                  "end_date": "2024-12-31",
+                  "max_result": 5
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "e-commerce brand building online presence strategy",
+                  "start_date": "2020-01-01",
+                  "end_date": "2024-12-31",
+                  "max_result": 5
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "query": "e-commerce customer loyalty retention strategies",
+                  "start_date": "2020-01-01",
+                  "end_date": "2024-12-31",
+                  "max_result": 5
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "ecommerce direct-to-consumer DTC online presence growth",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "online retail customer experience personalization loyalty",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "e-commerce social commerce digital marketing success",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "ecommerce business growth tips",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "online store customer loyalty program",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "small business ecommerce platform digital presence",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "e-commerce",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "retail online shopping digital transformation",
+                  "start_date": "2021-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "Amazon Shopify online store success",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-06-30",
+                  "max_result": 5,
+                  "query": "ecommerce trends",
+                  "start_date": "2023-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2022-12-31",
+                  "max_result": 5,
+                  "query": "online business customer retention",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 10,
+                  "query": "business",
+                  "start_date": "2022-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "COVID pandemic ecommerce boom online stores",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "ecommerce",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "Shopify",
+                  "start_date": "2020-01-01"
+                }
+              },
+              {
+                "name": "search_news",
+                "input_parameters": {
+                  "end_date": "2024-12-31",
+                  "max_result": 5,
+                  "query": "customer loyalty",
+                  "start_date": "2020-01-01"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['analyze_trends']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.047619047619047616, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.047619047619047616,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -63.3% (MAS: 29712 vs SAS: 81049 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 26480,
+        "completion_tokens": 3232,
+        "total_tokens": 29712,
+        "llm_calls": 12,
+        "cost": 0.014331
+      },
+      "latency": {
+        "total": 93.331,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_10",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Develop a new sustainable agricultural model and analyze it in conjunction with the elevation data of coordinates 39.7392° N, 104.9903° W and the topographical data of Andean highlands, South America,",
+      "expected_tools": [
+        {
+          "name": "wolfram_query",
+          "arguments": {
+            "query": "topographical data analysis for sustainable agriculture model in the Andean highlands, including land use, fertilizer application rates, and optimal crop selection under varying terrain conditions",
+            "format": "json",
+            "location": "Andean highlands, South America"
+          }
+        },
+        {
+          "name": "fetch_terrain_elevation",
+          "arguments": {
+            "latitude": 39.7392,
+            "longitude": -104.9903,
+            "unit": "meters"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "fetch_terrain_elevation",
+          "args": {
+            "latitude": 39.7392,
+            "longitude": -104.9903,
+            "unit": "meters"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Elevation at (39.7392, -104.9903) is approximately 1609.00 meters above sea level.', 'id': 'lc_260f6fa4-b85d-4cc8-9b1c-80191b949225'}] name='fetch_terrain_elevation' tool_call_id='call_3aeaab3d7ec54f108d902554' artifact={'structured_content': {'result': 'Elevation at (39.7392, -104.9903) is approximately 1609.00 meters above sea level.'}}",
+          "start_time": 0.0,
+          "latency": 1.9532733000814915,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/2 expected tools found, 1 total calls. Correct: ['fetch_terrain_elevation']. Missing: ['wolfram_query']",
+          "comparison": {
+            "expected": [
+              "wolfram_query",
+              "fetch_terrain_elevation"
+            ],
+            "actual": [
+              "fetch_terrain_elevation"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool 'fetch_terrain_elevation': All expected parameters (latitude, longitude, unit) are present in the actual call with matching names and semantically equivalent values. Types match exactly (latitude and longitude as float, unit as str). No extra or missing parameters detected. Therefore, the actual arguments fully match the expected arguments.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "fetch_terrain_elevation",
+                "input_parameters": {
+                  "latitude": 39.7392,
+                  "longitude": -104.9903,
+                  "unit": "meters"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "fetch_terrain_elevation",
+                "input_parameters": {
+                  "latitude": 39.7392,
+                  "longitude": -104.9903,
+                  "unit": "meters"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": null,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "N/A — cannot evaluate efficiency: 1/2 expected tools called. Missing: ['wolfram_query']"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -90.7% (MAS: 7286 vs SAS: 78249 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 3542,
+        "completion_tokens": 3744,
+        "total_tokens": 7286,
+        "llm_calls": 4,
+        "cost": 0.004798
+      },
+      "latency": {
+        "total": 77.333,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_11",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Design a city planning scheme that considers various aspects such as architecture, transportation, and environmental protection. In details, the city is Datong, Shanxi Province, China. At the same tim",
+      "expected_tools": [
+        {
+          "name": "wolfram_query",
+          "arguments": {
+            "query": "Comprehensive city planning scheme considering architecture, transportation networks, and environmental protection strategies for a modern urban area",
+            "format": "json",
+            "location": "Datong, Shanxi Province, China"
+          }
+        },
+        {
+          "name": "fetch_terrain_elevation",
+          "arguments": {
+            "latitude": 40.0975,
+            "longitude": 113.1494,
+            "unit": "meters"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "fetch_terrain_elevation",
+          "args": {
+            "latitude": 40.0975,
+            "longitude": -113.1494,
+            "unit": "meters"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Elevation at (40.0975, -113.1494) is approximately 211.80 meters above sea level.', 'id': 'lc_a19c66bb-26b2-4787-a459-d6b467e32257'}] name='fetch_terrain_elevation' tool_call_id='call_c39f2a70f0dd4748a143a670' artifact={'structured_content': {'result': 'Elevation at (40.0975, -113.1494) is approximately 211.80 meters above sea level.'}}",
+          "start_time": 0.0,
+          "latency": 2.030772100086324,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "json",
+            "location": "China",
+            "query": "Datong Shanxi China demographics population geography area"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_c29907b0-eb36-46f0-bac6-f2d83b0e0f54'}] name='wolfram_query' tool_call_id='call_cf9c83db58",
+          "start_time": 6.227,
+          "latency": 3.2015219999011606,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "json",
+            "location": "China",
+            "query": "Datong Shanxi economy GDP coal industry"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_288e3cbd-257d-4687-9586-179dcb929914'}] name='wolfram_query' tool_call_id='call_53e434ca33",
+          "start_time": 6.227,
+          "latency": 3.1994561000028625,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "json",
+            "location": "China",
+            "query": "Datong Shanxi climate temperature precipitation air quality"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_4d5858c7-d6cb-4e3b-99fa-eb463bddde42'}] name='wolfram_query' tool_call_id='call_8945674a82",
+          "start_time": 6.227,
+          "latency": 3.203520299983211,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "json",
+            "location": "China",
+            "query": "Datong city population 2023 2024 urban area size"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_71c6cdb3-8140-475d-b7e9-7874e0b23a13'}] name='wolfram_query' tool_call_id='call_f9d2ed84ff",
+          "start_time": 16.128,
+          "latency": 3.2920089999679476,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "json",
+            "location": "China",
+            "query": "Datong famous historical sites Yungang Grottoes UNESCO heritage tourism"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_07c5a771-b920-49ae-9ed8-0588428ea70b'}] name='wolfram_query' tool_call_id='call_cc2cbcb9e2",
+          "start_time": 16.128,
+          "latency": 3.290527299977839,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "json",
+            "location": "China",
+            "query": "Datong transportation infrastructure railway highway Datong-Xi'an high-speed rail"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_942128c9-b290-432e-9818-4128604a1d86'}] name='wolfram_query' tool_call_id='call_5f6d30de39",
+          "start_time": 16.128,
+          "latency": 3.2895804999861866,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "text",
+            "location": "China",
+            "query": "Datong Shanxi population square kilometers elevation"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_d2a02d8e-5993-4c5d-8e3c-d0957fae923b'}] name='wolfram_query' tool_call_id='call_aa2b0eac13",
+          "start_time": 24.349,
+          "latency": 3.3224739000434056,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "text",
+            "location": "China",
+            "query": "Datong coal mine renewable energy transition solar wind power capacity"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_baff32be-b6be-45cc-bb49-302d6883c730'}] name='wolfram_query' tool_call_id='call_9bf714d59c",
+          "start_time": 24.349,
+          "latency": 3.318610900081694,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "Connect_SQL_Server",
+          "args": {
+            "connectionString": 1
+          },
+          "output": "content=[{'type': 'text', 'text': 'Successfully connected to SQL Server: Local development SQL Server instance', 'id': 'lc_2f478f17-4696-42f5-8d71-3afce20d5a22'}] name='Connect_SQL_Server' tool_call_id='call_7312644e70cd4d96b8cd35d5' artifact={'structured_content': {'result': 'Successfully connected to SQL Server: Local development SQL Server instance'}}",
+          "start_time": 24.349,
+          "latency": 3.32064829999581,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "mongo_mcp",
+          "args": {
+            "collection_name": "datong_urban_planning",
+            "mongoUri": "mongodb://localhost:27017/datong_city_planning"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Database 'mongodb://localhost:27017/datong_city_planning' not found in mock databases.\", 'id': 'lc_b4de3b29-0669-4184-ba00-d274b5d7db38'}] name='mongo_mcp' tool_call_id='call_77c36b69129d470fbe58f34c' artifact={'structured_content': {'result': \"Database 'mongodb://localhost:27017/datong_city_planning' not found in mock databases.\"}}",
+          "start_time": 33.614,
+          "latency": 3.2340180999599397,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "mongo_mcp",
+          "args": {
+            "collection_name": "city_data",
+            "mongoUri": "mongodb://localhost:27017/smart_city"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Database 'mongodb://localhost:27017/smart_city' not found in mock databases.\", 'id': 'lc_3d3c0dba-e879-4ff6-bdda-83944775902b'}] name='mongo_mcp' tool_call_id='call_59d823518925422b8c86bb09' artifact={'structured_content': {'result': \"Database 'mongodb://localhost:27017/smart_city' not found in mock databases.\"}}",
+          "start_time": 33.615,
+          "latency": 3.2374534000409767,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "wolfram_query",
+          "args": {
+            "format": "text",
+            "location": "global",
+            "query": "urban planning best practices sustainable city design architecture transportation environmental protection"
+          },
+          "output": "content=[{'type': 'text', 'text': '模拟Query Wolfram Alpha for computational, mathematical, scientific, geographic, and factual information. Supports natural language questions and returns the message of data successfully fetched or not. Useful for advanced calculations, model validation, scientific context, and real-world data lookup. It can localize results with unit or currency preferences.的结果', 'id': 'lc_5a14616b-d1b2-49a2-abb2-3f65d740afb9'}] name='wolfram_query' tool_call_id='call_3bc30887f0",
+          "start_time": 33.615,
+          "latency": 3.236008399981074,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.15384615384615385,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 13 total calls. Correct: ['fetch_terrain_elevation', 'wolfram_query']. Extra: ['Connect_SQL_Server', 'mongo_mcp']. Duplicates: 9",
+          "comparison": {
+            "expected": [
+              "wolfram_query",
+              "fetch_terrain_elevation"
+            ],
+            "actual": [
+              "fetch_terrain_elevation",
+              "wolfram_query",
+              "wolfram_query",
+              "wolfram_query",
+              "wolfram_query",
+              "wolfram_query",
+              "wolfram_query",
+              "wolfram_query",
+              "wolfram_query",
+              "Connect_SQL_Server",
+              "mongo_mcp",
+              "mongo_mcp",
+              "wolfram_query"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.2,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. Tool: fetch_terrain_elevation\n- Expected parameters: latitude=40.0975 (float), longitude=113.1494 (float), unit='meters' (str)\n- Actual parameters: latitude=40.0975 (float), longitude=-113.1494 (float), unit='meters' (str)\n- Issues: longitude value mismatch (expected positive 113.1494, actual negative -113.1494). Parameter names and types match.\n- Impact: Major issue due to wrong longitude value.\n\n2. Tool: wolfram_query\n- Expected parameters: query='Comprehensive city planning scheme considering architecture, transportation networks, and environmental protection strategies for a modern urban area' (str), format='json' (str), location='Datong, Shanxi Province, China' (str)\n- Actual calls: 9 separate wolfram_query calls with different queries, locations, and formats.\n- Issues:\n  * None of the actual queries match the expected comprehensive query string.\n  * Actual location is always 'China' or 'global', never the full 'Datong, Shanxi Province, China'.\n  * Actual format is mostly 'json' but some calls use 'text' instead of 'json'.\n- Parameter names and types match, but parameter values do not match semantically.\n- Impact: Major issue due to completely different query and location values, and inconsistent format.\n\nSummary:\n- fetch_terrain_elevation has a critical value mismatch in longitude.\n- wolfram_query calls do not match the expected query, location, or format values.\n- No type mismatches or extra/missing parameters detected.\n\nOverall, the actual tool calls fail to provide the expected argument values for both tools, resulting in major issues and a low score.\n\nScore justification:\n- Major value mismatches in both tools.\n- No type errors or parameter name errors.\n- Multiple wolfram_query calls instead of one expected call with a specific query.\n\nFinal score: 0.2 (major issues with argument values, but no type or parameter name errors).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "query": "Comprehensive city planning scheme considering architecture, transportation networks, and environmental protection strategies for a modern urban area",
+                  "format": "json",
+                  "location": "Datong, Shanxi Province, China"
+                }
+              },
+              {
+                "name": "fetch_terrain_elevation",
+                "input_parameters": {
+                  "latitude": 40.0975,
+                  "longitude": 113.1494,
+                  "unit": "meters"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "fetch_terrain_elevation",
+                "input_parameters": {
+                  "latitude": 40.0975,
+                  "longitude": -113.1494,
+                  "unit": "meters"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "json",
+                  "location": "China",
+                  "query": "Datong Shanxi China demographics population geography area"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "json",
+                  "location": "China",
+                  "query": "Datong Shanxi economy GDP coal industry"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "json",
+                  "location": "China",
+                  "query": "Datong Shanxi climate temperature precipitation air quality"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "json",
+                  "location": "China",
+                  "query": "Datong city population 2023 2024 urban area size"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "json",
+                  "location": "China",
+                  "query": "Datong famous historical sites Yungang Grottoes UNESCO heritage tourism"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "json",
+                  "location": "China",
+                  "query": "Datong transportation infrastructure railway highway Datong-Xi'an high-speed rail"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "text",
+                  "location": "China",
+                  "query": "Datong Shanxi population square kilometers elevation"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "text",
+                  "location": "China",
+                  "query": "Datong coal mine renewable energy transition solar wind power capacity"
+                }
+              },
+              {
+                "name": "wolfram_query",
+                "input_parameters": {
+                  "format": "text",
+                  "location": "global",
+                  "query": "urban planning best practices sustainable city design architecture transportation environmental protection"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.0,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "0/1 checks passed. Issues: Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.15384615384615385, Argument Correctness: 0.2",
+          "component_scores": {
+            "Tool Correctness": 0.15384615384615385,
+            "Argument Correctness": 0.2
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -40.0% (MAS: 22367 vs SAS: 37265 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 16756,
+        "completion_tokens": 5611,
+        "total_tokens": 22367,
+        "llm_calls": 9,
+        "cost": 0.01217
+      },
+      "latency": {
+        "total": 119.05,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_12",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am organizing a seminar on healthy eating habits and need nutritional information about various foods. Can you provide nutritional analysis for ingredients such as fruits like apple, banana, vegetab",
+      "expected_tools": [
+        {
+          "name": "check_nutrition",
+          "arguments": {
+            "ingredient_list": [
+              "Apple",
+              "Banana",
+              "Broccoli",
+              "Carrot",
+              "Oats"
+            ]
+          }
+        },
+        {
+          "name": "get_health_recommendations",
+          "arguments": {
+            "age": "18",
+            "sex": "female",
+            "pregnancyStatus": "not_pregnant"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "check_nutrition",
+          "args": {
+            "ingredient_list": [
+              "apple",
+              "banana",
+              "broccoli",
+              "carrot",
+              "oats"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Available Ingredients with Nutritional Information (per 100g):\\n\\nApple:\\n  Calories: 52 cal\\n  Protein: 0.3g\\n  Carbohydrates: 13.8g\\n  Sugar: 10.4g\\n  Fat: 0.2g\\n  Fiber: 2.4g\\n\\nBanana:\\n  Calories: 89 cal\\n  Protein: 1.1g\\n  Carbohydrates: 22.8g\\n  Sugar: 12.2g\\n  Fat: 0.3g\\n  Fiber: 2.6g\\n\\nBroccoli:\\n  Calories: 34 cal\\n  Protein: 2.8g\\n  Carbohydrates: 6.6g\\n  Sugar: 1.5g\\n  Fat: 0.4g\\n  Fiber: 2.6g\\n\\nCarrot:\\n  Calories: 41 cal\\n  Protein: 0.9g\\n  Carb",
+          "start_time": 0.0,
+          "latency": 2.5402179999509826,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_health_recommendations",
+          "args": {
+            "age": "18",
+            "sex": "female",
+            "pregnancyStatus": "not_pregnant"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Personalized Health Recommendations for a 18-year-old female (not pregnant):\\n\\nGeneral Vaccinations:\\n - Annual influenza vaccine\\n - COVID-19 vaccine as per current guidelines\\n - Tetanus-diphtheria booster every 10 years\\n\\nHealthy Habits:\\n - Maintain a balanced diet rich in fruits, vegetables, and whole grains\\n - Engage in at least 150 minutes of moderate-intensity exercise weekly\\n - Avoid smoking and limit alcohol consumption\\n\\nAge-Specific Screenings:",
+          "start_time": 0.0,
+          "latency": 2.542003000038676,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "check_nutrition",
+              "get_health_recommendations"
+            ],
+            "actual": [
+              "check_nutrition",
+              "get_health_recommendations"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool: check_nutrition - Expected parameter 'ingredient_list' is present in actual with the same type (list) and semantically equivalent values (case-insensitive match for ingredients). No extra or missing parameters. Tool: get_health_recommendations - All expected parameters ('age', 'sex', 'pregnancyStatus') are present with matching names, values, and types (all strings). No extra or missing parameters. No type mismatches or value mismatches found in either tool call.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "Apple",
+                    "Banana",
+                    "Broccoli",
+                    "Carrot",
+                    "Oats"
+                  ]
+                }
+              },
+              {
+                "name": "get_health_recommendations",
+                "input_parameters": {
+                  "age": "18",
+                  "sex": "female",
+                  "pregnancyStatus": "not_pregnant"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "check_nutrition",
+                "input_parameters": {
+                  "ingredient_list": [
+                    "apple",
+                    "banana",
+                    "broccoli",
+                    "carrot",
+                    "oats"
+                  ]
+                }
+              },
+              {
+                "name": "get_health_recommendations",
+                "input_parameters": {
+                  "age": "18",
+                  "sex": "female",
+                  "pregnancyStatus": "not_pregnant"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -45.7% (MAS: 5047 vs SAS: 9291 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 3712,
+        "completion_tokens": 1335,
+        "total_tokens": 5047,
+        "llm_calls": 3,
+        "cost": 0.002776
+      },
+      "latency": {
+        "total": 29.052,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_13",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Please design and enforce a comprehensive security protocol for our small online advertising network that strengthens defenses against threats such as SQL injection, cross-site scripting, and other cy",
+      "expected_tools": [
+        {
+          "name": "Semgrep_Code_SAST",
+          "arguments": {
+            "path": "./src",
+            "ruleset": "security",
+            "config_file": "./semgrep-security-config.yml",
+            "output_format": "json"
+          }
+        },
+        {
+          "name": "nmap_scan",
+          "arguments": {
+            "host": "adserver.example.com",
+            "ports": "80,443,3306",
+            "arguments": "-sV"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "Semgrep_Code_SAST",
+          "args": {
+            "path": "./src",
+            "ruleset": "security",
+            "config_file": "./semgrep-security-config.yml",
+            "output_format": "json"
+          },
+          "output": "content=[{'type': 'text', 'text': \"{'summary': {'total_issues': 3, 'critical': 1, 'high': 1, 'medium': 1, 'low': 0}, 'issues': [{'id': 'SQLI-001', 'type': 'SQL Injection', 'file': 'app/controllers/user_controller.py', 'line': 87, 'severity': 'critical', 'description': 'Unescaped user input in SQL query construction.', 'remediation': 'Use parameterized queries with placeholders.'}, {'id': 'XSS-002', 'type': 'Cross-Site Scripting', 'file': 'app/templates/profile.html', 'line': 42, 'severity': 'hig",
+          "start_time": 0.0,
+          "latency": 2.5133719999575987,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "nmap_scan",
+          "args": {
+            "host": "adserver.example.com",
+            "ports": "80,443,3306",
+            "arguments": "-sV"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Starting Nmap 7.93 ( https://nmap.org ) at 2024-06-15 12:01 UTC\\nNmap scan report for adserver.example.com (203.0.113.25)\\nHost is up (0.045s latency).\\n\\nPORT     STATE SERVICE    VERSION\\n80/tcp   open  http       nginx 1.18.0\\n443/tcp  open  https      nginx 1.18.0\\n3306/tcp open  mysql      MySQL 5.7.33\\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel\\n\\nNmap done: 1 IP address (1 host up) scanned in 2.05 seconds', 'id': 'lc_c43afb17-95cc-4a57-a0d2-",
+          "start_time": 1.376,
+          "latency": 1.9304657999891788,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "Semgrep_Code_SAST",
+              "nmap_scan"
+            ],
+            "actual": [
+              "Semgrep_Code_SAST",
+              "nmap_scan"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For Semgrep_Code_SAST, all parameters (path, ruleset, config_file, output_format) match exactly in name, value, and type (all strings). For nmap_scan, all parameters (host, ports, arguments) also match exactly in name, value, and type (all strings). No extra or missing parameters, no type mismatches, and values are semantically equivalent. Therefore, full score of 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "Semgrep_Code_SAST",
+                "input_parameters": {
+                  "path": "./src",
+                  "ruleset": "security",
+                  "config_file": "./semgrep-security-config.yml",
+                  "output_format": "json"
+                }
+              },
+              {
+                "name": "nmap_scan",
+                "input_parameters": {
+                  "host": "adserver.example.com",
+                  "ports": "80,443,3306",
+                  "arguments": "-sV"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "Semgrep_Code_SAST",
+                "input_parameters": {
+                  "path": "./src",
+                  "ruleset": "security",
+                  "config_file": "./semgrep-security-config.yml",
+                  "output_format": "json"
+                }
+              },
+              {
+                "name": "nmap_scan",
+                "input_parameters": {
+                  "host": "adserver.example.com",
+                  "ports": "80,443,3306",
+                  "arguments": "-sV"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -59.6% (MAS: 10753 vs SAS: 26616 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7203,
+        "completion_tokens": 3550,
+        "total_tokens": 10753,
+        "llm_calls": 6,
+        "cost": 0.006222
+      },
+      "latency": {
+        "total": 66.16,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_14",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I'm exploring different cities in Germany and I'want to download the OSM data in Berlin. Furthermore, I want to know the boundaries of the city named Karlsruhe. Please provide me with the postal codes",
+      "expected_tools": [
+        {
+          "name": "download_osm_data",
+          "arguments": {
+            "city": "Berlin",
+            "output_path": "/berlin",
+            "format": "json"
+          }
+        },
+        {
+          "name": "download_osm_data",
+          "arguments": {
+            "city": "Karlsruhe",
+            "output_path": "/karlsruhe",
+            "format": "json"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Berlin",
+            "output_path": "/berlin.json",
+            "format": "json"
+          },
+          "output": "content=[{'type': 'text', 'text': \"OSM data for city 'Berlin' downloaded in JSON format and saved to /berlin.json.\", 'id': 'lc_20323460-2c30-415b-bf0d-1d80c3210724'}] name='download_osm_data' tool_call_id='call_3e293666d51c4c2a86f55150' artifact={'structured_content': {'result': \"OSM data for city 'Berlin' downloaded in JSON format and saved to /berlin.json.\"}}",
+          "start_time": 0.0,
+          "latency": 2.435169299948029,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Karlsruhe",
+            "output_path": "/karlsruhe",
+            "format": "json"
+          },
+          "output": "content=[{'type': 'text', 'text': \"OSM data for city 'Karlsruhe' downloaded in JSON format and saved to /karlsruhe.\", 'id': 'lc_7cb9f26f-e5b9-4fdb-bc76-84ba2df8268c'}] name='download_osm_data' tool_call_id='call_078efca75d8e4a4b8b38f2a5' artifact={'structured_content': {'result': \"OSM data for city 'Karlsruhe' downloaded in JSON format and saved to /karlsruhe.\"}}",
+          "start_time": 1.252,
+          "latency": 1.9776758999796584,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 2 total calls. Correct: ['download_osm_data']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "download_osm_data",
+              "download_osm_data"
+            ],
+            "actual": [
+              "download_osm_data",
+              "download_osm_data"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.8,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two tool calls to 'download_osm_data'.\n\n1. First call:\n- Expected parameters: city='Berlin' (str), output_path='/berlin' (str), format='json' (str)\n- Actual parameters: city='Berlin' (str), output_path='/berlin.json' (str), format='json' (str)\n- Issue: output_path value differs semantically ('/berlin' vs '/berlin.json'). This is a value mismatch, not a type mismatch.\n\n2. Second call:\n- Expected parameters: city='Karlsruhe' (str), output_path='/karlsruhe' (str), format='json' (str)\n- Actual parameters: city='Karlsruhe' (str), output_path='/karlsruhe' (str), format='json' (str)\n- No issues found.\n\nNo parameter name mismatches, no type mismatches, no extra or missing parameters.\n\nOverall, one minor value mismatch in the first call's output_path parameter leads to a slight penalty, resulting in a score of 0.8.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/berlin",
+                  "format": "json"
+                }
+              },
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Karlsruhe",
+                  "output_path": "/karlsruhe",
+                  "format": "json"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/berlin.json",
+                  "format": "json"
+                }
+              },
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Karlsruhe",
+                  "output_path": "/karlsruhe",
+                  "format": "json"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.8",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.8
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -84.7% (MAS: 12322 vs SAS: 80761 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 7412,
+        "completion_tokens": 4910,
+        "total_tokens": 12322,
+        "llm_calls": 6,
+        "cost": 0.007496
+      },
+      "latency": {
+        "total": 70.001,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_15",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am looking for a new laptop for my graphic design work. Can you help me find a laptop with high performance specifications and good display quality? Additionally, I also need to buy an iPhone 16, pl",
+      "expected_tools": [
+        {
+          "name": "recommend_electronics",
+          "arguments": {
+            "product_type": "laptop"
+          }
+        },
+        {
+          "name": "get_best_price",
+          "arguments": {
+            "product_name": "iphone_16"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_best_price",
+          "args": {
+            "product_name": "iphone_16"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Best price for Apple iPhone 16: USD 1079.00 from Amazon (https://www.amazon.com/dp/B0IPHONE16).', 'id': 'lc_066ac80a-598f-44fd-8b74-54a9eed8b2d2'}] name='get_best_price' tool_call_id='call_1843c791dc1b4a7eb36ff320' artifact={'structured_content': {'result': 'Best price for Apple iPhone 16: USD 1079.00 from Amazon (https://www.amazon.com/dp/B0IPHONE16).'}}",
+          "start_time": 0.0,
+          "latency": 2.548411999945529,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "recommend_electronics",
+          "args": {
+            "product_type": "laptop"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Laptop Recommendations with Performance Specifications and Good Display Quality:\\n================================================================================\\n\\n1. Dell XPS 15 OLED\\nCategory: Laptop\\nSpecifications:\\n  - Processor: Intel Core i9-13900H\\n  - Ram: 32GB DDR5\\n  - Storage: 1TB NVMe SSD\\n  - Gpu: NVIDIA GeForce RTX 4070\\n  - Display: 15.6-inch 4K OLED Touch, 100% AdobeRGB\\n  - Weight: 1.9 kg\\n  - Battery: 86Wh, up to 12 hours\\nFeatures:\\n  - Ex",
+          "start_time": 0.992,
+          "latency": 2.0445188999874517,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "recommend_electronics",
+              "get_best_price"
+            ],
+            "actual": [
+              "get_best_price",
+              "recommend_electronics"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. \n\n1. recommend_electronics:\n- Expected parameters: product_type = 'laptop' (str)\n- Actual parameters: product_type = 'laptop' (str)\n- No mismatches or extra/missing parameters.\n\n2. get_best_price:\n- Expected parameters: product_name = 'iphone_16' (str)\n- Actual parameters: product_name = 'iphone_16' (str)\n- No mismatches or extra/missing parameters.\n\nAll parameters match exactly in name, value (case-insensitive for identifiers), and type. No extra or missing parameters found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "recommend_electronics",
+                "input_parameters": {
+                  "product_type": "laptop"
+                }
+              },
+              {
+                "name": "get_best_price",
+                "input_parameters": {
+                  "product_name": "iphone_16"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_best_price",
+                "input_parameters": {
+                  "product_name": "iphone_16"
+                }
+              },
+              {
+                "name": "recommend_electronics",
+                "input_parameters": {
+                  "product_type": "laptop"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -33.3% (MAS: 7928 vs SAS: 11888 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 6345,
+        "completion_tokens": 1583,
+        "total_tokens": 7928,
+        "llm_calls": 6,
+        "cost": 0.004137
+      },
+      "latency": {
+        "total": 28.873,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_16",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am a fourth-year PhD student with ideas about embodied intelligence entrepreneurship and would like to understand the current development situation in the industry and conduct industry research focu",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -25.2% (MAS: 43140 vs SAS: 57713 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 37310,
+        "completion_tokens": 5830,
+        "total_tokens": 43140,
+        "llm_calls": 15,
+        "cost": 0.021302
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_17",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "I am currently trying to establish an online learning platform, which requires connecting to a database online_learning_db to obtain student information. However, I also need to protect user privacy a",
+      "expected_tools": [
+        {
+          "name": "connect_database",
+          "arguments": {
+            "database_name": "online_learning_db"
+          }
+        },
+        {
+          "name": "security_guidance",
+          "arguments": {
+            "query": "online learning platform student information privacy and security best practices"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "connect_database",
+          "args": {
+            "database_name": "online_learning_db"
+          },
+          "output": "content=[{'type': 'text', 'text': \"Successfully connected to 'online_learning_db' with TLS-enabled pooled connection. Ready for secure student data operations.\", 'id': 'lc_9e71bb54-be49-409e-9553-ae83d76688da'}] name='connect_database' tool_call_id='call_269e665434a6454a8f79347d' artifact={'structured_content': {'result': \"Successfully connected to 'online_learning_db' with TLS-enabled pooled connection. Ready for secure student data operations.\"}}",
+          "start_time": 0.0,
+          "latency": 2.586960899992846,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "Data storage and access security best practices for an online learning platform, including protection of student PII, access control (RBAC), encryption at rest and in transit, database security, logging and monitoring, and compliance with regulations such as FERPA and GDPR."
+          },
+          "output": "content=[{'type': 'text', 'text': 'Security and Privacy Guidance for an Online Learning Platform:\\n1. Collect only the minimum necessary personal data from students.\\n2. Encrypt sensitive data at rest using AES-256.\\n3. Use HTTPS/TLS for all data in transit.\\n4. Implement RBAC: separate roles for students, teachers, and admins with appropriate permissions.\\n5. Store credentials in a secure secrets manager — never in source code.\\n6. Comply with relevant privacy regulations (e.g., FERPA, GDPR).\\n",
+          "start_time": 1.427,
+          "latency": 1.9659104000311345,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "security_guidance",
+          "args": {
+            "query": "Best practices for securely retrieving student information from a database, including parameterized queries, least-privilege access, and PII protection"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Security and Privacy Guidance for an Online Learning Platform:\\n1. Collect only the minimum necessary personal data from students.\\n2. Encrypt sensitive data at rest using AES-256.\\n3. Use HTTPS/TLS for all data in transit.\\n4. Implement RBAC: separate roles for students, teachers, and admins with appropriate permissions.\\n5. Store credentials in a secure secrets manager — never in source code.\\n6. Comply with relevant privacy regulations (e.g., FERPA, GDPR).\\n",
+          "start_time": 5.754,
+          "latency": 1.9489685000153258,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['connect_database', 'security_guidance']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "connect_database",
+              "security_guidance"
+            ],
+            "actual": [
+              "connect_database",
+              "security_guidance",
+              "security_guidance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.6,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. connect_database:\n- Expected parameters: {\"database_name\": \"online_learning_db\"} (type str)\n- Actual parameters: {\"database_name\": \"online_learning_db\"} (type str)\n- Match: Perfect match in parameter names, values, and types.\n\n2. security_guidance:\n- Expected parameters: {\"query\": \"online learning platform student information privacy and security best practices\"} (type str)\n- Actual calls: Two calls with parameter \"query\" but with different string values, both semantically different from expected.\n- Parameter names and types match, but parameter values differ significantly (not semantically equivalent).\n- Also, there are two actual calls for one expected call, which is not penalized explicitly but indicates extra calls.\n\nSummary:\n- connect_database is fully correct.\n- security_guidance has correct parameter names and types but incorrect parameter values.\n- No type mismatches or missing/extra parameters.\n\nGiven one tool call fully correct and one with incorrect argument values, the score is moderate.\n\nScore assigned: 0.6 to reflect correct parameter usage but incorrect argument values for security_guidance.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "online_learning_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "online learning platform student information privacy and security best practices"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "connect_database",
+                "input_parameters": {
+                  "database_name": "online_learning_db"
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "Data storage and access security best practices for an online learning platform, including protection of student PII, access control (RBAC), encryption at rest and in transit, database security, logging and monitoring, and compliance with regulations such as FERPA and GDPR."
+                }
+              },
+              {
+                "name": "security_guidance",
+                "input_parameters": {
+                  "query": "Best practices for securely retrieving student information from a database, including parameterized queries, least-privilege access, and PII protection"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.6",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.6
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -19.0% (MAS: 13493 vs SAS: 16653 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10377,
+        "completion_tokens": 3116,
+        "total_tokens": 13493,
+        "llm_calls": 7,
+        "cost": 0.007225
+      },
+      "latency": {
+        "total": 41.181,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_18",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Process an interview recording so that it begins with a smooth fade-in lasting about one and a half seconds and ends with a gentle fade-out of roughly two seconds, then save the enhanced version in th",
+      "expected_tools": [
+        {
+          "name": "AudioEditor_apply_fades",
+          "arguments": {
+            "audio_file": "./inputs/interview_record.mp3",
+            "fade_in_ms": "1500",
+            "fade_out_ms": "2000"
+          }
+        },
+        {
+          "name": "Business_Analyst",
+          "arguments": {
+            "industry_focus": "caregiver robots",
+            "market_scope": "global",
+            "analysis_methods": "qualitative + quantitative",
+            "data_sources": "gov reports, market surveys",
+            "output_types": "market report",
+            "report_format": "pdf",
+            "time_horizon": "5 years"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['AudioEditor_apply_fades', 'Business_Analyst']",
+          "comparison": {
+            "expected": [
+              "AudioEditor_apply_fades",
+              "Business_Analyst"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -87.6% (MAS: 2803 vs SAS: 22541 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 1963,
+        "completion_tokens": 840,
+        "total_tokens": 2803,
+        "llm_calls": 3,
+        "cost": 0.001585
+      },
+      "latency": {
+        "total": 27.106,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_19",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Convert all PDF documents stored in the reports directory into Markdown format to enable easier editing and text extraction. Meanwhile, establish a secure connection to the production SQL Server using",
+      "expected_tools": [
+        {
+          "name": "convert_pdf_to_markdown",
+          "arguments": {
+            "pdf_dir": "./data/reports"
+          }
+        },
+        {
+          "name": "Connect_SQL_Server",
+          "arguments": {
+            "connectionString": 2
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "Connect_SQL_Server",
+          "args": {
+            "connectionString": 2
+          },
+          "output": "content=[{'type': 'text', 'text': 'Successfully connected to SQL Server: Amazon RDS SQL Server - Production', 'id': 'lc_af6f8c6c-9ae3-4a07-94f2-5c0970f45192'}] name='Connect_SQL_Server' tool_call_id='call_4f8fb5a404804aa284c037ce' artifact={'structured_content': {'result': 'Successfully connected to SQL Server: Amazon RDS SQL Server - Production'}}",
+          "start_time": 0.0,
+          "latency": 2.660729099996388,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "convert_pdf_to_markdown",
+          "args": {
+            "pdf_dir": "reports"
+          },
+          "output": "content=[{'type': 'text', 'text': 'All PDF files have been converted to Markdown format.', 'id': 'lc_183ff6d6-7ae0-4bcf-b9ad-92d3ec05a08d'}] name='convert_pdf_to_markdown' tool_call_id='call_bec63b14349c454da735fedb' artifact={'structured_content': {'result': 'All PDF files have been converted to Markdown format.'}}",
+          "start_time": 0.656,
+          "latency": 2.001874399953522,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "convert_pdf_to_markdown",
+              "Connect_SQL_Server"
+            ],
+            "actual": [
+              "Connect_SQL_Server",
+              "convert_pdf_to_markdown"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: convert_pdf_to_markdown\n- Expected parameter 'pdf_dir': value='./data/reports' (str)\n- Actual parameter 'pdf_dir': value='reports' (str)\n- Issue: Parameter value mismatch (expected './data/reports', got 'reports')\n\nTool: Connect_SQL_Server\n- Expected parameter 'connectionString': value=2 (int)\n- Actual parameter 'connectionString': value=2 (int)\n- No issues found\n\nSummary: The Connect_SQL_Server tool call matches exactly in parameter name, value, and type. The convert_pdf_to_markdown tool call has the correct parameter name and type but the parameter value differs, which is a major issue. Therefore, the overall score is 0.5 due to one major parameter value mismatch.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "convert_pdf_to_markdown",
+                "input_parameters": {
+                  "pdf_dir": "./data/reports"
+                }
+              },
+              {
+                "name": "Connect_SQL_Server",
+                "input_parameters": {
+                  "connectionString": 2
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "Connect_SQL_Server",
+                "input_parameters": {
+                  "connectionString": 2
+                }
+              },
+              {
+                "name": "convert_pdf_to_markdown",
+                "input_parameters": {
+                  "pdf_dir": "reports"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -72.5% (MAS: 5929 vs SAS: 21572 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5107,
+        "completion_tokens": 822,
+        "total_tokens": 5929,
+        "llm_calls": 6,
+        "cost": 0.002937
+      },
+      "latency": {
+        "total": 17.097,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_2_parallel_tools_20",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "Download the latest OpenStreetMap dataset for the city of Berlin and save it using a compact binary format in the appropriate output directory. Meanwhile, gather the most recent financial news headlin",
+      "expected_tools": [
+        {
+          "name": "download_osm_data",
+          "arguments": {
+            "city": "Berlin",
+            "output_path": "/Berlin",
+            "format": "pbf"
+          }
+        },
+        {
+          "name": "get_stock_news",
+          "arguments": {
+            "ticker": "SSEC",
+            "max_result": 5
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "get_stock_news",
+          "args": {
+            "ticker": "SSEC",
+            "max_result": 10
+          },
+          "output": "content=[{'type': 'text', 'text': 'Latest news for SSEC:\\n1. Shanghai Composite Rallies on Stimulus Hopes (Reuters, 2024-06-03)\\n   Summary: The index surged over 2% as traders anticipated new government measures to boost the economy.\\n2. Tech Stocks Lead Gains in Shanghai (Caixin, 2024-06-02)\\n   Summary: Technology and consumer sectors drove the index higher amid positive earnings reports.', 'id': 'lc_9c0c0128-f118-4bd7-9cd8-fc45b6f84f41'}] name='get_stock_news' tool_call_id='call_bc80123dc455",
+          "start_time": 0.0,
+          "latency": 2.5632449000841007,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "download_osm_data",
+          "args": {
+            "city": "Berlin",
+            "output_path": "/Berlin",
+            "format": "pbf"
+          },
+          "output": "content=[{'type': 'text', 'text': \"OSM data for city 'Berlin' downloaded in PBF format and saved to /Berlin.\", 'id': 'lc_430dfc52-5890-4df2-9329-46ab8debfc37'}] name='download_osm_data' tool_call_id='call_e615974be2b043cf91246fd6' artifact={'structured_content': {'result': \"OSM data for city 'Berlin' downloaded in PBF format and saved to /Berlin.\"}}",
+          "start_time": 0.853,
+          "latency": 2.017073899973184,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "download_osm_data",
+              "get_stock_news"
+            ],
+            "actual": [
+              "get_stock_news",
+              "download_osm_data"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each tool call:\n\n1. download_osm_data:\n- Expected parameters: city='Berlin' (str), output_path='/Berlin' (str), format='pbf' (str)\n- Actual parameters: city='Berlin' (str), output_path='/Berlin' (str), format='pbf' (str)\n- All parameter names match exactly.\n- All parameter values match exactly.\n- All parameter types match exactly.\n- No extra or missing parameters.\n- Result: Correct arguments with correct types.\n\n2. get_stock_news:\n- Expected parameters: ticker='SSEC' (str), max_result=5 (int)\n- Actual parameters: ticker='SSEC' (str), max_result=10 (int)\n- Parameter names match exactly.\n- Parameter types match exactly.\n- Parameter values differ for max_result (expected 5, actual 10).\n- This is a semantic mismatch (wrong value).\n- No extra or missing parameters.\n- Result: Major issue due to wrong parameter value.\n\nSummary:\n- One tool (download_osm_data) is fully correct.\n- One tool (get_stock_news) has a major issue (wrong value for max_result).\n\nAccording to scoring rules, major issues (wrong values) lead to a score between 0.0 and 0.4, but since only one tool has this issue and the other is perfect, a moderate penalty is appropriate.\n\nFinal score: 0.5",
+          "comparison": {
+            "expected": [
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/Berlin",
+                  "format": "pbf"
+                }
+              },
+              {
+                "name": "get_stock_news",
+                "input_parameters": {
+                  "ticker": "SSEC",
+                  "max_result": 5
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_stock_news",
+                "input_parameters": {
+                  "ticker": "SSEC",
+                  "max_result": 10
+                }
+              },
+              {
+                "name": "download_osm_data",
+                "input_parameters": {
+                  "city": "Berlin",
+                  "output_path": "/Berlin",
+                  "format": "pbf"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -36.7% (MAS: 6240 vs SAS: 9863 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5063,
+        "completion_tokens": 1177,
+        "total_tokens": 6240,
+        "llm_calls": 6,
+        "cost": 0.003226
+      },
+      "latency": {
+        "total": 27.513,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-protask_2_parallel_tools_16",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 19,
+      "mean": 0.6246,
+      "median": 0.6667,
+      "std": 0.3644,
+      "variance": 0.1328,
+      "ci_lower": 0.4608,
+      "ci_upper": 0.7885,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.5,
+      "p75": 1.0,
+      "iqr": 0.5,
+      "pass_rate": 0.3684,
+      "pass_ci_lower": 0.1915,
+      "pass_ci_upper": 0.5896,
+      "passed": 7,
+      "total": 19
+    },
+    "Argument Correctness [Reference]": {
+      "n": 19,
+      "mean": 0.5842,
+      "median": 0.7,
+      "std": 0.392,
+      "variance": 0.1536,
+      "ci_lower": 0.408,
+      "ci_upper": 0.7605,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.25,
+      "p75": 1.0,
+      "iqr": 0.75,
+      "pass_rate": 0.3158,
+      "pass_ci_lower": 0.1536,
+      "pass_ci_upper": 0.5399,
+      "passed": 6,
+      "total": 19
+    },
+    "Execution Efficiency": {
+      "n": 14,
+      "mean": 0.7857,
+      "median": 1.0,
+      "std": 0.4258,
+      "variance": 0.1813,
+      "ci_lower": 0.5627,
+      "ci_upper": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 0.6471,
+      "pass_ci_lower": 0.413,
+      "pass_ci_upper": 0.8269,
+      "passed": 11,
+      "total": 17
+    },
+    "Final State (Derived)": {
+      "n": 19,
+      "mean": 0.2105,
+      "median": 0.0,
+      "std": 0.4189,
+      "variance": 0.1754,
+      "ci_lower": 0.0222,
+      "ci_upper": 0.3989,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "iqr": 0.0,
+      "pass_rate": 0.2105,
+      "pass_ci_lower": 0.0851,
+      "pass_ci_upper": 0.4333,
+      "passed": 4,
+      "total": 19
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 0.9819,
+      "median": 1.0,
+      "std": 0.0808,
+      "variance": 0.0065,
+      "ci_lower": 0.9465,
+      "ci_upper": 1.0,
+      "min": 0.6387,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8389,
+      "pass_ci_upper": 1.0,
+      "passed": 20,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 8834.1,
+        "median": 5969.0,
+        "std": 8912.2507,
+        "variance": 79428211.6737,
+        "min": 1183.0,
+        "max": 37310.0,
+        "p25": 3667.25,
+        "p75": 10530.25,
+        "p95": 27021.5,
+        "p99": 35252.3,
+        "iqr": 6863.0
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 2718.75,
+        "median": 2089.5,
+        "std": 1613.8916,
+        "variance": 2604646.0921,
+        "min": 822.0,
+        "max": 5830.0,
+        "p25": 1519.5,
+        "p75": 3598.5,
+        "p95": 5621.95,
+        "p99": 5788.39,
+        "iqr": 2079.0
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 11552.85,
+        "median": 7893.5,
+        "std": 10038.0614,
+        "variance": 100762675.9237,
+        "min": 2369.0,
+        "max": 43140.0,
+        "p25": 5267.5,
+        "p75": 12801.5,
+        "p95": 30383.4,
+        "p99": 40588.68,
+        "iqr": 7534.0
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0062,
+        "median": 0.0046,
+        "std": 0.0049,
+        "variance": 0.0,
+        "min": 0.0015,
+        "max": 0.0213,
+        "p25": 0.0029,
+        "p75": 0.0073,
+        "p95": 0.0147,
+        "p99": 0.02,
+        "iqr": 0.0044,
+        "total": 0.124161
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 7,
+      "failed": 12,
+      "errors": 1,
+      "total_tokens": 231057,
+      "tokens_per_pass": 33008.14,
+      "success_per_1k_tokens": 0.0303,
+      "pass_rate": 0.35,
+      "error_rate": 0.05
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:01.948302",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 5,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

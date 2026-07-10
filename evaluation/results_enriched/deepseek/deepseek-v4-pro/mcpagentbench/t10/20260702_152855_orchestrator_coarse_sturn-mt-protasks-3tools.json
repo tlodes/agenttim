@@ -1,0 +1,1252 @@
+{
+  "timestamp": "2026-07-02T15:28:55.734440+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "orchestrator_coarse",
+  "mode": "sturn-mt-protasks-3tools",
+  "num_tools": 10,
+  "num_test_cases": 18,
+  "errors_summary": {
+    "total_errors": 14,
+    "total_test_cases": 18,
+    "error_rate": 0.7777777777777778
+  },
+  "aggregate": {
+    "total_prompt_tokens": 334903,
+    "total_completion_tokens": 62314,
+    "total_tokens": 397217,
+    "total_llm_calls": 121,
+    "total_cost": 0.199896,
+    "total_latency": 1920.864,
+    "avg_latency": 106.715,
+    "pass_rate": 0.05555555555555555,
+    "passed": 1,
+    "failed": 3,
+    "errors": 14
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-protask_3_tools_1",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I would like to enhance the existing demand for robotics business by incorporating reinforcement learning so that the algorithm can dynamically adapt to the fluctuating market conditions and changes i",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -74.4% (MAS: 39998 vs SAS: 156484 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 35580,
+        "completion_tokens": 4418,
+        "total_tokens": 39998,
+        "llm_calls": 14,
+        "cost": 0.019321
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_2",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am writing a research paper and the relevant details files are saved under folder '/research/document' Read all these files and analyze 5 relevant papers on arxiv and convert these multiple document",
+      "expected_tools": [
+        {
+          "name": "search_and_read_files",
+          "arguments": {
+            "path": "/research/document"
+          }
+        },
+        {
+          "name": "search_academic_papers",
+          "arguments": {
+            "query": "MOE",
+            "subject": "large language model",
+            "max_results": 5
+          }
+        },
+        {
+          "name": "convert_pdf_to_markdown",
+          "arguments": {
+            "pdf_dir": "/research/document/results/"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_and_read_files",
+          "args": {
+            "path": "/research/document"
+          },
+          "output": "content=[{'type': 'text', 'text': 'The topic of these files is about MOE, subject is large language model', 'id': 'lc_920f2226-ae02-451b-8ef9-ee27f62f4e63'}] name='search_and_read_files' tool_call_id='call_66221c47059744fa835f6f56' artifact={'structured_content': {'result': 'The topic of these files is about MOE, subject is large language model'}}",
+          "start_time": 3.482,
+          "latency": 1.922472900012508,
+          "agent_id": "professional"
+        },
+        {
+          "name": "convert_pdf_to_markdown",
+          "args": {
+            "pdf_dir": "/research/document"
+          },
+          "output": "content=[{'type': 'text', 'text': 'All PDF files have been converted to Markdown format.', 'id': 'lc_95971ea4-56ef-40bd-9de9-307f041524ac'}] name='convert_pdf_to_markdown' tool_call_id='call_a2c94f5c1acc471dbe0289cd' artifact={'structured_content': {'result': 'All PDF files have been converted to Markdown format.'}}",
+          "start_time": 14.33,
+          "latency": 1.9312787000089884,
+          "agent_id": "professional"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/3 expected tools found, 2 total calls. Correct: ['convert_pdf_to_markdown', 'search_and_read_files']. Missing: ['search_academic_papers']",
+          "comparison": {
+            "expected": [
+              "search_and_read_files",
+              "search_academic_papers",
+              "convert_pdf_to_markdown"
+            ],
+            "actual": [
+              "search_and_read_files",
+              "convert_pdf_to_markdown"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: search_and_read_files - Expected parameters: {path: '/research/document' (str)}; Actual parameters: {path: '/research/document' (str)}; Result: Match with correct type and value.\nTool: convert_pdf_to_markdown - Expected parameters: {pdf_dir: '/research/document/results/' (str)}; Actual parameters: {pdf_dir: '/research/document' (str)}; Result: Parameter name matches and type matches, but parameter value differs semantically (missing '/results/' suffix). This is a major issue as the path is different.\nOverall, one tool matches perfectly, the other has a significant parameter value mismatch, resulting in a moderate penalty.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_and_read_files",
+                "input_parameters": {
+                  "path": "/research/document"
+                }
+              },
+              {
+                "name": "convert_pdf_to_markdown",
+                "input_parameters": {
+                  "pdf_dir": "/research/document/results/"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_and_read_files",
+                "input_parameters": {
+                  "path": "/research/document"
+                }
+              },
+              {
+                "name": "convert_pdf_to_markdown",
+                "input_parameters": {
+                  "pdf_dir": "/research/document"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.5
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -79.6% (MAS: 11465 vs SAS: 56154 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8561,
+        "completion_tokens": 2904,
+        "total_tokens": 11465,
+        "llm_calls": 5,
+        "cost": 0.006251
+      },
+      "latency": {
+        "total": 64.1,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_3_tools_3",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I want to retrieve the purchase history of customer David and Sam between 2024-01-01 and 2024-12-31, and join it with the product_detail database save in MongoDB. Based on the list of products purchas",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -79.9% (MAS: 26852 vs SAS: 133593 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 24308,
+        "completion_tokens": 2544,
+        "total_tokens": 26852,
+        "llm_calls": 9,
+        "cost": 0.012787
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_4",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I want to find and call an existing public API that retrieves all earthquakes in a specific city within the last 30 days. Make sure to make the call and use the api",
+      "expected_tools": [
+        {
+          "name": "searchApis",
+          "arguments": {
+            "keyword": "earthquake"
+          }
+        },
+        {
+          "name": "request_api_schema",
+          "arguments": {
+            "ApiName": "City Earthquake Data API"
+          }
+        },
+        {
+          "name": "make_api_request",
+          "arguments": {
+            "apiName": "city_earthquake_data_api",
+            "url": "https://api.earthquake.example.com/earthquakes",
+            "endpoint": "/earthquakes"
+          }
+        }
+      ],
+      "tools_called": [],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No tools were called. Expected: ['make_api_request', 'request_api_schema', 'searchApis']",
+          "comparison": {
+            "expected": [
+              "searchApis",
+              "request_api_schema",
+              "make_api_request"
+            ],
+            "actual": []
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "No overlapping tools to evaluate arguments for."
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.0, Argument Correctness: 0.0",
+          "component_scores": {
+            "Tool Correctness": 0.0,
+            "Argument Correctness": 0.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -98.5% (MAS: 1252 vs SAS: 81298 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 769,
+        "completion_tokens": 483,
+        "total_tokens": 1252,
+        "llm_calls": 1,
+        "cost": 0.000755
+      },
+      "latency": {
+        "total": 9.601,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_3_tools_5",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "How can we, for a particular medical condition which the disease id is 'EFO_0000305', retrieve prioritized disease-associated targets, obtain detailed biological and druggability information on candid",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.993,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 2.1% (MAS: 24358 vs SAS: 23860 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 18310,
+        "completion_tokens": 6048,
+        "total_tokens": 24358,
+        "llm_calls": 5,
+        "cost": 0.013227
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_6",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Please interpret the recent trends of stocks of Alibaba Group Holding Limited, identify the ticker and search for its real time data from yahoo in SSE market. Save the data in the folder of 'outputs/m",
+      "expected_tools": [
+        {
+          "name": "search_stock_byname",
+          "arguments": {
+            "name": "Alibaba Group Holding Limited"
+          }
+        },
+        {
+          "name": "get_realtime_market_data",
+          "arguments": {
+            "symbols": [
+              "BABA"
+            ],
+            "source": "yahoo",
+            "market": "SSE"
+          }
+        },
+        {
+          "name": "get_comprehensive_analysis",
+          "arguments": {
+            "file_path": "outputs/market_data/alibaba_group_holding_limited.json"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "E_commerce_analyst_MCP_get_schemas",
+          "args": {
+            "schema_filter": [
+              "sales",
+              "products",
+              "customers"
+            ]
+          },
+          "output": "content=[{'type': 'text', 'text': 'Database: default_ecommerce_db\\nSchemas:\\n  - products: Contains product-related data including details, categories, and reviews.\\n    Tables: product_list, product_categories, product_reviews\\n  - sales: Contains sales order records, transaction history, and return information.\\n    Tables: sales_orders, sales_transactions, sales_returns\\n  - customers: Contains customer personal information, feedback, and loyalty program data.\\n    Tables: customer_profiles, ",
+          "start_time": 10.902,
+          "latency": 1.778625899925828,
+          "agent_id": "professional"
+        },
+        {
+          "name": "get_comprehensive_analysis",
+          "args": {
+            "file_path": "outputs/market_data/alibaba_group_holding_limited.json"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Comprehensive Analysis for file: alibaba_group_holding_limited.json\\nFile Path: outputs/market_data/alibaba_group_holding_limited.json\\n\\nContent Statistics:\\n  - Word Count: 1,247\\n  - Character Count: 7,892\\n  - Line Count: 156\\n\\nKey Findings:\\n  - File contains 1,247 words across 156 lines\\n  - Average words per line: 8.0\\n  - File size: 7,892 characters\\n  - Content appears to be well-structured with consistent formatting\\n  - Multiple sections identified ",
+          "start_time": 28.877,
+          "latency": 1.8216786999255419,
+          "agent_id": "professional"
+        },
+        {
+          "name": "get_comprehensive_analysis",
+          "args": {
+            "file_path": "outputs/market_data/alibaba_group_holding_limited.json"
+          },
+          "output": "content=[{'type': 'text', 'text': 'Comprehensive Analysis for file: alibaba_group_holding_limited.json\\nFile Path: outputs/market_data/alibaba_group_holding_limited.json\\n\\nContent Statistics:\\n  - Word Count: 1,247\\n  - Character Count: 7,892\\n  - Line Count: 156\\n\\nKey Findings:\\n  - File contains 1,247 words across 156 lines\\n  - Average words per line: 8.0\\n  - File size: 7,892 characters\\n  - Content appears to be well-structured with consistent formatting\\n  - Multiple sections identified ",
+          "start_time": 43.838,
+          "latency": 1.946712899953127,
+          "agent_id": "professional"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.3333333333333333,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/3 expected tools found, 3 total calls. Correct: ['get_comprehensive_analysis']. Missing: ['get_realtime_market_data', 'search_stock_byname']. Extra: ['E_commerce_analyst_MCP_get_schemas']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_stock_byname",
+              "get_realtime_market_data",
+              "get_comprehensive_analysis"
+            ],
+            "actual": [
+              "E_commerce_analyst_MCP_get_schemas",
+              "get_comprehensive_analysis",
+              "get_comprehensive_analysis"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "There is one expected tool call: 'get_comprehensive_analysis' with one parameter 'file_path' of type string and value 'outputs/market_data/alibaba_group_holding_limited.json'. The actual calls include two calls to the same tool with identical parameters and types matching exactly. Having duplicate actual calls does not violate any rules since the expected call is present and correct. No extra or missing parameters, no type mismatches, and parameter values match exactly. Therefore, the score is 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "get_comprehensive_analysis",
+                "input_parameters": {
+                  "file_path": "outputs/market_data/alibaba_group_holding_limited.json"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "get_comprehensive_analysis",
+                "input_parameters": {
+                  "file_path": "outputs/market_data/alibaba_group_holding_limited.json"
+                }
+              },
+              {
+                "name": "get_comprehensive_analysis",
+                "input_parameters": {
+                  "file_path": "outputs/market_data/alibaba_group_holding_limited.json"
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.3333333333333333",
+          "component_scores": {
+            "Tool Correctness": 0.3333333333333333,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -43.1% (MAS: 19174 vs SAS: 33685 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13457,
+        "completion_tokens": 5717,
+        "total_tokens": 19174,
+        "llm_calls": 6,
+        "cost": 0.010828
+      },
+      "latency": {
+        "total": 108.862,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_3_tools_7",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Can the example Blender code be enhanced by integrating an interactive outdoor environment that reflects natural dynamics and adding a bird? Which means, I want to create a some object to interact wit",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -98.0% (MAS: 1538 vs SAS: 75359 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 872,
+        "completion_tokens": 666,
+        "total_tokens": 1538,
+        "llm_calls": 1,
+        "cost": 0.000959
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_8",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Extract housing data of U.S. cities from a BigQuery database from which the table name is 'housing_data' and the project id is 'us-housing-project', load the data into the program /housing/house.py an",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -50.4% (MAS: 44214 vs SAS: 89077 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 39548,
+        "completion_tokens": 4666,
+        "total_tokens": 44214,
+        "llm_calls": 12,
+        "cost": 0.021263
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_9",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "How can I implement advanced obstacle avoidance techniques for robots in complex environments using MATLAB? Please explain how to program in MATLAB to detect and recognize objects using computer visio",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -66.9% (MAS: 11581 vs SAS: 34981 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9984,
+        "completion_tokens": 1597,
+        "total_tokens": 11581,
+        "llm_calls": 4,
+        "cost": 0.005732
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_10",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Build an AI model in Python that can predict Alphabet Inc future stock price based on its historical closing prices over the past month, name the python file predict_stock.py and save it under finance",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -44.1% (MAS: 37750 vs SAS: 67490 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 32616,
+        "completion_tokens": 5134,
+        "total_tokens": 37750,
+        "llm_calls": 9,
+        "cost": 0.018655
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_11",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Ask the Dungeon Master agent the question 'What overall theme should the one-shot have?' with a tone of 'serious' and a focus on 'boss design'. After receiving the narrative response, inquire about th",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.7067,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 88.0% (MAS: 30332 vs SAS: 16135 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 24893,
+        "completion_tokens": 5439,
+        "total_tokens": 30332,
+        "llm_calls": 15,
+        "cost": 0.01556
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_12",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Add a front-end interface for an e-commerce website that can connect to given database API Ecommerce API. At the same time, visualize the data save under 'outputs/ecommerce_sales.csv' as a bar chart. ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -78.0% (MAS: 9802 vs SAS: 44585 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 8246,
+        "completion_tokens": 1556,
+        "total_tokens": 9802,
+        "llm_calls": 4,
+        "cost": 0.004941
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_13",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "This is the summary of my department meeting, and I need help completing the assigned tasks. There are two tasks: the first is Project Management Platform（Create a platform to improve work efficiency ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -37.4% (MAS: 7347 vs SAS: 11733 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 4976,
+        "completion_tokens": 2371,
+        "total_tokens": 7347,
+        "llm_calls": 3,
+        "cost": 0.004227
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_14",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Build an online music review platform call musicreviews.com in PHP that features music reviews and recommendations. Today is 2024-06-15. Create a post with id post_001 in the platform with the title '",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -90.5% (MAS: 5077 vs SAS: 53606 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 4341,
+        "completion_tokens": 736,
+        "total_tokens": 5077,
+        "llm_calls": 3,
+        "cost": 0.002529
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_15",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "Create an web search tool to search for nearby restaurants. The app should show a list of restaurants based on current location and user preferences, this app should use Google search engine and retur",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -91.4% (MAS: 7101 vs SAS: 82416 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 5980,
+        "completion_tokens": 1121,
+        "total_tokens": 7101,
+        "llm_calls": 3,
+        "cost": 0.003577
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_16",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I am currently studying the hereditary probabilities of genetic diseases and mental disorders. I want to find relevant literature on these two topics separately and explore the association between gen",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 0.8327,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 50.2% (MAS: 46302 vs SAS: 30828 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 37136,
+        "completion_tokens": 9166,
+        "total_tokens": 46302,
+        "llm_calls": 14,
+        "cost": 0.024129
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    },
+    {
+      "id": "MCPAB-protask_3_tools_17",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "I'm a music producer looking for inspiration for my next project save under url/to/demo_song.mp3. Could you analyze my demo song by giving me its duration and speed it up by 1.2x and then transcribing",
+      "expected_tools": [
+        {
+          "name": "AudioEditor_apply_speed_adjustment",
+          "arguments": {
+            "audio_file": "url/to/demo_song.mp3",
+            "speed_factor": "1.2"
+          }
+        },
+        {
+          "name": "AudioEditor_transcribe_audio_sync",
+          "arguments": {
+            "audio_file": "url/to/demo_song.mp3"
+          }
+        },
+        {
+          "name": "recommend_musictracks",
+          "arguments": {
+            "music_name": [
+              "guts"
+            ],
+            "result_num": 5
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "AudioEditor_apply_speed_adjustment",
+          "args": {
+            "audio_file": "url/to/demo_song.mp3",
+            "speed_factor": "1.2"
+          },
+          "output": "content=[{'type': 'text', 'text': '((48000, [0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1, 0.05, 0.1, -0.05, -0.1,",
+          "start_time": 6.982,
+          "latency": 2.7593961000675336,
+          "agent_id": "media"
+        },
+        {
+          "name": "AudioEditor_transcribe_audio_sync",
+          "args": {
+            "audio_file": "url/to/demo_song.mp3"
+          },
+          "output": "content=[{'type': 'text', 'text': '(\"Error: Audio file \\'url/to/demo_song.mp3\\' not found in transcription database.\", \\'\\', \\'\\', \\'\\')', 'id': 'lc_451580a8-03aa-43c7-a19d-d7630afe08cf'}] name='AudioEditor_transcribe_audio_sync' tool_call_id='call_c5eb2ea343c543c6b6879d09' artifact={'structured_content': {'result': '(\"Error: Audio file \\'url/to/demo_song.mp3\\' not found in transcription database.\", \\'\\', \\'\\', \\'\\')'}}",
+          "start_time": 6.982,
+          "latency": 2.757032599998638,
+          "agent_id": "media"
+        },
+        {
+          "name": "recommend_musictracks",
+          "args": {
+            "music_name": [
+              "guts"
+            ],
+            "result_num": 5
+          },
+          "output": "content=[{'type': 'text', 'text': \"[{'title': 'vampire', 'artist': 'Olivia Rodrigo', 'album': 'GUTS', 'genre': 'Pop Rock', 'release_date': '2023-06-30', 'preview_url': 'https://mockstreaming.com/preview/olivia_rodrigo_vampire'}, {'title': 'bad idea right?', 'artist': 'Olivia Rodrigo', 'album': 'GUTS', 'genre': 'Pop Punk', 'release_date': '2023-08-11', 'preview_url': 'https://mockstreaming.com/preview/olivia_rodrigo_bad_idea_right'}, {'title': 'get him back!', 'artist': 'Olivia Rodrigo', 'album':",
+          "start_time": 18.396,
+          "latency": 2.022214600001462,
+          "agent_id": "media"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 3 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "AudioEditor_apply_speed_adjustment",
+              "AudioEditor_transcribe_audio_sync",
+              "recommend_musictracks"
+            ],
+            "actual": [
+              "AudioEditor_apply_speed_adjustment",
+              "AudioEditor_transcribe_audio_sync",
+              "recommend_musictracks"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All three tools have exact matching parameter names and values. The types for all parameters match exactly as expected: 'audio_file' is a string in both AudioEditor_apply_speed_adjustment and AudioEditor_transcribe_audio_sync; 'speed_factor' is a string in AudioEditor_apply_speed_adjustment; 'music_name' is a list and 'result_num' is an integer in recommend_musictracks. There are no extra or missing parameters in any tool call. No type mismatches or value mismatches were found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "AudioEditor_apply_speed_adjustment",
+                "input_parameters": {
+                  "audio_file": "url/to/demo_song.mp3",
+                  "speed_factor": "1.2"
+                }
+              },
+              {
+                "name": "AudioEditor_transcribe_audio_sync",
+                "input_parameters": {
+                  "audio_file": "url/to/demo_song.mp3"
+                }
+              },
+              {
+                "name": "recommend_musictracks",
+                "input_parameters": {
+                  "music_name": [
+                    "guts"
+                  ],
+                  "result_num": 5
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "AudioEditor_apply_speed_adjustment",
+                "input_parameters": {
+                  "audio_file": "url/to/demo_song.mp3",
+                  "speed_factor": "1.2"
+                }
+              },
+              {
+                "name": "AudioEditor_transcribe_audio_sync",
+                "input_parameters": {
+                  "audio_file": "url/to/demo_song.mp3"
+                }
+              },
+              {
+                "name": "recommend_musictracks",
+                "input_parameters": {
+                  "music_name": [
+                    "guts"
+                  ],
+                  "result_num": 5
+                }
+              }
+            ]
+          }
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -2.9% (MAS: 51581 vs SAS: 53093 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 49095,
+        "completion_tokens": 2486,
+        "total_tokens": 51581,
+        "llm_calls": 5,
+        "cost": 0.023519
+      },
+      "latency": {
+        "total": 58.302,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-protask_3_tools_18",
+      "dimension": "STurn-MT",
+      "category": "sequential",
+      "input": "How can I establish a secure connection to BigQuery database for a large-scale movie review website, the project id is 'movie-reviews-db', and at the same time obtain security guidance to ensure safe ",
+      "expected_tools": [],
+      "tools_called": [],
+      "metrics": {
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -13.6% (MAS: 21493 vs SAS: 24884 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 16231,
+        "completion_tokens": 5262,
+        "total_tokens": 21493,
+        "llm_calls": 8,
+        "cost": 0.011638
+      },
+      "latency": {
+        "total": 120.0,
+        "per_turn": []
+      },
+      "error": {
+        "type": "TestCaseTimeoutError",
+        "message": "Test case timed out after 120s"
+      }
+    }
+  ],
+  "test_case_errors": [
+    {
+      "test_case_id": "MCPAB-protask_3_tools_1",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_3",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_5",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_7",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_8",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_9",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_10",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_11",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_12",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_13",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_14",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_15",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_16",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    },
+    {
+      "test_case_id": "MCPAB-protask_3_tools_18",
+      "error_type": "TestCaseTimeoutError",
+      "error_message": "Test case timed out after 120s",
+      "traceback": ""
+    }
+  ],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 4,
+      "mean": 0.5,
+      "median": 0.5,
+      "std": 0.4303,
+      "variance": 0.1852,
+      "ci_lower": 0.0783,
+      "ci_upper": 0.9217,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.25,
+      "p75": 0.75,
+      "iqr": 0.5,
+      "pass_rate": 0.25,
+      "pass_ci_lower": 0.0456,
+      "pass_ci_upper": 0.6994,
+      "passed": 1,
+      "total": 4
+    },
+    "Argument Correctness [Reference]": {
+      "n": 4,
+      "mean": 0.625,
+      "median": 0.75,
+      "std": 0.4787,
+      "variance": 0.2292,
+      "ci_lower": 0.1559,
+      "ci_upper": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.375,
+      "p75": 1.0,
+      "iqr": 0.625,
+      "pass_rate": 0.5,
+      "pass_ci_lower": 0.15,
+      "pass_ci_upper": 0.85,
+      "passed": 2,
+      "total": 4
+    },
+    "Final State (Derived)": {
+      "n": 4,
+      "mean": 0.25,
+      "median": 0.0,
+      "std": 0.5,
+      "variance": 0.25,
+      "ci_lower": 0.0,
+      "ci_upper": 0.74,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 0.25,
+      "iqr": 0.25,
+      "pass_rate": 0.25,
+      "pass_ci_lower": 0.0456,
+      "pass_ci_upper": 0.6994,
+      "passed": 1,
+      "total": 4
+    },
+    "Coordination Token Overhead": {
+      "n": 18,
+      "mean": 0.974,
+      "median": 1.0,
+      "std": 0.0774,
+      "variance": 0.006,
+      "ci_lower": 0.9383,
+      "ci_upper": 1.0,
+      "min": 0.7067,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 1.0,
+      "pass_ci_lower": 0.8241,
+      "pass_ci_upper": 1.0,
+      "passed": 18,
+      "total": 18
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 18,
+        "mean": 18605.7222,
+        "median": 14844.0,
+        "std": 14880.0905,
+        "variance": 221417094.683,
+        "min": 769.0,
+        "max": 49095.0,
+        "p25": 6546.5,
+        "p75": 30685.25,
+        "p95": 40980.05,
+        "p99": 47472.01,
+        "iqr": 24138.75
+      },
+      "completion_tokens": {
+        "n": 18,
+        "mean": 3461.8889,
+        "median": 2724.0,
+        "std": 2384.1033,
+        "variance": 5683948.3399,
+        "min": 483.0,
+        "max": 9166.0,
+        "p25": 1566.25,
+        "p75": 5230.0,
+        "p95": 6515.7,
+        "p99": 8635.94,
+        "iqr": 3663.75
+      },
+      "total_tokens": {
+        "n": 18,
+        "mean": 22067.6111,
+        "median": 20333.5,
+        "std": 16410.8015,
+        "variance": 269314404.4869,
+        "min": 1252.0,
+        "max": 51581.0,
+        "p25": 7960.75,
+        "p75": 35895.5,
+        "p95": 47093.85,
+        "p99": 50683.57,
+        "iqr": 27934.75
+      },
+      "cost": {
+        "n": 18,
+        "mean": 0.0111,
+        "median": 0.0112,
+        "std": 0.0079,
+        "variance": 0.0001,
+        "min": 0.0008,
+        "max": 0.0241,
+        "p25": 0.0044,
+        "p75": 0.0179,
+        "p95": 0.0236,
+        "p99": 0.024,
+        "iqr": 0.0135,
+        "total": 0.199898
+      }
+    },
+    "efficiency": {
+      "total_tests": 18,
+      "passed": 1,
+      "failed": 3,
+      "errors": 14,
+      "total_tokens": 397217,
+      "tokens_per_pass": 397217.0,
+      "success_per_1k_tokens": 0.0025,
+      "pass_rate": 0.0556,
+      "error_rate": 0.7778
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:01.774136",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 18,
+    "confidence_intervals_computed": 4,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}

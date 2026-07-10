@@ -1,0 +1,3208 @@
+{
+  "timestamp": "2026-07-03T09:11:08.600848+00:00",
+  "model": "deepseek/deepseek-v4-pro",
+  "benchmark": "mcpagentbench",
+  "agent_type": "swarm",
+  "mode": "sturn-mt-daytasks-parallel",
+  "num_tools": 10,
+  "num_test_cases": 20,
+  "errors_summary": {
+    "total_errors": 0,
+    "total_test_cases": 20,
+    "error_rate": 0.0
+  },
+  "aggregate": {
+    "total_prompt_tokens": 263352,
+    "total_completion_tokens": 50311,
+    "total_tokens": 313663,
+    "total_llm_calls": 105,
+    "total_cost": 0.158329,
+    "total_latency": 1195.703,
+    "avg_latency": 59.785,
+    "pass_rate": 0.7,
+    "passed": 14,
+    "failed": 6,
+    "errors": 0
+  },
+  "test_cases": [
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_1",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is in a good mood and wants to watch the suspense movie \"Hotel Mumbai\" directed by Anthony Maras, with subtitles due to a language issue. They also plan to eat out and request a reservation a",
+      "expected_tools": [
+        {
+          "name": "search_imdb",
+          "arguments": {
+            "primary_title": "Hotel Mumbai"
+          }
+        },
+        {
+          "name": "make_reservation",
+          "arguments": {
+            "restaurant_name": "Marche Aux Fleurs"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_imdb",
+          "args": {
+            "primary_title": "Hotel Mumbai"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Title: Hotel Mumbai\\\\nGenre: Suspense\\\\nSubtitles available: Yes\\\\nIMDb ID: tt5461944\", \"id\": \"lc_64ae74e6-e915-4867-9b67-069ce8463bcf\"}], {\"structured_content\": {\"result\": \"Title: Hotel Mumbai\\\\nGenre: Suspense\\\\nSubtitles available: Yes\\\\nIMDb ID: tt5461944\"}}]' name='search_imdb' tool_call_id='call_4294c5427b804f53bd4a16b1'",
+          "start_time": 0.0,
+          "latency": 3.5967109999619424,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "make_reservation",
+          "args": {
+            "restaurant_name": "Marche Aux Fleurs"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Success: Reservation made at Marche Aux Fleurs.\", \"id\": \"lc_cfb2b0b2-1d90-44b7-9cec-95934b691790\"}], {\"structured_content\": {\"result\": \"Success: Reservation made at Marche Aux Fleurs.\"}}]' name='make_reservation' tool_call_id='call_c6cdb3180db743c3805e75d2'",
+          "start_time": 0.0,
+          "latency": 3.5950347000034526,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_restaurant_details",
+          "args": {
+            "restaurant_name": "Marche Aux Fleurs"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Error: Invalid restaurant name. The restaurant details could not be found.\", \"id\": \"lc_881cfb8e-bfaf-4a8f-abf6-624fefe82d5d\"}], {\"structured_content\": {\"result\": \"Error: Invalid restaurant name. The restaurant details could not be found.\"}}]' name='get_restaurant_details' tool_call_id='call_bff25bb43cfd4744bbabd8f4'",
+          "start_time": 0.0,
+          "latency": 3.627007200033404,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['make_reservation', 'search_imdb']. Extra: ['get_restaurant_details']",
+          "comparison": {
+            "expected": [
+              "search_imdb",
+              "make_reservation"
+            ],
+            "actual": [
+              "search_imdb",
+              "make_reservation",
+              "get_restaurant_details"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. For 'search_imdb', the expected parameter 'primary_title' with value 'Hotel Mumbai' (type str) matches the actual call exactly. For 'make_reservation', the expected parameter 'restaurant_name' with value 'Marche Aux Fleurs' (type str) also matches the actual call exactly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hotel Mumbai"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Marche Aux Fleurs"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_imdb",
+                "input_parameters": {
+                  "primary_title": "Hotel Mumbai"
+                }
+              },
+              {
+                "name": "make_reservation",
+                "input_parameters": {
+                  "restaurant_name": "Marche Aux Fleurs"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -26.7% (MAS: 15100 vs SAS: 20598 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11859,
+        "completion_tokens": 3241,
+        "total_tokens": 15100,
+        "llm_calls": 5,
+        "cost": 0.007978
+      },
+      "latency": {
+        "total": 74.552,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_2",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for round-trip economy flights for three people from San Francisco to Toronto, leaving on October 1st and returning on the 5th of October. They also asked for recommendations for a",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "SFO",
+            "destination": "YYZ",
+            "departure_date": "10/01",
+            "return_date": "10/05",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "Toronto",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "SFO",
+            "destination": "YYZ",
+            "departure_date": "10/01",
+            "return_date": "10/05",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following flights: Departure Flight: AC123; Return Flight: AC456\", \"id\": \"lc_1dd8b57b-e84c-4757-aa70-8b1790c815a8\"}], {\"structured_content\": {\"result\": \"Found the following flights: Departure Flight: AC123; Return Flight: AC456\"}}]' name='search_flights' tool_call_id='call_35f72969d90d42178aa8d17f'",
+          "start_time": 0.0,
+          "latency": 2.813322100089863,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "Toronto",
+            "category": "attractions"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No points of interest found within 10km for the specified categories.\", \"id\": \"lc_4ccd8d58-c4ae-4c1a-8630-6e829456ba85\"}], {\"structured_content\": {\"result\": \"No points of interest found within 10km for the specified categories.\"}}]' name='geocalc_mcp_get_points_of_interest' tool_call_id='call_8f5be232c2144ef4ab4e254b'",
+          "start_time": 0.0,
+          "latency": 2.814458000008017,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "Toronto",
+            "category": "attractions",
+            "radius_km": 50
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No points of interest found within 50.0km for the specified categories.\", \"id\": \"lc_314b4801-01c8-490d-90f4-4aee9ba52503\"}], {\"structured_content\": {\"result\": \"No points of interest found within 50.0km for the specified categories.\"}}]' name='geocalc_mcp_get_points_of_interest' tool_call_id='call_ed05ffba4aac47e6a51a1c8c'",
+          "start_time": 12.413,
+          "latency": 1.7652805999387056,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "Toronto",
+            "category": "general",
+            "radius_km": 50
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Points of Interest in Toronto:\\\\n- CN Tower (Landmark), 2km away from the searching point\\\\n- Royal Ontario Museum (Museum), 5km away from the searching point\\\\n\", \"id\": \"lc_f2869b00-b8a2-43f8-bab9-9df1c28d049c\"}], {\"structured_content\": {\"result\": \"Points of Interest in Toronto:\\\\n- CN Tower (Landmark), 2km away from the searching point\\\\n- Royal Ontario Museum (Museum), 5km away from the searching point\\\\n\"}}]' name='geocalc_mcp_get_points_of_interest' tool",
+          "start_time": 18.473,
+          "latency": 1.7710956999799237,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 4 total calls. Correct: ['geocalc_mcp_get_points_of_interest', 'search_flights']. Duplicates: 2",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest",
+              "geocalc_mcp_get_points_of_interest",
+              "geocalc_mcp_get_points_of_interest"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. search_flights:\n- Expected parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Actual parameters: type, origin, destination, departure_date, return_date, cabin_class\n- Parameter names match exactly.\n- Parameter values match exactly.\n- Parameter types match exactly.\n- No extra or missing parameters.\n- Result: Perfect match, score contribution = 1.0\n\n2. geocalc_mcp_get_points_of_interest:\n- Expected parameters: city, category\n- Actual calls: 3 calls with this name.\n\n  a) First actual call:\n  - Parameters: city=Toronto, category=attractions\n  - category value differs from expected 'general' vs 'attractions' (value mismatch).\n  - No type mismatch.\n  - No extra or missing parameters.\n  - Result: Major issue due to wrong value.\n\n  b) Second actual call:\n  - Parameters: city=Toronto, category=attractions, radius_km=50\n  - Extra parameter 'radius_km' not in expected (penalize).\n  - category value mismatch as above.\n  - Result: Major issue (wrong value + extra param).\n\n  c) Third actual call:\n  - Parameters: city=Toronto, category=general, radius_km=50\n  - category matches expected value.\n  - Extra parameter 'radius_km' present (penalize).\n  - Result: Minor issue (extra param).\n\n- Since expected has only one call for geocalc_mcp_get_points_of_interest, but actual has three calls, we consider the best matching call for scoring.\n- Best matching call is the third one (category matches expected), but has an extra parameter.\n\nSummary:\n- search_flights: perfect match\n- geocalc_mcp_get_points_of_interest: major issues due to value mismatch in two calls and extra parameter in all actual calls\n\nOverall score:\n- search_flights: 1.0\n- geocalc_mcp_get_points_of_interest: 0.0 (due to major issues)\n\nAverage over 2 tools: (1.0 + 0.0) / 2 = 0.5\n\nHowever, since multiple major issues exist (wrong values and extra parameters), and multiple actual calls for one expected call, the score is lowered further to 0.3 to reflect major issues and hallucinated extra calls.\n\nFinal score: 0.3",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SFO",
+                  "destination": "YYZ",
+                  "departure_date": "10/01",
+                  "return_date": "10/05",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "Toronto",
+                  "category": "general"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SFO",
+                  "destination": "YYZ",
+                  "departure_date": "10/01",
+                  "return_date": "10/05",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "Toronto",
+                  "category": "attractions"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "Toronto",
+                  "category": "attractions",
+                  "radius_km": 50
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "Toronto",
+                  "category": "general",
+                  "radius_km": 50
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.3847,
+          "threshold": 0.5,
+          "success": false,
+          "reason": "Overhead: 184.6% (MAS: 25288 vs SAS: 8886 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 22545,
+        "completion_tokens": 2743,
+        "total_tokens": 25288,
+        "llm_calls": 7,
+        "cost": 0.012193
+      },
+      "latency": {
+        "total": 76.035,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_3",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for a round trip flight from Seattle to Phoenix, departing on March 5th and returning on March 7th, with three economy tickets. They are also interested in finding child-friendly a",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "PHX",
+            "departure_date": "03/05",
+            "return_date": "03/07",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "Phoenix",
+            "category": "child-friendly"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "PHX",
+            "departure_date": "03/05",
+            "return_date": "03/07",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following flights: Departure Flight: DL789; Return Flight: DL012\", \"id\": \"lc_a9db1ffe-e365-484c-b365-04b76ece83d5\"}], {\"structured_content\": {\"result\": \"Found the following flights: Departure Flight: DL789; Return Flight: DL012\"}}]' name='search_flights' tool_call_id='call_91929e9bb09542d38966c0d3'",
+          "start_time": 0.0,
+          "latency": 2.2129010999342427,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "Phoenix",
+            "category": "child-friendly"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Points of Interest in Phoenix:\\\\n- Phoenix Zoo (Zoo), 8km away from the searching point\\\\n- Children\\'s Museum of Phoenix (Museum), 4km away from the searching point\\\\n\", \"id\": \"lc_3a454871-44b6-4e59-8be7-97a74374f9d4\"}], {\"structured_content\": {\"result\": \"Points of Interest in Phoenix:\\\\n- Phoenix Zoo (Zoo), 8km away from the searching point\\\\n- Children\\'s Museum of Phoenix (Museum), 4km away from the searching point\\\\n\"}}]' name='geocalc_mcp_get_points_of_",
+          "start_time": 0.0,
+          "latency": 2.2114432000089437,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_flights', all expected parameters (type, origin, destination, departure_date, return_date, cabin_class) are present in actual with matching string values and types. For 'geocalc_mcp_get_points_of_interest', both expected parameters (city, category) are present with matching string values and types. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is justified.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "PHX",
+                  "departure_date": "03/05",
+                  "return_date": "03/07",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "Phoenix",
+                  "category": "child-friendly"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "PHX",
+                  "departure_date": "03/05",
+                  "return_date": "03/07",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "Phoenix",
+                  "category": "child-friendly"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.6982,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 90.5% (MAS: 15968 vs SAS: 8380 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13327,
+        "completion_tokens": 2641,
+        "total_tokens": 15968,
+        "llm_calls": 5,
+        "cost": 0.008095
+      },
+      "latency": {
+        "total": 59.302,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_4",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to book a round-trip Economy flight from Phoenix, AZ, to New York City, departing on the 7th of March and returning on the 14th. They are also interested in seeing some attractions in N",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "JFK",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "New York",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "NYC",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No flights found for the given parameters.\", \"id\": \"lc_ac41de9e-f0cd-442e-9de7-ea7b33089f64\"}], {\"structured_content\": {\"result\": \"No flights found for the given parameters.\"}}]' name='search_flights' tool_call_id='call_a146fe5c1d564ed49ae27007'",
+          "start_time": 0.0,
+          "latency": 2.326689100009389,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "New York",
+            "category": "general",
+            "radius_km": 10
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Points of Interest in New York:\\\\n- Statue of Liberty (Landmark), 6km away from the searching point\\\\n- Central Park (Park), 3km away from the searching point\\\\n\", \"id\": \"lc_28de3a95-bd2a-4c8e-ab67-d08077ea15bf\"}], {\"structured_content\": {\"result\": \"Points of Interest in New York:\\\\n- Statue of Liberty (Landmark), 6km away from the searching point\\\\n- Central Park (Park), 3km away from the searching point\\\\n\"}}]' name='geocalc_mcp_get_points_of_interest' tool",
+          "start_time": 0.0,
+          "latency": 2.325152299948968,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "JFK",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No flights found for the given parameters.\", \"id\": \"lc_07d9f3e8-0573-43b7-a502-9da7a0f2307b\"}], {\"structured_content\": {\"result\": \"No flights found for the given parameters.\"}}]' name='search_flights' tool_call_id='call_785dd41cb4f84cfe9686ad3d'",
+          "start_time": 13.582,
+          "latency": 3.0632653000066057,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "LGA",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No flights found for the given parameters.\", \"id\": \"lc_fa4695e3-35dc-43d7-b0af-154116103a7b\"}], {\"structured_content\": {\"result\": \"No flights found for the given parameters.\"}}]' name='search_flights' tool_call_id='call_b681484198f542b2aaa4ae11'",
+          "start_time": 13.582,
+          "latency": 3.0656434000702575,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "PHX",
+            "destination": "EWR",
+            "departure_date": "03/07",
+            "return_date": "03/14",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No flights found for the given parameters.\", \"id\": \"lc_89a0b163-e1ca-4c0a-b323-9df0d0831f7b\"}], {\"structured_content\": {\"result\": \"No flights found for the given parameters.\"}}]' name='search_flights' tool_call_id='call_13d73a35cf3d4f139abaccdc'",
+          "start_time": 13.582,
+          "latency": 3.064727700082585,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.4,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 5 total calls. Correct: ['geocalc_mcp_get_points_of_interest', 'search_flights']. Duplicates: 3",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest",
+              "search_flights",
+              "search_flights",
+              "search_flights"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. search_flights (first actual call):\n- Expected destination: 'JFK'\n- Actual destination: 'NYC'\n- Parameter names match exactly.\n- Parameter values differ for 'destination' ('JFK' vs 'NYC'), which is a major semantic mismatch.\n- No type mismatches.\n- Result: major issue due to wrong destination value.\n\n2. geocalc_mcp_get_points_of_interest:\n- Expected parameters: city, category\n- Actual parameters: city, category, radius_km\n- Extra parameter 'radius_km' present in actual but not expected (penalize).\n- Parameter values and types for city and category match.\n- Result: minor issue due to extra parameter.\n\n3. search_flights (second actual call):\n- Matches expected exactly (destination 'JFK').\n- Parameter names and values match.\n- No type mismatches.\n- Result: correct.\n\n4. search_flights (third actual call):\n- Destination is 'LGA' instead of expected 'JFK'.\n- Parameter names match.\n- Value mismatch for destination (major issue).\n- Result: major issue.\n\n5. search_flights (fourth actual call):\n- Destination is 'EWR' instead of expected 'JFK'.\n- Parameter names match.\n- Value mismatch for destination (major issue).\n- Result: major issue.\n\nSummary:\n- Out of 5 actual calls, 3 are search_flights with wrong destination values (major issues).\n- 1 search_flights call is correct.\n- geocalc_mcp_get_points_of_interest has an extra parameter (minor issue).\n\nGiven multiple major semantic mismatches (wrong destination values) and one minor issue (extra parameter), the overall score is low.\n\nScore assigned: 0.3 (major issues dominate, minor issue present, one correct call).",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "JFK",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "general"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "NYC",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "New York",
+                  "category": "general",
+                  "radius_km": 10
+                }
+              },
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "JFK",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "LGA",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "PHX",
+                  "destination": "EWR",
+                  "departure_date": "03/07",
+                  "return_date": "03/14",
+                  "cabin_class": "economy"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.4, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.4,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7949,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 61.5% (MAS: 23464 vs SAS: 14526 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 18325,
+        "completion_tokens": 5139,
+        "total_tokens": 23464,
+        "llm_calls": 6,
+        "cost": 0.012442
+      },
+      "latency": {
+        "total": 114.12,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_5",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user inquires about the weather, humidity, and wind levels there on March 1st in Chicago. They want to find hotels in Chicago, making a reservation for 2 rooms, checking in on the 1st and checking",
+      "expected_tools": [
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "Chicago",
+            "date": "03/01"
+          }
+        },
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "Chicago",
+            "checkinDate": "03/01",
+            "checkoutDate": "03/04"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "Chicago",
+            "date": "03/01"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The weather in Chicago on 03/01 is as follows:\\\\nTemperature: 5°C\\\\nHumidity: 60%\\\\nWind: 15 km/h\", \"id\": \"lc_f2aeebaa-c626-42e5-853c-633c50557893\"}], {\"structured_content\": {\"result\": \"The weather in Chicago on 03/01 is as follows:\\\\nTemperature: 5°C\\\\nHumidity: 60%\\\\nWind: 15 km/h\"}}]' name='weather_tool' tool_call_id='call_be51f521148e4e8485679065'",
+          "start_time": 0.0,
+          "latency": 2.378750800038688,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "Chicago",
+            "checkinDate": "03/01",
+            "checkoutDate": "03/04"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Booking successful!\\\\nHotel: Chicago Grand Hotel\\\\nAddress: 123 Grand Ave, Chicago, IL\\\\nPhone: 123-456-7890\\\\nCheck-in Date: 03/01\\\\nCheck-out Date: 03/04\", \"id\": \"lc_9288c81b-8476-440f-9860-0c71ac1eaaa4\"}], {\"structured_content\": {\"result\": \"Booking successful!\\\\nHotel: Chicago Grand Hotel\\\\nAddress: 123 Grand Ave, Chicago, IL\\\\nPhone: 123-456-7890\\\\nCheck-in Date: 03/01\\\\nCheck-out Date: 03/04\"}}]' name='booking_tool' tool_call_id='call_d06d49cfe69549b9866",
+          "start_time": 0.0,
+          "latency": 2.380207100068219,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "weather_tool",
+              "booking_tool"
+            ],
+            "actual": [
+              "weather_tool",
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For weather_tool, expected parameters are city:str='Chicago' and date:str='03/01', actual matches exactly. For booking_tool, expected parameters are city:str='Chicago', checkinDate:str='03/01', checkoutDate:str='03/04', actual matches exactly. No extra or missing parameters, no type mismatches, and values are semantically equivalent. Therefore, full score of 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "date": "03/01"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "checkinDate": "03/01",
+                  "checkoutDate": "03/04"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "date": "03/01"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Chicago",
+                  "checkinDate": "03/01",
+                  "checkoutDate": "03/04"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7191,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 84.3% (MAS: 15132 vs SAS: 8212 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12298,
+        "completion_tokens": 2834,
+        "total_tokens": 15132,
+        "llm_calls": 5,
+        "cost": 0.007815
+      },
+      "latency": {
+        "total": 65.914,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_6",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to book a hotel in London from March 6th to March 11th, and inquires about the weather in London on March 11th.",
+      "expected_tools": [
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "London",
+            "checkinDate": "03/06",
+            "checkoutDate": "03/11"
+          }
+        },
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "London",
+            "date": "03/11"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "London",
+            "checkinDate": "03/06",
+            "checkoutDate": "03/11"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Booking successful!\\\\nHotel: London Bridge Hotel\\\\nAddress: London Bridge St, London\\\\nPhone: 020-7946-0958\\\\nCheck-in Date: 03/06\\\\nCheck-out Date: 03/11\", \"id\": \"lc_162dd23b-f502-486c-b970-61ce1f4eeaa4\"}], {\"structured_content\": {\"result\": \"Booking successful!\\\\nHotel: London Bridge Hotel\\\\nAddress: London Bridge St, London\\\\nPhone: 020-7946-0958\\\\nCheck-in Date: 03/06\\\\nCheck-out Date: 03/11\"}}]' name='booking_tool' tool_call_id='call_4aef2790053d43178fe3b",
+          "start_time": 0.0,
+          "latency": 2.262940900051035,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "London",
+            "date": "03/11"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The weather in London on 03/11 is as follows:\\\\nTemperature: 12°C\\\\nHumidity: 75%\\\\nWind: 20 km/h\", \"id\": \"lc_86fcafa5-4bd9-4006-b69a-0f234ee9224e\"}], {\"structured_content\": {\"result\": \"The weather in London on 03/11 is as follows:\\\\nTemperature: 12°C\\\\nHumidity: 75%\\\\nWind: 20 km/h\"}}]' name='weather_tool' tool_call_id='call_64c315b301fc48d0af995815'",
+          "start_time": 0.0,
+          "latency": 2.261585000087507,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "booking_tool",
+              "weather_tool"
+            ],
+            "actual": [
+              "booking_tool",
+              "weather_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exactly matching parameter names and values with correct types. \n\n1. booking_tool:\n- Expected parameters: city (str='London'), checkinDate (str='03/06'), checkoutDate (str='03/11')\n- Actual parameters: city (str='London'), checkinDate (str='03/06'), checkoutDate (str='03/11')\n- No missing or extra parameters.\n- No type mismatches.\n\n2. weather_tool:\n- Expected parameters: city (str='London'), date (str='03/11')\n- Actual parameters: city (str='London'), date (str='03/11')\n- No missing or extra parameters.\n- No type mismatches.\n\nAll parameters match semantically and type-wise. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "03/06",
+                  "checkoutDate": "03/11"
+                }
+              },
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "date": "03/11"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "03/06",
+                  "checkoutDate": "03/11"
+                }
+              },
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "date": "03/11"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8847,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 34.6% (MAS: 13116 vs SAS: 9746 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11855,
+        "completion_tokens": 1261,
+        "total_tokens": 13116,
+        "llm_calls": 5,
+        "cost": 0.006254
+      },
+      "latency": {
+        "total": 33.801,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_7",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to book a hotel room in or near New York City for a family stay, checking in on March 11th and checking out on March 14th. They also inquire about the weather conditions in New York Cit",
+      "expected_tools": [
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "New York",
+            "checkinDate": "03/11",
+            "checkoutDate": "03/14"
+          }
+        },
+        {
+          "name": "weather_tool",
+          "arguments": {
+            "city": "New York",
+            "date": "03/12"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "New York",
+            "checkinDate": "03/11",
+            "checkoutDate": "03/14"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Booking successful!\\\\nHotel: NYC Central Hotel\\\\nAddress: 789 Broadway, New York, NY\\\\nPhone: 212-555-0198\\\\nCheck-in Date: 03/11\\\\nCheck-out Date: 03/14\", \"id\": \"lc_bb66af05-2997-4119-8d1c-6aa3a3ecbb0c\"}], {\"structured_content\": {\"result\": \"Booking successful!\\\\nHotel: NYC Central Hotel\\\\nAddress: 789 Broadway, New York, NY\\\\nPhone: 212-555-0198\\\\nCheck-in Date: 03/11\\\\nCheck-out Date: 03/14\"}}]' name='booking_tool' tool_call_id='call_31d1703c98aa4d1cb4a36db",
+          "start_time": 0.0,
+          "latency": 2.684420199948363,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "weather_tool",
+          "args": {
+            "city": "New York",
+            "date": "03/12"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The weather in New York on 03/12 is as follows:\\\\nTemperature: 10°C\\\\nHumidity: 65%\\\\nWind: 12 km/h\", \"id\": \"lc_b1303417-e2d5-4878-a973-cc0acefeb250\"}], {\"structured_content\": {\"result\": \"The weather in New York on 03/12 is as follows:\\\\nTemperature: 10°C\\\\nHumidity: 65%\\\\nWind: 12 km/h\"}}]' name='weather_tool' tool_call_id='call_708f9deb360245df8c1d77a1'",
+          "start_time": 0.0,
+          "latency": 2.6858023999957368,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "booking_tool",
+              "weather_tool"
+            ],
+            "actual": [
+              "booking_tool",
+              "weather_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For booking_tool, expected parameters are city, checkinDate, and checkoutDate all strings, and actual matches exactly. For weather_tool, expected parameters are city and date both strings, and actual matches exactly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "checkinDate": "03/11",
+                  "checkoutDate": "03/14"
+                }
+              },
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "date": "03/12"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "checkinDate": "03/11",
+                  "checkoutDate": "03/14"
+                }
+              },
+              {
+                "name": "weather_tool",
+                "input_parameters": {
+                  "city": "New York",
+                  "date": "03/12"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.6804,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 95.9% (MAS: 18350 vs SAS: 9368 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 15309,
+        "completion_tokens": 3041,
+        "total_tokens": 18350,
+        "llm_calls": 5,
+        "cost": 0.009305
+      },
+      "latency": {
+        "total": 69.369,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_8",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for a round-trip economy flight for three people traveling from Seattle to San Diego, departing on March 4th and returning on March 6th. They also requested information about attra",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "SAN",
+            "departure_date": "03/04",
+            "return_date": "03/06",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Diego",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "SEA",
+            "destination": "SAN",
+            "departure_date": "03/04",
+            "return_date": "03/06",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following flights: Departure Flight: UA234; Return Flight: UA567\", \"id\": \"lc_5aa33148-8eba-429e-a5ba-d35d66cbb13a\"}], {\"structured_content\": {\"result\": \"Found the following flights: Departure Flight: UA234; Return Flight: UA567\"}}]' name='search_flights' tool_call_id='call_e57f4ca55a2d42658c2e6e15'",
+          "start_time": 0.0,
+          "latency": 2.426726400037296,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "San Diego",
+            "category": "general"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Points of Interest in San Diego:\\\\n- Balboa Park (Park), 5km away from the searching point\\\\n- San Diego Zoo (Zoo), 7km away from the searching point\\\\n\", \"id\": \"lc_d29d880b-828c-4658-bec1-70c9f801be75\"}], {\"structured_content\": {\"result\": \"Points of Interest in San Diego:\\\\n- Balboa Park (Park), 5km away from the searching point\\\\n- San Diego Zoo (Zoo), 7km away from the searching point\\\\n\"}}]' name='geocalc_mcp_get_points_of_interest' tool_call_id='call_f40",
+          "start_time": 0.0,
+          "latency": 2.425313400104642,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_flights', all expected parameters (type, origin, destination, departure_date, return_date, cabin_class) are present with matching string values and no extra or missing parameters. For 'geocalc_mcp_get_points_of_interest', both expected parameters (city, category) are present with matching string values and no extra or missing parameters. No type mismatches or parameter discrepancies found.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "SAN",
+                  "departure_date": "03/04",
+                  "return_date": "03/06",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Diego",
+                  "category": "general"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "SEA",
+                  "destination": "SAN",
+                  "departure_date": "03/04",
+                  "return_date": "03/06",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Diego",
+                  "category": "general"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.7665,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 70.0% (MAS: 15134 vs SAS: 8900 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12308,
+        "completion_tokens": 2826,
+        "total_tokens": 15134,
+        "llm_calls": 5,
+        "cost": 0.007813
+      },
+      "latency": {
+        "total": 63.165,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_9",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user requested help booking a round-trip flight from LA to SF, departing on March 3rd and returning on March 12th in economy class. They also inquired about finding attractions in SF.",
+      "expected_tools": [
+        {
+          "name": "search_flights",
+          "arguments": {
+            "type": "round_trip",
+            "origin": "LAX",
+            "destination": "SFO",
+            "departure_date": "03/03",
+            "return_date": "03/12",
+            "cabin_class": "economy"
+          }
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "arguments": {
+            "city": "San Francisco",
+            "category": "general"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_flights",
+          "args": {
+            "type": "round_trip",
+            "origin": "LAX",
+            "destination": "SFO",
+            "departure_date": "03/03",
+            "return_date": "03/12",
+            "cabin_class": "economy"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following flights: Departure Flight: UA234; Return Flight: UA567\", \"id\": \"lc_c420cba4-7750-43c1-ba68-f6164cfe8296\"}], {\"structured_content\": {\"result\": \"Found the following flights: Departure Flight: UA234; Return Flight: UA567\"}}]' name='search_flights' tool_call_id='call_e267c4472019464fb8c45c11'",
+          "start_time": 0.0,
+          "latency": 2.672300499980338,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "San Francisco",
+            "category": "attractions"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No points of interest found within 10km for the specified categories.\", \"id\": \"lc_da82ee8a-7012-4eea-80d7-a8f71d37e492\"}], {\"structured_content\": {\"result\": \"No points of interest found within 10km for the specified categories.\"}}]' name='geocalc_mcp_get_points_of_interest' tool_call_id='call_34cf4a2f9d1c4d35b9c9475f'",
+          "start_time": 0.0,
+          "latency": 2.812970699975267,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "geocalc_mcp_get_points_of_interest",
+          "args": {
+            "city": "San Francisco",
+            "category": "attractions",
+            "radius_km": 50
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"No points of interest found within 50.0km for the specified categories.\", \"id\": \"lc_9650b2d6-f3a2-48bd-bb10-43c5697171f6\"}], {\"structured_content\": {\"result\": \"No points of interest found within 50.0km for the specified categories.\"}}]' name='geocalc_mcp_get_points_of_interest' tool_call_id='call_38661dcf9c8d40f98a4b7ffa'",
+          "start_time": 9.267,
+          "latency": 1.7942997999489307,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['geocalc_mcp_get_points_of_interest', 'search_flights']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest"
+            ],
+            "actual": [
+              "search_flights",
+              "geocalc_mcp_get_points_of_interest",
+              "geocalc_mcp_get_points_of_interest"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "There are two expected tool calls: 'search_flights' and 'geocalc_mcp_get_points_of_interest'.\n\n1. 'search_flights':\n- Expected parameters: type, origin, destination, departure_date, return_date, cabin_class.\n- Actual parameters: exactly the same with matching values and types.\n- Result: Perfect match, score contribution = 1.0.\n\n2. 'geocalc_mcp_get_points_of_interest':\n- Expected parameters: city='San Francisco', category='general'.\n- Actual calls:\n  a) One call with city='San Francisco', category='attractions' (category value differs from expected).\n  b) Another call with city='San Francisco', category='attractions', radius_km=50 (extra parameter radius_km not expected).\n\n- Issues:\n  - Category value mismatch ('general' vs 'attractions') is a major semantic mismatch.\n  - Extra parameter 'radius_km' in the second actual call is penalized.\n  - Missing expected category='general' in actual calls.\n\n- Result: Major issues for this tool, score contribution = 0.0.\n\nOverall:\n- One tool perfect (1.0), one tool major issues (0.0).\n- Additionally, there are two actual calls for 'geocalc_mcp_get_points_of_interest' but only one expected call, which is an extra call but not explicitly penalized by rules.\n\nFinal score is low due to major semantic mismatch and extra parameter in the second tool's calls.\n\nHence, overall score is 0.3.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "LAX",
+                  "destination": "SFO",
+                  "departure_date": "03/03",
+                  "return_date": "03/12",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Francisco",
+                  "category": "general"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_flights",
+                "input_parameters": {
+                  "type": "round_trip",
+                  "origin": "LAX",
+                  "destination": "SFO",
+                  "departure_date": "03/03",
+                  "return_date": "03/12",
+                  "cabin_class": "economy"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Francisco",
+                  "category": "attractions"
+                }
+              },
+              {
+                "name": "geocalc_mcp_get_points_of_interest",
+                "input_parameters": {
+                  "city": "San Francisco",
+                  "category": "attractions",
+                  "radius_km": 50
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.5519,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 134.4% (MAS: 20216 vs SAS: 8624 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 16990,
+        "completion_tokens": 3226,
+        "total_tokens": 20216,
+        "llm_calls": 6,
+        "cost": 0.010197
+      },
+      "latency": {
+        "total": 76.385,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_10",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for interesting activities to do, particularly concert events in San Francisco, and also inquires about their checking account balances.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Concert Event",
+            "city": "San Francisco"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Concert Event",
+            "city": "San Francisco"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: Concert Event in San Francisco on 03/01 to 03/02\", \"id\": \"lc_b3c225b2-3336-4e23-a601-1574437e6fd6\"}], {\"structured_content\": {\"result\": \"Found the following events: Concert Event in San Francisco on 03/01 to 03/02\"}}]' name='search_ticketmaster' tool_call_id='call_5e579117f342455ea883b53c'",
+          "start_time": 0.0,
+          "latency": 2.8838791999733075,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The balance of the user\\'s checking account is 1500 USD.\", \"id\": \"lc_3eed7776-fd8c-41ca-96f5-9b6288c7f7d0\"}], {\"structured_content\": {\"result\": \"The balance of the user\\'s checking account is 1500 USD.\"}}]' name='get_balance' tool_call_id='call_22d8a103c7d746c39a1a346b'",
+          "start_time": 0.0,
+          "latency": 2.885289700003341,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_ticketmaster', expected parameters are 'type' (str) with value 'Concert Event' and 'city' (str) with value 'San Francisco', which exactly match the actual call. For 'get_balance', expected parameter is 'account_type' (str) with value 'checking', which also exactly matches the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is awarded.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "San Francisco"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "San Francisco"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8333,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 50.0% (MAS: 13474 vs SAS: 8982 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12191,
+        "completion_tokens": 1283,
+        "total_tokens": 13474,
+        "llm_calls": 5,
+        "cost": 0.006419
+      },
+      "latency": {
+        "total": 40.08,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_11",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for interesting activities in Boston, particularly sports events like football events. They also inquired about their checking account balance.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Football Event",
+            "city": "Boston"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Sports Event",
+            "city": "Boston"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: \", \"id\": \"lc_57f0bf8e-21ba-4f85-9e3d-7843b0542096\"}], {\"structured_content\": {\"result\": \"Found the following events: \"}}]' name='search_ticketmaster' tool_call_id='call_00_C0hWMoWIU7uZ6lCtqzec3153'",
+          "start_time": 0.0,
+          "latency": 2.790702399914153,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Festival Event",
+            "city": "Boston"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: \", \"id\": \"lc_25277f33-a3a7-4c14-b70d-ff1890f8db7d\"}], {\"structured_content\": {\"result\": \"Found the following events: \"}}]' name='search_ticketmaster' tool_call_id='call_01_LoMWEFwmafiXox4W5Nq26231'",
+          "start_time": 0.0,
+          "latency": 2.819041999988258,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The balance of the user\\'s checking account is 1500 USD.\", \"id\": \"lc_dfb15801-1a72-4052-8784-c6cb6a2bd1f8\"}], {\"structured_content\": {\"result\": \"The balance of the user\\'s checking account is 1500 USD.\"}}]' name='get_balance' tool_call_id='call_02_SiXbbEX9ydKgqPBVhEgb6112'",
+          "start_time": 0.0,
+          "latency": 2.7888696999289095,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.6666666666666666,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "2/2 expected tools found, 3 total calls. Correct: ['get_balance', 'search_ticketmaster']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "search_ticketmaster",
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of each expected tool call against actual calls:\n\n1. Tool: search_ticketmaster\n- Expected parameters: {type: 'Football Event', city: 'Boston'} (both strings)\n- Actual calls: Two calls with parameters:\n  a) {type: 'Sports Event', city: 'Boston'}\n  b) {type: 'Festival Event', city: 'Boston'}\n- Issues: Both actual calls have the correct parameter names and types (strings), but the 'type' parameter values do NOT match the expected 'Football Event'. This is a semantic mismatch in parameter values.\n- Since the expected call is one, but actual has two calls with different 'type' values, neither matches the expected value.\n- Result: Major issue due to wrong parameter values.\n\n2. Tool: get_balance\n- Expected parameters: {account_type: 'checking'} (string)\n- Actual call: {account_type: 'checking'}\n- Parameters and types match exactly.\n\nSummary:\n- One tool (get_balance) matches perfectly.\n- One tool (search_ticketmaster) has major semantic mismatches in parameter values.\n- No missing or extra parameters, no type mismatches.\n\nGiven the major semantic mismatch in one of two expected tools, the score is low but not zero because one tool is fully correct.\n\nScore assigned: 0.3",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Boston"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Sports Event",
+                  "city": "Boston"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Festival Event",
+                  "city": "Boston"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.6666666666666666, Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 0.6666666666666666,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8143,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 55.7% (MAS: 13868 vs SAS: 8907 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10649,
+        "completion_tokens": 3219,
+        "total_tokens": 13868,
+        "llm_calls": 5,
+        "cost": 0.007433
+      },
+      "latency": {
+        "total": 73.713,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_12",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for a concert in Rohnert Park and wants to know their savings account balances.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Concert Event",
+            "city": "Rohnert Park"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "savings"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Concert Event",
+            "city": "Rohnert Park"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: Concert Event in Rohnert Park on 03/11 to 03/11\", \"id\": \"lc_c61b74b3-65ea-4cdf-a675-1e9c5204f520\"}], {\"structured_content\": {\"result\": \"Found the following events: Concert Event in Rohnert Park on 03/11 to 03/11\"}}]' name='search_ticketmaster' tool_call_id='call_00_8bOO7AOZdMZGsynYtQqd0792'",
+          "start_time": 0.0,
+          "latency": 2.227554599987343,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "savings"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The balance of the user\\'s savings account is 3000 USD.\", \"id\": \"lc_8d41ef40-3128-46a0-a2f9-d89ab8331c5d\"}], {\"structured_content\": {\"result\": \"The balance of the user\\'s savings account is 3000 USD.\"}}]' name='get_balance' tool_call_id='call_01_Aj9NJI1odI3dD639Aszm9541'",
+          "start_time": 0.0,
+          "latency": 2.2261091999243945,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_ticketmaster', expected parameters are 'type' (str) with value 'Concert Event' and 'city' (str) with value 'Rohnert Park', which exactly match the actual call. For 'get_balance', expected parameter is 'account_type' (str) with value 'savings', which also exactly matches the actual call. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "Rohnert Park"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "Rohnert Park"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "savings"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8857,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 34.3% (MAS: 12435 vs SAS: 9259 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10954,
+        "completion_tokens": 1481,
+        "total_tokens": 12435,
+        "llm_calls": 5,
+        "cost": 0.006053
+      },
+      "latency": {
+        "total": 35.716,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_13",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for fun activities in Seattle, specifically a country show on April 10th, which they decide on. They also need a hotel room for a 4-day stay starting on April 8th.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Country Event",
+            "city": "Seattle"
+          }
+        },
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "Seattle",
+            "checkinDate": "04/08",
+            "checkoutDate": "04/12"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Country Event",
+            "city": "Seattle"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: Country Event in Seattle on 04/10 to 04/10\", \"id\": \"lc_24f1fd5e-7a6b-4ee0-9478-50d5905f6db8\"}], {\"structured_content\": {\"result\": \"Found the following events: Country Event in Seattle on 04/10 to 04/10\"}}]' name='search_ticketmaster' tool_call_id='call_00_V2kcI0s9xG23gfk94OE57443'",
+          "start_time": 0.0,
+          "latency": 2.3761618999997154,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "Seattle",
+            "checkinDate": "04/08",
+            "checkoutDate": "04/12"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Booking successful!\\\\nHotel: Seattle Sky Hotel\\\\nAddress: 789 Rainy Ave, Seattle, WA\\\\nPhone: 206-555-0145\\\\nCheck-in Date: 04/08\\\\nCheck-out Date: 04/12\", \"id\": \"lc_ef1ee8db-f0ec-4da1-a371-aa8373d46da5\"}], {\"structured_content\": {\"result\": \"Booking successful!\\\\nHotel: Seattle Sky Hotel\\\\nAddress: 789 Rainy Ave, Seattle, WA\\\\nPhone: 206-555-0145\\\\nCheck-in Date: 04/08\\\\nCheck-out Date: 04/12\"}}]' name='booking_tool' tool_call_id='call_01_l9VgvQn9BSYWImcj9boQ",
+          "start_time": 0.0,
+          "latency": 2.3747016999404877,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "booking_tool"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools have exact matching parameter names and values with correct types. For 'search_ticketmaster', expected parameters are 'type' and 'city' with values 'Country Event' and 'Seattle' respectively, both strings, which match the actual call exactly. For 'booking_tool', expected parameters are 'city', 'checkinDate', and 'checkoutDate' with values 'Seattle', '04/08', and '04/12' respectively, all strings, which also match the actual call exactly. No extra or missing parameters, no type mismatches, and parameter values are semantically equivalent. Therefore, full score of 1.0 is given.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Country Event",
+                  "city": "Seattle"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Seattle",
+                  "checkinDate": "04/08",
+                  "checkoutDate": "04/12"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Country Event",
+                  "city": "Seattle"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "Seattle",
+                  "checkinDate": "04/08",
+                  "checkoutDate": "04/12"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8281,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 51.6% (MAS: 14756 vs SAS: 9736 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12409,
+        "completion_tokens": 2347,
+        "total_tokens": 14756,
+        "llm_calls": 5,
+        "cost": 0.00744
+      },
+      "latency": {
+        "total": 51.932,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_14",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to find pop music events in London on May 9th. They also want to reserve a hotel room in London for two days starting May 7th and request the phone number and address of the hotel.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Pop Event",
+            "city": "London"
+          }
+        },
+        {
+          "name": "booking_tool",
+          "arguments": {
+            "city": "London",
+            "checkinDate": "05/07",
+            "checkoutDate": "05/09"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Concert Event",
+            "city": "London"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: \", \"id\": \"lc_c89eabe5-7306-4f4a-b80c-9132e51ff720\"}], {\"structured_content\": {\"result\": \"Found the following events: \"}}]' name='search_ticketmaster' tool_call_id='call_d39a4da4db984e88a6091fdf'",
+          "start_time": 0.0,
+          "latency": 2.347187799983658,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "booking_tool",
+          "args": {
+            "city": "London",
+            "checkinDate": "5/7",
+            "checkoutDate": "5/9"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Booking successful!\\\\nHotel: London Bridge Hotel\\\\nAddress: London Bridge St, London\\\\nPhone: 020-7946-0958\\\\nCheck-in Date: 5/7\\\\nCheck-out Date: 5/9\", \"id\": \"lc_8bd0558e-7da3-445a-8afd-1a188f171ddc\"}], {\"structured_content\": {\"result\": \"Booking successful!\\\\nHotel: London Bridge Hotel\\\\nAddress: London Bridge St, London\\\\nPhone: 020-7946-0958\\\\nCheck-in Date: 5/7\\\\nCheck-out Date: 5/9\"}}]' name='booking_tool' tool_call_id='call_f3c91b64ef2b477686edad96'",
+          "start_time": 0.0,
+          "latency": 2.348722100025043,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "booking_tool"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "booking_tool"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Evaluation of tool calls:\n\n1. search_ticketmaster:\n- Expected parameters: type='Pop Event' (str), city='London' (str)\n- Actual parameters: type='Concert Event' (str), city='London' (str)\n- Parameter names match exactly.\n- Parameter types match (both strings).\n- Parameter values differ for 'type': expected 'Pop Event', actual 'Concert Event' (semantic mismatch).\n- Issue: Wrong value for 'type' parameter.\n\n2. booking_tool:\n- Expected parameters: city='London' (str), checkinDate='05/07' (str), checkoutDate='05/09' (str)\n- Actual parameters: city='London' (str), checkinDate='5/7' (str), checkoutDate='5/9' (str)\n- Parameter names match exactly.\n- Parameter types match (all strings).\n- Parameter values differ in formatting for checkinDate and checkoutDate ('05/07' vs '5/7', '05/09' vs '5/9'). Although both represent dates, the formatting difference is a semantic mismatch under strict evaluation.\n\nSummary:\n- Both tools have correct parameter names and types.\n- Both tools have semantic mismatches in parameter values.\n- No missing or extra parameters.\n\nGiven major semantic mismatches in both tools, the score is low but not zero since types and parameter names are correct.\n\nFinal score: 0.3",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Pop Event",
+                  "city": "London"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "05/07",
+                  "checkoutDate": "05/09"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "London"
+                }
+              },
+              {
+                "name": "booking_tool",
+                "input_parameters": {
+                  "city": "London",
+                  "checkinDate": "5/7",
+                  "checkoutDate": "5/9"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.5649,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 130.5% (MAS: 17778 vs SAS: 7712 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 13763,
+        "completion_tokens": 4015,
+        "total_tokens": 17778,
+        "llm_calls": 5,
+        "cost": 0.00948
+      },
+      "latency": {
+        "total": 86.17,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_15",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to check their calendar for events on the 6th of May. They also want to know their availability and if there are any other available times on that day.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "05/06"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "05/06"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "05/06"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Events:\\\\n- 05/06: Meeting with Bob (Status: confirmed)\\\\n  Attendees: Alice, Bob\\\\n- 05/06: Lunch with Sarah (Status: tentative)\\\\n  Attendees: Alice, Sarah\\\\n\", \"id\": \"lc_ebcca557-97a8-4864-9ae2-214fb8df861c\"}], {\"structured_content\": {\"result\": \"Events:\\\\n- 05/06: Meeting with Bob (Status: confirmed)\\\\n  Attendees: Alice, Bob\\\\n- 05/06: Lunch with Sarah (Status: tentative)\\\\n  Attendees: Alice, Sarah\\\\n\"}}]' name='list_events' tool_call_id='call_00_bimCLuW",
+          "start_time": 0.0,
+          "latency": 2.7745743000414222,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "05/06"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The user is free from 7:00 PM to 10:00 PM on 05/06.\", \"id\": \"lc_a20e8b8e-dace-4ecd-9bcf-80af2feeadb2\"}], {\"structured_content\": {\"result\": \"The user is free from 7:00 PM to 10:00 PM on 05/06.\"}}]' name='find_free_slots' tool_call_id='call_01_NFt9wEr8UtDasDrrcN580225'",
+          "start_time": 0.0,
+          "latency": 2.77583139995113,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have exact matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '05/06' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls match perfectly.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "05/06"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.702,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 89.4% (MAS: 12485 vs SAS: 6592 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 10392,
+        "completion_tokens": 2093,
+        "total_tokens": 12485,
+        "llm_calls": 5,
+        "cost": 0.006341
+      },
+      "latency": {
+        "total": 52.266,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_16",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is inquiring about their calendar schedule for March 13th, and when their schedule is clear.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "03/13"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "03/13"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "03/13"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Events:\\\\n- 03/13: Project Presentation (Status: confirmed)\\\\n  Attendees: Alice, Charlie\\\\n\", \"id\": \"lc_9dfc62bf-9dcd-4b62-b1e2-adce573f8d20\"}], {\"structured_content\": {\"result\": \"Events:\\\\n- 03/13: Project Presentation (Status: confirmed)\\\\n  Attendees: Alice, Charlie\\\\n\"}}]' name='list_events' tool_call_id='call_47a221081dd94a28b4687834'",
+          "start_time": 0.0,
+          "latency": 3.143046100041829,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "03/13"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The user is free from 7:00 PM to 10:00 PM on 03/13.\", \"id\": \"lc_2d87690b-1e6f-4270-b7e8-c2ccd7dc4f21\"}], {\"structured_content\": {\"result\": \"The user is free from 7:00 PM to 10:00 PM on 03/13.\"}}]' name='find_free_slots' tool_call_id='call_397bcfae73cd48a5bb906606'",
+          "start_time": 0.0,
+          "latency": 3.1381572999525815,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '03/13' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls have correct arguments with correct types.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "03/13"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.8215,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 53.5% (MAS: 14136 vs SAS: 9207 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 12418,
+        "completion_tokens": 1718,
+        "total_tokens": 14136,
+        "llm_calls": 5,
+        "cost": 0.006896
+      },
+      "latency": {
+        "total": 44.904,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_17",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to check their calendar for upcoming events, specifically for 04/01, and also wants to know their availability for the day.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "04/01"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "04/01"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "04/01"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Events:\\\\n- 04/01: April Fool\\'s Day Event (Status: confirmed)\\\\n  Attendees: Alice\\\\n\", \"id\": \"lc_c34cc570-72c8-40ec-a3d4-dbf907b0f04d\"}], {\"structured_content\": {\"result\": \"Events:\\\\n- 04/01: April Fool\\'s Day Event (Status: confirmed)\\\\n  Attendees: Alice\\\\n\"}}]' name='list_events' tool_call_id='call_1d6df70e83eb400183f42d80'",
+          "start_time": 0.0,
+          "latency": 2.2438746000407264,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "04/01"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The user is free from 7:00 PM to 10:00 PM on 04/01.\", \"id\": \"lc_e326d9b4-6f57-47c1-b12a-56adc56d364f\"}], {\"structured_content\": {\"result\": \"The user is free from 7:00 PM to 10:00 PM on 04/01.\"}}]' name='find_free_slots' tool_call_id='call_25126e9139664525b0383941'",
+          "start_time": 0.0,
+          "latency": 2.242429199977778,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have matching parameters exactly as expected. Parameter names match exactly, parameter values are semantically equivalent, and types match correctly (both 'date' parameters are strings with value '04/01'). There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls are correct.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/01"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.6319,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 110.4% (MAS: 12548 vs SAS: 5963 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11107,
+        "completion_tokens": 1441,
+        "total_tokens": 12548,
+        "llm_calls": 5,
+        "cost": 0.006085
+      },
+      "latency": {
+        "total": 40.645,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_18",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to check their calendar for events on Thursday next week, which is 04/06/2023, and know their availability.",
+      "expected_tools": [
+        {
+          "name": "list_events",
+          "arguments": {
+            "date": "04/06"
+          }
+        },
+        {
+          "name": "find_free_slots",
+          "arguments": {
+            "date": "04/06"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "list_events",
+          "args": {
+            "date": "04/06"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Events:\\\\n- 04/06: Yoga Class (Status: confirmed)\\\\n  Attendees: Alice\\\\n\", \"id\": \"lc_472a528e-12d3-4059-ace2-caf0e5571e40\"}], {\"structured_content\": {\"result\": \"Events:\\\\n- 04/06: Yoga Class (Status: confirmed)\\\\n  Attendees: Alice\\\\n\"}}]' name='list_events' tool_call_id='call_8060f9fdcd0d4b7dabcd556b'",
+          "start_time": 0.0,
+          "latency": 1.7739946999354288,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "find_free_slots",
+          "args": {
+            "date": "04/06"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The user is free from 7:00 PM to 10:00 PM on 04/06.\", \"id\": \"lc_bfab1674-4403-49a4-bbac-3b860243f80d\"}], {\"structured_content\": {\"result\": \"The user is free from 7:00 PM to 10:00 PM on 04/06.\"}}]' name='find_free_slots' tool_call_id='call_9a16a3c5b8fc439a8e4fc6f9'",
+          "start_time": 5.605,
+          "latency": 1.791775899939239,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "list_events",
+              "find_free_slots"
+            ],
+            "actual": [
+              "list_events",
+              "find_free_slots"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tools 'list_events' and 'find_free_slots' have exact matching parameter names and values. The parameter 'date' is present in both expected and actual calls with the same string value '04/06' and correct type 'str'. There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls match perfectly.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "list_events",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              },
+              {
+                "name": "find_free_slots",
+                "input_parameters": {
+                  "date": "04/06"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 0.0,
+          "threshold": 0.7,
+          "success": false,
+          "reason": "0/1 checks passed. Issues: Tools ran sequentially (missed parallelization)"
+        },
+        "Final State (Derived)": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Tool + Argument Correctness passed (execution order ignored)",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.5781,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 126.6% (MAS: 16711 vs SAS: 7376 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 14615,
+        "completion_tokens": 2096,
+        "total_tokens": 16711,
+        "llm_calls": 6,
+        "cost": 0.008181
+      },
+      "latency": {
+        "total": 52.296,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_19",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user is looking for events in Atlanta, including basketball events on March 5th, and football events on the 13th of the same month.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Basketball Event",
+            "city": "Atlanta"
+          }
+        },
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Football Event",
+            "city": "Atlanta"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Basketball Event",
+            "city": "Atlanta"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: Basketball Event in Atlanta on 03/05 to 03/05\", \"id\": \"lc_ceafca99-3501-4c88-a6a0-be5f54115179\"}], {\"structured_content\": {\"result\": \"Found the following events: Basketball Event in Atlanta on 03/05 to 03/05\"}}]' name='search_ticketmaster' tool_call_id='call_00_KYeU7JtuY2atVrx5Eo0o2780'",
+          "start_time": 0.0,
+          "latency": 2.6864069000585005,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Football Event",
+            "city": "Atlanta"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: Football Event in Atlanta on 03/13 to 03/13\", \"id\": \"lc_a9ea5f10-ce41-4101-98ec-7a6577bb9781\"}], {\"structured_content\": {\"result\": \"Found the following events: Football Event in Atlanta on 03/13 to 03/13\"}}]' name='search_ticketmaster' tool_call_id='call_01_V5SLEeYsGBFGShX39j5R3819'",
+          "start_time": 0.0,
+          "latency": 2.6884112999541685,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 0.5,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "1/1 expected tools found, 2 total calls. Correct: ['search_ticketmaster']. Duplicates: 1",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "search_ticketmaster"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "search_ticketmaster"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "Both tool calls 'search_ticketmaster' have exact matching parameter names and values with correct types. The first call has parameters {type: 'Basketball Event', city: 'Atlanta'} matching exactly in name, value, and type (string). The second call has parameters {type: 'Football Event', city: 'Atlanta'} also matching exactly in name, value, and type (string). There are no extra or missing parameters, and no type mismatches. Therefore, all tool calls match perfectly.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Basketball Event",
+                  "city": "Atlanta"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Atlanta"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Basketball Event",
+                  "city": "Atlanta"
+                }
+              },
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Football Event",
+                  "city": "Atlanta"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Tool Correctness: 0.5",
+          "component_scores": {
+            "Tool Correctness": 0.5,
+            "Argument Correctness": 1.0
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 0.9002,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: 29.9% (MAS: 10401 vs SAS: 8005 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 9021,
+        "completion_tokens": 1380,
+        "total_tokens": 10401,
+        "llm_calls": 5,
+        "cost": 0.005125
+      },
+      "latency": {
+        "total": 34.438,
+        "per_turn": []
+      },
+      "error": null
+    },
+    {
+      "id": "MCPAB-daytask_2_parallel_tools_20",
+      "dimension": "STurn-MT",
+      "category": "parallel",
+      "input": "The user wants to know about rock concerts in New York, and also wants to check the balances in their checking account.",
+      "expected_tools": [
+        {
+          "name": "search_ticketmaster",
+          "arguments": {
+            "type": "Rock Event",
+            "city": "New York"
+          }
+        },
+        {
+          "name": "get_balance",
+          "arguments": {
+            "account_type": "checking"
+          }
+        }
+      ],
+      "tools_called": [
+        {
+          "name": "search_ticketmaster",
+          "args": {
+            "type": "Concert Event",
+            "city": "New York"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"Found the following events: \", \"id\": \"lc_7e2adc67-8ef8-4b13-893a-afa867481052\"}], {\"structured_content\": {\"result\": \"Found the following events: \"}}]' name='search_ticketmaster' tool_call_id='call_00_HJJUOzBDFvIYZZ9T8JtN5691'",
+          "start_time": 0.0,
+          "latency": 2.458235399913974,
+          "agent_id": "orchestrator"
+        },
+        {
+          "name": "get_balance",
+          "args": {
+            "account_type": "checking"
+          },
+          "output": "content='[[{\"type\": \"text\", \"text\": \"The balance of the user\\'s checking account is 1500 USD.\", \"id\": \"lc_dd934ca9-e591-4918-9a56-1375b298739f\"}], {\"structured_content\": {\"result\": \"The balance of the user\\'s checking account is 1500 USD.\"}}]' name='get_balance' tool_call_id='call_01_oD3GSDFWHV0O9I3yBJWL0203'",
+          "start_time": 0.0,
+          "latency": 2.4594795999582857,
+          "agent_id": "orchestrator"
+        }
+      ],
+      "metrics": {
+        "Tool Correctness": {
+          "score": 1.0,
+          "threshold": 1.0,
+          "success": true,
+          "reason": "All 2 expected tools called exactly.",
+          "comparison": {
+            "expected": [
+              "search_ticketmaster",
+              "get_balance"
+            ],
+            "actual": [
+              "search_ticketmaster",
+              "get_balance"
+            ]
+          }
+        },
+        "Argument Correctness [Reference]": {
+          "score": 0.3,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Tool: search_ticketmaster - Expected parameters: type='Rock Event' (str), city='New York' (str). Actual parameters: type='Concert Event' (str), city='New York' (str). Issue: Parameter 'type' value mismatch ('Rock Event' vs 'Concert Event'). No type mismatch, but semantic value differs, which is a major issue. Tool: get_balance - Expected parameters: account_type='checking' (str). Actual parameters: account_type='checking' (str). No issues found. Overall, one tool has a major parameter value mismatch, the other matches perfectly. According to scoring rules, major issues (wrong values) lead to a low score around 0.0-0.4.",
+          "comparison": {
+            "expected": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Rock Event",
+                  "city": "New York"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ],
+            "actual": [
+              {
+                "name": "search_ticketmaster",
+                "input_parameters": {
+                  "type": "Concert Event",
+                  "city": "New York"
+                }
+              },
+              {
+                "name": "get_balance",
+                "input_parameters": {
+                  "account_type": "checking"
+                }
+              }
+            ]
+          }
+        },
+        "Execution Efficiency": {
+          "score": 1.0,
+          "threshold": 0.7,
+          "success": true,
+          "reason": "All parallel opportunities used and all dependencies respected"
+        },
+        "Final State (Derived)": {
+          "score": 0.0,
+          "threshold": 1.0,
+          "success": false,
+          "reason": "Failed: Argument Correctness: 0.3",
+          "component_scores": {
+            "Tool Correctness": 1.0,
+            "Argument Correctness": 0.3
+          }
+        },
+        "Coordination Token Overhead": {
+          "score": 1.0,
+          "threshold": 0.5,
+          "success": true,
+          "reason": "Overhead: -5.8% (MAS: 13303 vs SAS: 14125 tokens)"
+        }
+      },
+      "per_turn": [],
+      "tokens": {
+        "prompt_tokens": 11017,
+        "completion_tokens": 2286,
+        "total_tokens": 13303,
+        "llm_calls": 5,
+        "cost": 0.006781
+      },
+      "latency": {
+        "total": 50.901,
+        "per_turn": []
+      },
+      "error": null
+    }
+  ],
+  "test_case_errors": [],
+  "confidence_intervals": {
+    "Tool Correctness": {
+      "n": 20,
+      "mean": 0.87,
+      "median": 1.0,
+      "std": 0.2122,
+      "variance": 0.045,
+      "ci_lower": 0.777,
+      "ci_upper": 0.963,
+      "min": 0.4,
+      "max": 1.0,
+      "p25": 0.6667,
+      "p75": 1.0,
+      "iqr": 0.3333,
+      "pass_rate": 0.7,
+      "pass_ci_lower": 0.481,
+      "pass_ci_upper": 0.8545,
+      "passed": 14,
+      "total": 20
+    },
+    "Argument Correctness [Reference]": {
+      "n": 20,
+      "mean": 0.79,
+      "median": 1.0,
+      "std": 0.3291,
+      "variance": 0.1083,
+      "ci_lower": 0.6458,
+      "ci_upper": 0.9342,
+      "min": 0.3,
+      "max": 1.0,
+      "p25": 0.3,
+      "p75": 1.0,
+      "iqr": 0.7,
+      "pass_rate": 0.7,
+      "pass_ci_lower": 0.481,
+      "pass_ci_upper": 0.8545,
+      "passed": 14,
+      "total": 20
+    },
+    "Execution Efficiency": {
+      "n": 20,
+      "mean": 0.95,
+      "median": 1.0,
+      "std": 0.2236,
+      "variance": 0.05,
+      "ci_lower": 0.852,
+      "ci_upper": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 1.0,
+      "p75": 1.0,
+      "iqr": 0.0,
+      "pass_rate": 0.95,
+      "pass_ci_lower": 0.7639,
+      "pass_ci_upper": 0.9911,
+      "passed": 19,
+      "total": 20
+    },
+    "Final State (Derived)": {
+      "n": 20,
+      "mean": 0.6,
+      "median": 1.0,
+      "std": 0.5026,
+      "variance": 0.2526,
+      "ci_lower": 0.3797,
+      "ci_upper": 0.8203,
+      "min": 0.0,
+      "max": 1.0,
+      "p25": 0.0,
+      "p75": 1.0,
+      "iqr": 1.0,
+      "pass_rate": 0.6,
+      "pass_ci_lower": 0.3866,
+      "pass_ci_upper": 0.7812,
+      "passed": 12,
+      "total": 20
+    },
+    "Coordination Token Overhead": {
+      "n": 20,
+      "mean": 0.752,
+      "median": 0.7807,
+      "std": 0.1573,
+      "variance": 0.0247,
+      "ci_lower": 0.6831,
+      "ci_upper": 0.8209,
+      "min": 0.3847,
+      "max": 1.0,
+      "p25": 0.6683,
+      "p75": 0.8462,
+      "iqr": 0.1779,
+      "pass_rate": 0.95,
+      "pass_ci_lower": 0.7639,
+      "pass_ci_upper": 0.9911,
+      "passed": 19,
+      "total": 20
+    }
+  },
+  "statistics": {
+    "tokens": {
+      "prompt_tokens": {
+        "n": 20,
+        "mean": 13167.6,
+        "median": 12303.0,
+        "std": 3147.5971,
+        "variance": 9907367.3053,
+        "min": 9021.0,
+        "max": 22545.0,
+        "p25": 11084.5,
+        "p75": 13976.0,
+        "p95": 18536.0,
+        "p99": 21743.2,
+        "iqr": 2891.5
+      },
+      "completion_tokens": {
+        "n": 20,
+        "mean": 2515.55,
+        "median": 2494.0,
+        "std": 996.7663,
+        "variance": 993542.9974,
+        "min": 1261.0,
+        "max": 5139.0,
+        "p25": 1658.75,
+        "p75": 3085.5,
+        "p95": 4071.2,
+        "p99": 4925.44,
+        "iqr": 1426.75
+      },
+      "total_tokens": {
+        "n": 20,
+        "mean": 15683.15,
+        "median": 14928.0,
+        "std": 3763.5207,
+        "variance": 14164088.3447,
+        "min": 10401.0,
+        "max": 25288.0,
+        "p25": 13256.25,
+        "p75": 16977.75,
+        "p95": 23555.2,
+        "p99": 24941.44,
+        "iqr": 3721.5
+      },
+      "cost": {
+        "n": 20,
+        "mean": 0.0079,
+        "median": 0.0076,
+        "std": 0.002,
+        "variance": 0.0,
+        "min": 0.0051,
+        "max": 0.0124,
+        "p25": 0.0064,
+        "p75": 0.0085,
+        "p95": 0.0122,
+        "p99": 0.0124,
+        "iqr": 0.0021,
+        "total": 0.158326
+      }
+    },
+    "efficiency": {
+      "total_tests": 20,
+      "passed": 14,
+      "failed": 6,
+      "errors": 0,
+      "total_tokens": 313663,
+      "tokens_per_pass": 22404.5,
+      "success_per_1k_tokens": 0.0446,
+      "pass_rate": 0.7,
+      "error_rate": 0.0
+    }
+  },
+  "_enriched": {
+    "timestamp": "2026-07-08T16:41:01.806458",
+    "version": "2.1",
+    "costs_recalculated": 0,
+    "overhead_computed": 20,
+    "confidence_intervals_computed": 5,
+    "statistics_computed": true,
+    "efficiency_computed": true
+  }
+}
